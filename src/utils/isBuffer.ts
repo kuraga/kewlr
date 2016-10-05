@@ -1,5 +1,10 @@
 import { BufferFlags } from '../flags';
 
+/**
+ * Check if Buffer are supported
+ *
+ * @typedef {any} arrayBufferSupport
+ */
 const bufferSupport = (function(): any {
     class FakeBuffer {
         isBuffer(): true {
@@ -18,6 +23,13 @@ const bufferSupport = (function(): any {
     }
     return BufferFlags.BUFFER_NATIVE;
 })();
+
+/**
+ * Check if isPolyfilledFastBuffer are used
+ *
+ * @typedef {true | false} isPolyfilledFastBuffer
+ * @property {[any]} [Object]
+ */
 function isPolyfilledFastBuffer(object: any): true | false {
     let Buffer = object.constructor;
     if (typeof Buffer !== 'function') {
@@ -28,6 +40,13 @@ function isPolyfilledFastBuffer(object: any): true | false {
     }
     return Buffer.isBuffer(object);
 }
+
+/**
+ * isBuffer
+ *
+ * @typedef {true | false} isBuffer
+ * @property {[any]} [Object]
+ */
 function isBuffer(object: any): true | false {
     if (bufferSupport === BufferFlags.BUFFER_NATIVE && Buffer.isBuffer(object)) {
         return true;

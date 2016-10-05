@@ -1,5 +1,7 @@
 /**
- * isObject
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
  *
  * @typedef {true | false} isObject
  * @property {[any]} [value]
@@ -10,7 +12,8 @@ function isObject(value) {
 }
 
 /**
- * isObjectLike
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
  *
  * @typedef {true | false} isObjectLike
  * @property {[any]} [value]
@@ -36,7 +39,7 @@ var iterator = supportsIterator ? symbolIterator : false;
 var symbolsAreObjects = typeof Symbol === 'function' && typeof Symbol() === 'object';
 
 /**
- * isIterable
+ * Check if a object is iterable
  *
  * @typedef {true | false} isIterable
  * @property {[any]} [obj]
@@ -71,7 +74,7 @@ function compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual,
 }
 
 /**
- * equalKeys
+ * Check if equal keys
  *
  * @typedef {true | false} equalKeys
  * @property {[any]} [current]
@@ -351,6 +354,11 @@ function compareReferences(actual, expected, isEqual, context, left, right) {
     }
 }
 
+/**
+ * Check if Buffer are supported
+ *
+ * @typedef {any} arrayBufferSupport
+ */
 var bufferSupport = (function () {
     var FakeBuffer = function FakeBuffer () {};
 
@@ -369,6 +377,12 @@ var bufferSupport = (function () {
     }
     return 4 /* BUFFER_NATIVE */;
 })();
+/**
+ * Check if isPolyfilledFastBuffer are used
+ *
+ * @typedef {true | false} isPolyfilledFastBuffer
+ * @property {[any]} [Object]
+ */
 function isPolyfilledFastBuffer(object) {
     var Buffer = object.constructor;
     if (typeof Buffer !== 'function') {
@@ -379,6 +393,12 @@ function isPolyfilledFastBuffer(object) {
     }
     return Buffer.isBuffer(object);
 }
+/**
+ * isBuffer
+ *
+ * @typedef {true | false} isBuffer
+ * @property {[any]} [Object]
+ */
 function isBuffer(object) {
     if (bufferSupport === 4 /* BUFFER_NATIVE */ && Buffer.isBuffer(object)) {
         return true;
@@ -393,6 +413,11 @@ function isBuffer(object) {
     return slice != null && isPolyfilledFastBuffer(slice);
 }
 
+/**
+ * Check if arrayBuffer are supported
+ *
+ * @typedef {any} arrayBufferSupport
+ */
 var arrayBufferSupport = (function () {
     if (typeof Uint8Array !== 'function') {
         return 1 /* BUFFER_NONE */;
@@ -409,6 +434,11 @@ var arrayBufferSupport = (function () {
     return 1 /* BUFFER_NONE */;
 })();
 
+/**
+ * Determine if 'isView' is supported or not
+ *
+ * @typedef {any} isView
+ */
 var isView = (function () {
     if (arrayBufferSupport === 1 /* BUFFER_NONE */) {
         return undefined;
@@ -427,6 +457,9 @@ var weakSetTag = '[object WeakSet]';
 var errorTag = '[object Error]';
 var boolTag = '[object Boolean]';
 var stringTag = '[object String]';
+var generatorTag = '[object GeneratorFunction]';
+var funcTag = '[object Function]';
+var proxyTag = '[object Proxy]';
 
 function compareRegEx(actual, expected) {
     return actual.source === expected.source &&
@@ -451,7 +484,7 @@ function strict$1(actual, expected) {
 }
 
 /**
- * equalView
+ * Compare two Buffer.isView() values
  *
  * @typedef {true | false} equalView
  * @property {[any]} [actual]
@@ -471,10 +504,16 @@ function equalView(actual, expected) {
     return true;
 }
 
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @typedef {true | false} isFunction
+ * @property {[string]} [tag]
+ */
 function isFunction(tag) {
-    return tag === '[object Function]' ||
-        tag === '[object GeneratorFunction]' ||
-        tag === '[object Proxy]';
+    return tag === funcTag ||
+        tag === generatorTag ||
+        tag === proxyTag;
 }
 
 /**

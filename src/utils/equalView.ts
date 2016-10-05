@@ -1,7 +1,7 @@
 import strict from './strict';
 
 /**
- * equalView
+ * Compare two Buffer.isView() values
  *
  * @typedef {true | false} equalView
  * @property {[any]} [actual]

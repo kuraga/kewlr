@@ -1,7 +1,7 @@
 import { EqualFunc } from '../layout';
 
 /**
- * equalKeys
+ * Check if equal keys
  *
  * @typedef {true | false} equalKeys
  * @property {[any]} [current]

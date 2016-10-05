@@ -1,7 +1,7 @@
 import { supportsIterator, symbolIterator } from '../constants';
 
 /**
- * isIterable
+ * Check if a object is iterable
  *
  * @typedef {true | false} isIterable
  * @property {[any]} [obj]
