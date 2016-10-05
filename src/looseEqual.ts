@@ -16,13 +16,22 @@ import { EqualFunc } from './layout';
  */
 function looseEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
+    // All identical values are equivalent, as determined by ==.
     if (actual == expected) {
         return true;
     }
-    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
-      }
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
 
+    if (actual == null || expected == null) {
+        return false;
+    }
+
+    if ((!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
+    }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 

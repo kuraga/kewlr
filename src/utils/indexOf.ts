@@ -7,10 +7,10 @@
  * @property {any} [value]
  * @property {number} [fromIndex]
  */
-function indexOf <T>(array: Array<T>, value: any) {
+function indexOf <T>(array: {[key: string]: T}[], value: any): number {
 
     let length = array ? array.length : 0;
-    let index = - 1;
+    let index = -1;
     let isReflexive = value === value;
 
     while (++index < length) {

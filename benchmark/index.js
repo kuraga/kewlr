@@ -5,7 +5,6 @@ const underscore = require('underscore');
 const nodeDeepEqual = require('deep-equal');
 const nshallow = require('not-so-shallow');
 const Benchmark = require('benchmark');
-const Immutable = require('immutable');
 
 function newSuite (name) {
   return new Benchmark.Suite(name, {
@@ -43,7 +42,6 @@ newSuite('Array vs Object literal')
 .add('underscore', () => underscore.isEqual(1, '1'))
 .add('kewlr', () => kewlr(  [], {}))
 .add('chai', () => chai([], {}))
-.add('Immutable.is', () => Immutable.is(1, '1'))
 .run({ async: false });
 
 newSuite('Undefined')
@@ -51,7 +49,6 @@ newSuite('Undefined')
 .add('underscore', () => underscore.isEqual(undefined, undefined))
 .add('kewlr', () => kewlr(undefined, undefined))
 .add('chai', () => chai(undefined, undefined))
-.add('Immutable.is', () => Immutable.is(undefined, undefined))
 .run({ async: false });
 
 newSuite('Date')
@@ -59,7 +56,6 @@ newSuite('Date')
 .add('underscore', () => underscore.isEqual(new Date(123), new Date(123)))
 .add('kewlr', () => kewlr(new Date(123), new Date(123)))
 .add('chai', () => chai(new Date(123), new Date(123)))
-.add('Immutable.is', () => Immutable.is(new Date(123), new Date(123)))
 .run({ async: false });
 
 newSuite('String ctor')
@@ -74,7 +70,6 @@ newSuite('Error')
 .add('underscore', () => underscore.isEqual(new Error(''), new Error('')))
 .add('kewlr', () => kewlr(new Error(''), new Error('')))
 .add('chai', () => chai(new Error(''), new Error('')))
-.add('Immutable.is', () => Immutable.is(new Error(''), new Error('')))
 .run({ async: false });
 
 newSuite('Map()')
@@ -101,7 +96,6 @@ newSuite('Null & undefined')
 .add('underscore', () => underscore.isEqual(new Number(123), new Number(456)))
 .add('kewlr', () => kewlr(new Number(123), new Number(456)))
 .add('chai', () => chai(new Number(123), new Number(456)))
-.add('Immutable.is', () => Immutable.is(new Number(123), new Number(456)))
 .add('node-deep-equal', () => nodeDeepEqual(new Number(123), new Number(456)))
 .run({ async: false });
 
@@ -117,8 +111,6 @@ newSuite('Numbers')
 const empty = newSuite('Empty Object Test');
 const emptyA = new require('./data/empty');
 const emptyB = new require('./data/empty');
-const iEmptyA = Immutable.Map(require('./data/empty'));
-const iEmptyB = Immutable.Map(require('./data/empty'));
 
 empty.add('lodash', () => lodash.isEqual(emptyA, emptyB));
 empty.add('kewlr', () => kewlr(emptyA, emptyB));
@@ -134,33 +126,26 @@ small.add('lodash', () => lodash.isEqual(smallA, smallB));
 small.add('kewlr', () => kewlr(smallA, smallB));
 small.add('chai', () => chai(smallA, smallB));
 small.add('underscore', () => underscore.isEqual(smallA, smallB));
-small.add('Immutable.is', () => Immutable.is(smallA, smallB));
 small.add('node-deep-equal', () => nodeDeepEqual(smallA, smallB));
 
 const medium = newSuite('Medium Object Test');
 const mediumA = new require('./data/medium');
 const mediumB = new require('./data/medium');
-const iMediumA = Immutable.Map(require('./data/medium'));
-const iMediumB = Immutable.Map(require('./data/medium'));
 
 medium.add('lodash', () => lodash.isEqual(mediumA, mediumA));
 medium.add('kewlr', () => kewlr(mediumA, mediumA));
 medium.add('underscore', () => underscore.isEqual(mediumA, mediumB));
 medium.add('chai', () => chai(mediumA, mediumB));
 medium.add('node-deep-equal', () => nodeDeepEqual(mediumA, mediumB));
-medium.add('Immutable.is', () => Immutable.is(iMediumA, iMediumB));
 medium.run({ async: false });
 
 const large = newSuite('Large Object Test');
 const largeA = new require('./data/large');
 const largeB = new require('./data/large');
-const iLargeA = Immutable.Map(require('./data/large'));
-const iLargeB = Immutable.Map(require('./data/large'));
 
 large.add('lodash', () => lodash.isEqual(largeA, largeB));
 large.add('kewlr', () => kewlr(largeA, largeB));
 large.add('underscore', () => underscore.isEqual(largeA, largeB));
 large.add('chai', () => chai(largeA, largeB));
 large.add('node-deep-equal', () => nodeDeepEqual(largeA, largeB));
-large.add('Immutable.is', () => Immutable.is(iLargeA, iLargeB));
 large.run({ async: false });

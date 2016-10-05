@@ -6,8 +6,8 @@
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function strict(actual: any, expected: any): true | false {
+function isStrict(actual: any, expected: any): true | false {
   return actual === expected || (actual !== actual && expected !== expected);
 }
 
-export default strict;
+export default isStrict;

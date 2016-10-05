@@ -1,20 +1,20 @@
-import strict from './strict';
+import isStrict from './isStrict';
 
 /**
  * Compare two Buffer.isView() values
  *
  * @typedef {true | false} equalView
- * @property {[any]} [actual]
- * @property {any} [expected]
+ * @property {[Uint8Array]} [actual]
+ * @property {Uint8Array} [expected]
  */
-function equalView(actual: any, expected: any): true | false {
+function equalView(actual: Uint8Array, expected: Uint8Array): true | false {
     let count = actual.length;
     if (count !== expected.length) {
         return false;
     }
     while (count) {
         count--;
-        if (!strict(actual[count], expected[count])) {
+        if (!isStrict(actual[count], expected[count])) {
             return false;
         }
     }

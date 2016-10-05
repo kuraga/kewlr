@@ -493,7 +493,7 @@ function compareRegEx(actual, expected) {
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function strict$1(actual, expected) {
+function isStrict(actual, expected) {
     return actual === expected || (actual !== actual && expected !== expected);
 }
 
@@ -511,7 +511,7 @@ function equalView(actual, expected) {
     }
     while (count) {
         count--;
-        if (!strict$1(actual[count], expected[count])) {
+        if (!isStrict(actual[count], expected[count])) {
             return false;
         }
     }
@@ -533,7 +533,7 @@ function isFunction(tag) {
 /**
  * Compare objects with identical prototypes
  *
- * @typedef {true | false} isEqualProto
+ * @typedef {true | false} equalProtos
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -541,7 +541,7 @@ function isFunction(tag) {
  * @property {any} [left]
  * @property {any} [right]
  */
-function isEqualProto(actual, expected, isEqual, context, left, right) {
+function equalProtos(actual, expected, isEqual, context, left, right) {
     // RegExp
     if (actual instanceof RegExp) {
         return compareRegEx(actual, expected);
@@ -602,7 +602,7 @@ function isEqualProto(actual, expected, isEqual, context, left, right) {
         case promiseTag:
         case errorTag:
         case stringTag:
-            return strict$1(actual, expected);
+            return isStrict(actual, expected);
         default:
             // use of 'isObjectLike' check, fixes Safari issues with arguments
             if (isObjectLike(actual) && actualTag === argsTag) {
@@ -628,7 +628,7 @@ function isEqualProto(actual, expected, isEqual, context, left, right) {
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function loose$1(actual, expected) {
+function isLoose(actual, expected) {
     return actual == expected || (actual !== actual && expected !== expected);
 }
 
@@ -636,7 +636,7 @@ function loose$1(actual, expected) {
  * Compare objects with different prototypes. This is only done for the 'loose' mode.
  * Only return false for the 'strict' mode.
  *
- * @typedef {true | false} isDifferentProto
+ * @typedef {true | false} differentProtos
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -644,7 +644,7 @@ function loose$1(actual, expected) {
  * @property {any} [left]
  * @property {any} [right]
  */
-function isDifferentProto(actual, expected, isEqual, context, left, right) {
+function differentProtos(actual, expected, isEqual, context, left, right) {
     // core.js and older V8 compat
     if (symbolsAreObjects) {
         if (actual instanceof Symbol || expected instanceof Symbol) {
@@ -719,7 +719,7 @@ function isDifferentProto(actual, expected, isEqual, context, left, right) {
         case weakSetTag:
         case promiseTag:
         case stringTag:
-            return loose$1(actual, expected);
+            return isLoose(actual, expected);
         default:
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;
@@ -751,10 +751,9 @@ function isDifferentProto(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function deepEqual(actual, expected, isEqual, context, left, right) {
-    // Check for an identical 'prototype' property.
     return context & 32768 /* STRICT_MODE */ && getPrototype(actual) === getPrototype(expected)
-        ? isEqualProto(actual, expected, isEqual, context | 131072 /* EQUAL_PROTO */, left, right)
-        : isDifferentProto(actual, expected, isEqual, context, left, right);
+        ? equalProtos(actual, expected, isEqual, context | 131072 /* EQUAL_PROTO */, left, right)
+        : differentProtos(actual, expected, isEqual, context, left, right);
 }
 
 /**
@@ -769,11 +768,19 @@ function deepEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function looseEqual(actual, expected, isEqual, context, left, right) {
+    // All identical values are equivalent, as determined by ==.
     if (actual == expected) {
         return true;
     }
-    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
+    if (actual == null || expected == null) {
+        return false;
+    }
+    if ((!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -790,6 +797,7 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function strictEqual(actual, expected, isEqual, context, left, right) {
+    // All identical values are equivalent, as determined by ===.
     if (actual === expected) {
         return true;
     }

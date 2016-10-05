@@ -15,18 +15,18 @@ import { EqualFunc } from './layout';
  * @property {any} [right]
  */
 function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
-
+    // All identical values are equivalent, as determined by ===.
     if (actual === expected) {
         return true;
     }
 
     // NaNs are equal
     if (actual !== actual) {
-      return expected !== expected;
+        return expected !== expected;
     }
 
     if (actual == null || expected == null) {
-          return false;
+        return false;
     }
 
     if ((!isObject(actual) && !isObjectLike(expected))) {

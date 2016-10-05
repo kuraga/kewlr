@@ -1,5 +1,5 @@
-import isEqualProto from './utils/isEqualProto';
-import isDifferentProto from './utils/isDifferentProto';
+import equalProtos from './utils/equalProtos';
+import differentProtos from './utils/differentProtos';
 import { getPrototype } from './constants';
 import { ModeFlags } from './flags';
 import { EqualFunc } from './layout';
@@ -16,11 +16,9 @@ import { EqualFunc } from './layout';
  * @property {any} [right]
  */
 function deepEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
-
-    // Check for an identical 'prototype' property.
     return context & ModeFlags.STRICT_MODE && getPrototype(actual) === getPrototype(expected)
-        ? isEqualProto(actual, expected, isEqual, context | ModeFlags.EQUAL_PROTO, left, right)
-        : isDifferentProto(actual, expected, isEqual, context, left, right);
+        ? equalProtos(actual, expected, isEqual, context | ModeFlags.EQUAL_PROTO, left, right)
+        : differentProtos(actual, expected, isEqual, context, left, right);
 }
 
 export default deepEqual;

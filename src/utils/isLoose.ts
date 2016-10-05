@@ -6,8 +6,8 @@
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function loose(actual: any, expected: any): true | false {
+function isLoose(actual: any, expected: any): true | false {
   return actual == expected || (actual !== actual && expected !== expected);
 }
 
-export default loose;
+export default isLoose;

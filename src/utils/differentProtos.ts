@@ -1,24 +1,24 @@
 import compareReferences from './compareReferences';
-import { isArray, supportsMap, supportsSet, objectToString } from '../constants';
-import { BufferFlags } from '../flags';
+import { isArray, symbolsAreObjects, supportsMap, supportsSet, objectToString } from '../constants';
 import isBuffer from './isBuffer';
 import arrayBufferSupport from './arrayBufferSupport';
 import isView from './isView';
+import { BufferFlags, ModeFlags } from '../flags';
+import equalView from './equalView';
+import { EqualFunc } from '../layout';
 import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, stringTag, boolTag } from '../tags';
+import isLoose from './isLoose';
+import isIterable from './isIterable';
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
-import { EqualFunc } from '../layout';
-import isIterable from './isIterable';
-import equalView from './equalView';
 import isObjectLike from './isObjectLike';
-import strict from './strict';
-import equalArrays from './equalArrays';
 import isFunction from './isFunction';
 
 /**
- * Compare objects with identical prototypes
+ * Compare objects with different prototypes. This is only done for the 'loose' mode.
+ * Only return false for the 'strict' mode.
  *
- * @typedef {true | false} isEqualProto
+ * @typedef {true | false} differentProtos
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -26,32 +26,34 @@ import isFunction from './isFunction';
  * @property {any} [left]
  * @property {any} [right]
  */
-function isEqualProto(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+    // core.js and older V8 compat
+    if (symbolsAreObjects) {
+        if (actual instanceof Symbol || expected instanceof Symbol) {
+            return false;
+        }
+    }
+
+    // Only return 'false' for strict mode
+    if (context & ModeFlags.STRICT_MODE) {
+        return false;
+    }
 
     // RegExp
-    if (actual instanceof RegExp) {
+    if (actual instanceof RegExp && expected instanceof RegExp) {
         return compareRegEx(actual, expected);
     }
 
-    // Date
-    if (actual instanceof Date) {
-        return actual.getTime() === expected.getTime();
-    }
-
-    if (isArray(actual)) {
-        return equalArrays(actual, expected, isEqual, context, left, right);
-    }
-
-    // Map() && Set()
-    if ((supportsMap && actual instanceof Map) || (supportsSet && actual instanceof Set)) {
-        // check for different primitive keys
-        if (actual.size !== expected.size) {
+    // isArray. Note! this will return true for' loose([], {})'
+    if (isArray(actual) && isArray(expected)) {
+        if (actual.length !== expected.length) {
             return false;
         }
-        if (actual.size === 0) {
+        if (actual.length === 0) {
             return true;
         }
     }
+
     // DataView, ArrayBuffer and Buffer
     if ((arrayBufferSupport & BufferFlags.BUFFER_NONE) === 0) {
         if (actual instanceof DataView) {
@@ -75,6 +77,22 @@ function isEqualProto(actual: any, expected: any, isEqual: EqualFunc, context: n
         }
     }
 
+    // Date
+    if (actual instanceof Date && expected instanceof Date) {
+        return actual.getTime() === expected.getTime();
+    }
+
+    // Map() && Set()
+    if ((supportsMap && actual instanceof Map) || (supportsSet && actual instanceof Set)) {
+        // check for different primitive keys
+        if (actual.size !== expected.size) {
+            return false;
+        }
+        if (actual.size === 0) {
+            return true;
+        }
+    }
+
     // There is a known bug with the 'typeof' operator in in Safari 8-9 which returns 'object' for
     // typed array and other constructors. And there is also an issue with Safari 10 for window.Proxy.
     // We accept a little drop in performance and fix it!
@@ -87,28 +105,27 @@ function isEqualProto(actual: any, expected: any, isEqual: EqualFunc, context: n
         return false;
     }
 
-    // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
-
     switch (actualTag) {
         case numberTag:
         case boolTag:
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
-        case errorTag:
         case stringTag:
-            return strict(actual, expected);
+            return isLoose(actual, expected);
         default:
-            // use of 'isObjectLike' check, fixes Safari issues with arguments
-            if (isObjectLike(actual) && actualTag === argsTag) {
-                if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
+            if (actualTag === errorTag) {
+                return actual.name == actual.name && actual.message == actual.message;
+                // use of 'isObjectLike' check, fixes Safari issues with arguments
+            } else if (isObjectLike(actual) && actualTag === argsTag) {
+                if (isObjectLike(expected) && objectToString.call(expected) != argsTag || actual.length !== expected.length) {
                     return false;
                 }
 
                 if (actual.length === 0) {
                     return true;
                 }
-            } else if (objectToString.call(expected) === argsTag) {
+            } else if (objectToString.call(expected) == argsTag) {
                 return false;
             }
 
@@ -116,4 +133,4 @@ function isEqualProto(actual: any, expected: any, isEqual: EqualFunc, context: n
     }
 }
 
-export default isEqualProto;
+export default differentProtos;

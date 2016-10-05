@@ -13,9 +13,9 @@ import { EqualFunc } from '../layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function equalKeys(
-    actualKeys: any,
-    expectedKeys: any,
+function equalKeys<K, V>(
+    actualKeys: {[key: string]: K}[],
+    expectedKeys: {[key: string]: V}[],
     start: number,
     end: number,
     isEqual: EqualFunc,
