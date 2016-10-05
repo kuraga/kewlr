@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "target": "es6",
+        "noEmitHelpers": true,
+        "newLine": "LF",
+        "noImplicitAny": true,
+        "noLib": false,
+        "removeComments": false,
+        "pretty": true,
+        "strictNullChecks": true,
+        "stripInternal": true,
+        "sourceMap": false,
+        "inlineSourceMap": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "outDir": "build/",
+        "types": ["chai", "mocha", "node"]
+},
+    "formatCodeOptions": {
+       "indentSize": 2,
+       "tabSize": 2
+},
+    "compileOnSave": false,
+    "buildOnSave": false
+}

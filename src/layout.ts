@@ -1,0 +1,1 @@
+export type EqualFunc = (actual?: any, expected?: any, isEqual?: any, context?: any, left?: any, right?: any) => true | false;

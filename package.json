@@ -1,0 +1,71 @@
+{
+    "name": "kewlr",
+    "version": "0.1.8",
+    "description": "Determine if two values are equal to each others",
+    "main": "dist/kewlr.js",
+    "jsnext:main": "dist/kewlr.mjs",
+    "module": "dist/kewlr.mjs",
+    "keywords": [
+    "node",
+    "nodeJS",
+    "deepEqual",
+    "deep",
+    "deeper",
+    "deepest",
+    "strict",
+    "ecma",
+    "es2015",
+    "es2016",
+    "es7",
+    "loose",
+    "match",
+    "shallow",
+    "equal",
+    "object",
+    "equality",
+    "compare",
+    "comparison"
+],
+    "files": [
+    "dist",
+    "README.md"
+],
+    "scripts": {
+        "build": "rollup -c",
+        "benchmark": "node benchmark/index.js",
+        "test": "npm run clean:build && npm run pretest && node --harmony ./node_modules/istanbul/lib/cli.js cover --root ./build/src --report lcov --report text ./node_modules/mocha/bin/_mocha ./build/test/**/*.js",
+        "prepublish": "npm run build",
+        "prebuild": "tsc --sourceMap --skipLibCheck -t es2015",
+        "pretest": "tsc --sourceMap --skipLibCheck -t es6 --m umd -p ./tsconfig.json",
+        "lint": "tslint src/**/*.ts",
+        "watch:tests": "mocha test/specs/**/*.ts -R spec --bail --watch",
+        "watch:build": "tsc -t es5 -m es6 --skipLibCheck -p ./tsconfig.json -w"
+},
+    "repository": {
+    "type": "git",
+        "url": "git+https://github.com/zubuzon/kewlr.git"
+},
+    "author": "ZubuZon",
+    "license": "MIT",
+    "bugs": {
+    "url": "https://github.com/zubuzon/kewlr/issues"
+},
+    "homepage": "https://github.com/zubuzon/kewlr#readme",
+    "devDependencies": {
+    "@types/chai": "^3.4.32",
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.41",
+        "chai": "^3.5.0",
+        "codecov": "^1.0.1",
+        "coveralls": "^2.11.14",
+        "istanbul": "github:gotwarlost/istanbul#v1",
+        "mocha": "^3.1.0",
+        "deep-equal": "^1.0.1",
+        "immutable": "^3.8.1",
+        "rollup": "0.36.1",
+        "rollup-plugin-buble": "0.14.0",
+        "ts-node": "^1.3.0",
+        "tslint": "next",
+        "typescript": "next"
+}
+}
