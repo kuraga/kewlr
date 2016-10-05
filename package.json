@@ -33,7 +33,7 @@
     "scripts": {
         "build": "rollup -c",
         "benchmark": "node benchmark/index.js",
-        "test": "npm run clean:build && npm run pretest && node --harmony ./node_modules/istanbul/lib/cli.js cover --root ./build/src --report lcov --report text ./node_modules/mocha/bin/_mocha ./build/test/**/*.js",
+        "test": "npm run pretest && node --harmony ./node_modules/istanbul/lib/cli.js cover --root ./build/src --report lcov --report text ./node_modules/mocha/bin/_mocha ./build/test/**/*.js",
         "prepublish": "npm run build",
         "prebuild": "tsc --sourceMap --skipLibCheck -t es2015",
         "pretest": "tsc --sourceMap --skipLibCheck -t es6 --m umd -p ./tsconfig.json",
