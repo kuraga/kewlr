@@ -1,5 +1,8 @@
 # Kewlr
 
+[![Build Status](https://travis-ci.org/zubuzon/kewlr.svg?branch=master)](https://travis-ci.org/zubuzon/kewlr)
+[![Coverage Status](https://coveralls.io/repos/github/zubuzon/kewlr/badge.svg?branch=master)](https://coveralls.io/github/zubuzon/kewlr?branch=master)
+
 `Kewlr` is a module which you can use to determine if two values are equal to each others. It offers two modes - `loose` and `strict`, and
 it aim to be the fastest `deepEqual` algorithm, and support everything that is possible to support.
 
