@@ -34,7 +34,6 @@ Icon?
 Thumbs.db
 coverage
 debug.log
-benchmark
 
 # Ignore npm debug log
 npm-debug.log
