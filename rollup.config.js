@@ -5,6 +5,7 @@ export default {
     plugins: [
         buble({}),
     ],
+    banner: '/* global Buffer, Symbol, Uint8Array, DataView, ArrayBuffer, ArrayBufferView, Map, Set */',
     external: ['buffer', 'util'],
     targets: [
         {

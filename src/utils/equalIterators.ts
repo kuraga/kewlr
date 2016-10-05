@@ -14,6 +14,7 @@ import iteratorToArray from './iteratorToArray';
  * @property {any} [right]
  */
 function equalIterators(actual: any, expected: any, isEqual: EqualFunc, context: number, left: any, right: any): true | false {
+
     let actualArray = iteratorToArray(actual[iterator]());
     let expectedArray = iteratorToArray(expected[iterator]());
 

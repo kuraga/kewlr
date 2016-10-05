@@ -11,7 +11,7 @@ import { EqualFunc } from '../layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function equalArrays(actual: any, expected: any, isEqual: EqualFunc, context?: number, left?: any, right?: any): any {
+function equalArrays(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
     let count = actual.length;
 

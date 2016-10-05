@@ -1,3 +1,4 @@
+/* global Buffer, Symbol, Uint8Array, DataView, ArrayBuffer, ArrayBufferView, Map, Set */
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -51,18 +52,18 @@ function isIterable(obj) {
 }
 
 /**
- * compareValues
+ * Compare two Map() values
  *
  * @typedef {true | false} compareValues
- * @property {[any]} [actual]
- * @property {any} [expected]
- * @property {EqualFunc} [actualKeys]
- * @property {EqualFunc} [expectedKeys]
- * @property {EqualFunc} [end]
+ * @property {[Map]} [actual]
+ * @property {Map} [expected]
+ * @property {any[]} [actualKeys]
+ * @property {any[]} [expectedKeys]
+ * @property {number} [end]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
- * @property {any} [left]
- * @property {any} [right]
+ * @property {Map[]} [left]
+ * @property {Map[]} [right]
  */
 function compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual, context, left, right) {
     for (var i = end - 1; i >= 0; i--) {
@@ -77,23 +78,23 @@ function compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual,
  * Check if equal keys
  *
  * @typedef {true | false} equalKeys
- * @property {[any]} [current]
- * @property {any} [actualKeys]
- * @property {any} [start]
- * @property {any} [end]
+ * @property {[any]} [actualKeys]
+ * @property {any} [expectedKeys]
+ * @property {number} [start]
+ * @property {number} [end]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
  * @property {any} [left]
  * @property {any} [right]
  */
-function equalKeys(current, actualKeys, start, end, isEqual, context, left, right) {
+function equalKeys(actualKeys, expectedKeys, start, end, isEqual, context, left, right) {
     for (var i = start + 1; i < end; i++) {
-        var key = actualKeys[i];
-        if (isEqual(current, key, isEqual, context, left, right)) {
+        var key = expectedKeys[i];
+        if (isEqual(actualKeys, key, isEqual, context, left, right)) {
             while (i > start) {
-                actualKeys[i] = actualKeys[--i];
+                expectedKeys[i] = expectedKeys[--i];
             }
-            actualKeys[i] = key;
+            expectedKeys[i] = key;
             return true;
         }
     }
@@ -306,9 +307,10 @@ function compareInnerValues(actual, expected, isEqual, context, left, right) {
  * @property {any} [value]
  * @property {number} [fromIndex]
  */
-var indexOf = function (array, value) {
+function indexOf(array, value) {
     var length = array ? array.length : 0;
-    var index = -1, isReflexive = value === value;
+    var index = -1;
+    var isReflexive = value === value;
     while (++index < length) {
         var other = array[index];
         if ((isReflexive ? other === value : other !== other)) {
@@ -425,10 +427,10 @@ var arrayBufferSupport = (function () {
     if (typeof DataView !== 'function') {
         return 1 /* BUFFER_NONE */;
     }
-    if (typeof global.ArrayBuffer !== 'function') {
+    if (typeof ArrayBuffer !== 'function') {
         return 1 /* BUFFER_NONE */;
     }
-    if (typeof global.ArrayBuffer.isView === 'function') {
+    if (typeof ArrayBuffer.isView === 'function') {
         return 2 /* BUFFER_CURRENT */;
     }
     return 1 /* BUFFER_NONE */;
@@ -461,6 +463,13 @@ var generatorTag = '[object GeneratorFunction]';
 var funcTag = '[object Function]';
 var proxyTag = '[object Proxy]';
 
+/**
+ * Compare two regExp values and check if they are equivalent.
+ *
+ * @typedef {true | false} compareRegEx
+ * @property {[RegExp]} [actual]
+ * @property {RegExp} [expected]
+ */
 function compareRegEx(actual, expected) {
     return actual.source === expected.source &&
         actual.global === expected.global &&
@@ -468,6 +477,7 @@ function compareRegEx(actual, expected) {
         actual.multiline === expected.multiline &&
         actual.lastIndex === expected.lastIndex &&
         (!supportsUnicode || actual.unicode === expected.unicode) &&
+        // Only supported by Firefox
         (!supportsSticky || actual.sticky === expected.sticky);
 }
 
@@ -811,7 +821,7 @@ function loose(actual, expected) {
 }
 
 /**
- * Loose mode
+ * Strict mode
  *
  * @typedef {true | false} strict
  * @property {[any]} [actual]

@@ -4,32 +4,32 @@ import { EqualFunc } from '../layout';
  * Check if equal keys
  *
  * @typedef {true | false} equalKeys
- * @property {[any]} [current]
- * @property {any} [actualKeys]
- * @property {any} [start]
- * @property {any} [end]
+ * @property {[any]} [actualKeys]
+ * @property {any} [expectedKeys]
+ * @property {number} [start]
+ * @property {number} [end]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
  * @property {any} [left]
  * @property {any} [right]
  */
 function equalKeys(
-    current: any,
     actualKeys: any,
-    start: any,
-    end: any,
+    expectedKeys: any,
+    start: number,
+    end: number,
     isEqual: EqualFunc,
     context: number,
     left: any,
     right: any
 ): true | false {
     for (let i = start + 1; i < end; i++) {
-        let key = actualKeys[i];
-        if (isEqual(current, key, isEqual, context, left, right)) {
+        let key = expectedKeys[i];
+        if (isEqual(actualKeys, key, isEqual, context, left, right)) {
             while (i > start) {
-                actualKeys[i] = actualKeys[--i];
+                expectedKeys[i] = expectedKeys[--i];
             }
-            actualKeys[i] = key;
+            expectedKeys[i] = key;
             return true;
         }
     }

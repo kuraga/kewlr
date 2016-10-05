@@ -14,7 +14,7 @@ export function loose(actual: any, expected: any): true | false {
 };
 
 /**
- * Loose mode
+ * Strict mode
  *
  * @typedef {true | false} strict
  * @property {[any]} [actual]

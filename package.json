@@ -1,6 +1,6 @@
 {
     "name": "kewlr",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "Determine if two values are equal to each others",
     "main": "dist/kewlr.js",
     "jsnext:main": "dist/kewlr.mjs",

@@ -14,7 +14,7 @@ import { EqualFunc } from '../layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function compareReferences(actual: any, expected: any, isEqual: EqualFunc, context?: any, left?: any, right?: any): true | false {
+function compareReferences (actual: any, expected: any, isEqual: EqualFunc, context: number, left: any, right: any): true | false {
 
     // Check for circular references after the first level, where it's
     // redundant. Note that they have to point to the same level to actually

@@ -7,11 +7,11 @@
  * @property {any} [value]
  * @property {number} [fromIndex]
  */
-export default <T>(array: Array<T>, value: any) => {
+function indexOf <T>(array: Array<T>, value: any) {
 
     let length = array ? array.length : 0;
-    let index = - 1,
-        isReflexive = value === value;
+    let index = - 1;
+    let isReflexive = value === value;
 
     while (++index < length) {
 
@@ -22,4 +22,6 @@ export default <T>(array: Array<T>, value: any) => {
         }
     }
     return -1;
-};
+}
+
+export default indexOf;

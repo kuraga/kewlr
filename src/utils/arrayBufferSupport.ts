@@ -5,7 +5,6 @@ import { BufferFlags } from '../flags';
  *
  * @typedef {any} arrayBufferSupport
  */
-
 export default (() => {
     if (typeof Uint8Array !== 'function') {
         return BufferFlags.BUFFER_NONE;
@@ -13,10 +12,10 @@ export default (() => {
     if (typeof DataView !== 'function') {
         return BufferFlags.BUFFER_NONE;
     }
-    if (typeof global.ArrayBuffer !== 'function') {
+    if (typeof ArrayBuffer !== 'function') {
         return BufferFlags.BUFFER_NONE;
     }
-    if (typeof global.ArrayBuffer.isView === 'function') {
+    if (typeof ArrayBuffer.isView === 'function') {
         return BufferFlags.BUFFER_CURRENT;
     }
     return BufferFlags.BUFFER_NONE;
