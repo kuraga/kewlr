@@ -48,7 +48,7 @@ if (typeof Buffer === 'function') {
         it('should notice different Buffers', () => {
             let b1 = new Buffer([0, 1, 2]);
             let b2 = new Buffer([0, 1, 2]);
-             expect(strict(b1, b2)).to.be.true;
+            expect(strict(b1, b2)).to.be.true;
             let shortb = new Buffer([0, 1]);
             let longb = new Buffer(320);
             for (let i = 0; i < 160; i++) {
@@ -82,67 +82,68 @@ if (typeof Buffer === 'function') {
             expect(loose(b1, b2)).to.be.true;
             expect(loose(b1, b3)).to.be.false;
         });
-    });
-    [
-        [new Uint8Array(1e5), new Uint8Array(1e5)],
-        [new Uint16Array(1e5), new Uint16Array(1e5)],
-        [new Uint32Array(1e5), new Uint32Array(1e5)],
-        [new Uint8ClampedArray(1e5), new Uint8ClampedArray(1e5)],
-        [new Int8Array(1e5), new Int8Array(1e5)],
-        [new Int16Array(1e5), new Int16Array(1e5)],
-        [new Int32Array(1e5), new Int32Array(1e5)],
-        [new Float32Array(1e5), new Float32Array(1e5)],
-        [new Float64Array(1e5), new Float64Array(1e5)],
-        [new Int16Array(256), new Uint16Array(256)],
-        [new Int16Array([256]), new Uint16Array([256])],
-        [new Float32Array([+0.0]), new Float32Array([-0.0])],
-        [new Float64Array([+0.0]), new Float32Array([-0.0])],
-        [new Float64Array([+0.0]), new Float64Array([-0.0])],
-        [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
-        [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
-        [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
-    ].forEach((arrayPair) => {
-        it('equalArrayPairs - loose mode', () => {
-            expect(loose(arrayPair[0], arrayPair[1])).to.be.true;
-        });
-    });
 
-    [
-        [new Uint8Array(1e5), new Uint8Array(1e5)],
-        [new Uint16Array(1e5), new Uint16Array(1e5)],
-        [new Uint32Array(1e5), new Uint32Array(1e5)],
-        [new Uint8ClampedArray(1e5), new Uint8ClampedArray(1e5)],
-        [new Int8Array(1e5), new Int8Array(1e5)],
-        [new Int16Array(1e5), new Int16Array(1e5)],
-        [new Int32Array(1e5), new Int32Array(1e5)],
-        [new Float32Array(1e5), new Float32Array(1e5)],
-        [new Float64Array(1e5), new Float64Array(1e5)],
-        [new Float32Array([+0.0]), new Float32Array([-0.0])],
-        [new Float64Array([+0.0]), new Float64Array([-0.0])],
-        [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
-        [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
-        [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
-    ].forEach((arrayPair) => {
-        it('equalArrayPairs - strict mode', () => {
-            expect(strict(arrayPair[0], arrayPair[1])).to.be.true;
+        [
+            [new Uint8Array(1e5), new Uint8Array(1e5)],
+            [new Uint16Array(1e5), new Uint16Array(1e5)],
+            [new Uint32Array(1e5), new Uint32Array(1e5)],
+            [new Uint8ClampedArray(1e5), new Uint8ClampedArray(1e5)],
+            [new Int8Array(1e5), new Int8Array(1e5)],
+            [new Int16Array(1e5), new Int16Array(1e5)],
+            [new Int32Array(1e5), new Int32Array(1e5)],
+            [new Float32Array(1e5), new Float32Array(1e5)],
+            [new Float64Array(1e5), new Float64Array(1e5)],
+            [new Int16Array(256), new Uint16Array(256)],
+            [new Int16Array([256]), new Uint16Array([256])],
+            [new Float32Array([+0.0]), new Float32Array([-0.0])],
+            [new Float64Array([+0.0]), new Float32Array([-0.0])],
+            [new Float64Array([+0.0]), new Float64Array([-0.0])],
+            [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
+            [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
+            [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
+        ].forEach((arrayPair) => {
+            it('equalArrayPairs - loose mode', () => {
+                expect(loose(arrayPair[0], arrayPair[1])).to.be.true;
+            });
         });
-    });
-    const notEqualArrayPairs = [
-        [new Uint8Array(2), new Uint8Array(3)],
-        [new Uint8Array([1, 2, 3]), new Uint8Array([4, 5, 6])],
-        [new Uint8ClampedArray([300, 2, 3]), new Uint8Array([300, 2, 3])],
-        [new Uint16Array([2]), new Uint16Array([3])],
-        [new Uint16Array([0]), new Uint16Array([256])],
-        [new Int16Array([0]), new Uint16Array([256])],
-        [new Int16Array([-256]), new Uint16Array([0xff00])], // same bits
-        [new Int32Array([-256]), new Uint32Array([0xffffff00])], // ditto
-        [new Float32Array([0.1]), new Float32Array([0.0])],
-        [new Float64Array([0.1]), new Float64Array([0.0])]
-    ];
-    notEqualArrayPairs.forEach((arrayPair) => {
-        it('notEqualArrayPairs', () => {
-            expect(strict(arrayPair[0], arrayPair[1])).to.false;
-            expect(loose(arrayPair[0], arrayPair[1])).to.false;
+
+        [
+            [new Uint8Array(1e5), new Uint8Array(1e5)],
+            [new Uint16Array(1e5), new Uint16Array(1e5)],
+            [new Uint32Array(1e5), new Uint32Array(1e5)],
+            [new Uint8ClampedArray(1e5), new Uint8ClampedArray(1e5)],
+            [new Int8Array(1e5), new Int8Array(1e5)],
+            [new Int16Array(1e5), new Int16Array(1e5)],
+            [new Int32Array(1e5), new Int32Array(1e5)],
+            [new Float32Array(1e5), new Float32Array(1e5)],
+            [new Float64Array(1e5), new Float64Array(1e5)],
+            [new Float32Array([+0.0]), new Float32Array([-0.0])],
+            [new Float64Array([+0.0]), new Float64Array([-0.0])],
+            [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
+            [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
+            [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
+        ].forEach((arrayPair) => {
+            it('equalArrayPairs - strict mode', () => {
+                expect(strict(arrayPair[0], arrayPair[1])).to.be.true;
+            });
+        });
+        const notEqualArrayPairs = [
+            [new Uint8Array(2), new Uint8Array(3)],
+            [new Uint8Array([1, 2, 3]), new Uint8Array([4, 5, 6])],
+            [new Uint8ClampedArray([300, 2, 3]), new Uint8Array([300, 2, 3])],
+            [new Uint16Array([2]), new Uint16Array([3])],
+            [new Uint16Array([0]), new Uint16Array([256])],
+            [new Int16Array([0]), new Uint16Array([256])],
+            [new Int16Array([-256]), new Uint16Array([0xff00])], // same bits
+            [new Int32Array([-256]), new Uint32Array([0xffffff00])], // ditto
+            [new Float32Array([0.1]), new Float32Array([0.0])],
+            [new Float64Array([0.1]), new Float64Array([0.0])]
+        ];
+        notEqualArrayPairs.forEach((arrayPair) => {
+            it('notEqualArrayPairs', () => {
+                expect(strict(arrayPair[0], arrayPair[1])).to.false;
+                expect(loose(arrayPair[0], arrayPair[1])).to.false;
+            });
         });
     });
 }
