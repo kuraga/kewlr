@@ -17,32 +17,11 @@ function newSuite (name) {
   });
 }
 
- newSuite('Basic primitive test')
-.add('lodash', () => lodash.isEqual(1, '1'))
-.add('underscore', () => underscore.isEqual(1, '1'))
-.add('kewlr', () => kewlr(1, '1'))
-.add('chai', () => chai(1, '1'))
-.run({ async: false });
-
  newSuite('String literal')
 .add('lodash', () => lodash.isEqual([ 'abc', 'abc' ]))
 .add('underscore', () => underscore.isEqual([ 'abc', 'abc' ]))
 .add('kewlr', () => kewlr([ 'abc', 'abc' ]))
 .add('chai', () => chai([ 'abc', 'abc' ]))
-.run({ async: false });
-
- newSuite('Boolean literal')
-.add('lodash', () => lodash.isEqual(true, true))
-.add('underscore', () => underscore.isEqual(true, true))
-.add('kewlr', () => kewlr(true, true))
-.add('chai', () => chai(true, true))
-.run({ async: false });
-
- newSuite('Basic primitive test')
-.add('lodash', () => lodash.isEqual(1, '1'))
-.add('underscore', () => underscore.isEqual(1, '1'))
-.add('kewlr', () => kewlr(1, '1'))
-.add('chai', () => chai(1, '1'))
 .run({ async: false });
 
  newSuite('Object created from null')
@@ -51,7 +30,6 @@ function newSuite (name) {
 .add('kewlr', () => kewlr(Object.create(null), Object.create(null)))
 .add('chai', () => chai(Object.create(null), Object.create(null)))
 .run({ async: false });
-
 
 newSuite('Object literal')
 .add('lodash', () => lodash.isEqual( {a: 1, b:2} , {b: 2, a:1}))

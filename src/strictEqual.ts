@@ -30,7 +30,7 @@ function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: nu
     }
 
     if ((!isObject(actual) && !isObjectLike(expected))) {
-        return expected !== expected;
+        return actual === expected;
     }
 
     return deepEqual(actual, expected, isEqual, context, left, right);
