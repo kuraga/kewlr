@@ -101,8 +101,7 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         case errorTag:
             return isStrict(actual, expected);
         default:
-            // use of 'isObjectLike' check, fixes Safari issues with arguments
-            if (isObjectLike(actual) && actualTag === argsTag) {
+            if (actualTag === argsTag) {
                 if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
                     return false;
                 }

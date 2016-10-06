@@ -4,12 +4,6 @@ describe('strings', () => {
     it('should return true for same values', () => {
         expect(strict('x', 'x')).to.be.true;
     });
-    it('should return false for literal vs instance with same value', () => {
-        expect(strict(new String('x'), 'x')).to.be.false;
-        expect(loose(new String('x'), 'x')).to.be.true;
-        expect(strict('x', new String('x'))).to.be.false;
-        expect(loose('x', new String('x'))).to.be.true;
-    });
     it('should return false for different strings', () => {
         expect(strict('x', 'y')).to.be.false;
         expect(loose('x', 'y')).to.be.false;

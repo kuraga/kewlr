@@ -592,8 +592,7 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
         case errorTag:
             return isStrict(actual, expected);
         default:
-            // use of 'isObjectLike' check, fixes Safari issues with arguments
-            if (isObjectLike(actual) && actualTag === argsTag) {
+            if (actualTag === argsTag) {
                 if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
                     return false;
                 }
@@ -715,8 +714,8 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;
             }
-            else if (isObjectLike(actual) && actualTag === argsTag) {
-                if (isObjectLike(expected) && objectToString.call(expected) != argsTag || actual.length !== expected.length) {
+            else if (actualTag === argsTag) {
+                if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
                     return false;
                 }
                 if (actual.length === 0) {

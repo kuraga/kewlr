@@ -117,9 +117,8 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
         default:
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;
-                // use of 'isObjectLike' check, fixes Safari issues with arguments
-            } else if (isObjectLike(actual) && actualTag === argsTag) {
-                if (isObjectLike(expected) && objectToString.call(expected) != argsTag || actual.length !== expected.length) {
+            } else if (actualTag === argsTag) {
+                if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
                     return false;
                 }
 
