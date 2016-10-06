@@ -1,5 +1,10 @@
 # Changelog
 
+# v, 0.2.2
+
+- improved performance
+- fixed a couple of bugs
+
 # v. 0.2.1
 
 - improved performance for functions, arrows and generators with 32%

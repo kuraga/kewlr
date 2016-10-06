@@ -20,18 +20,11 @@ function looseEqual(actual: any, expected: any, isEqual: EqualFunc, context: num
     if (actual == expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
 
-    if (actual == null || expected == null) {
-        return false;
-    }
+     if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
+     }
 
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
-    }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 

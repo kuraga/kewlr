@@ -70,8 +70,6 @@ describe('strings', () => {
 
         expect(strict([1, 'b', 'iii'], [1, 'b', 'iii'])).to.be.true;
 
-        let s = Symbol();
-
         let arr1: any = [1, 2];
         let arr2: any = [1, 2];
 

@@ -10,7 +10,6 @@ import compareRegEx from './compareRegEx';
 import { EqualFunc } from '../layout';
 import isIterable from './isIterable';
 import equalView from './equalView';
-import isStrict from './isStrict';
 import equalArrays from './equalArrays';
 
 /**
@@ -92,13 +91,11 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
           return actual == (expected + '');
         case numberTag:
         case boolTag:
-            // Coerce booleans to `1` or `0`
-          return isStrict(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
         case errorTag:
-            return isStrict(actual, expected);
+            return false;
         default:
             if (actualTag === argsTag) {
                 if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {

@@ -22,19 +22,11 @@ function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: nu
         return true;
     }
 
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-
-    if (actual == null || expected == null) {
-        return false;
-    }
     // if the input values have different type, or they are primitives
     // in force of the previouse check, here we can return "false"
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
-    }
+     if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
+     }
 
     return deepEqual(actual, expected, isEqual, context, left, right);
 }

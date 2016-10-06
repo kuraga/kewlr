@@ -24,7 +24,7 @@ function isObject(value) {
  * @property {[any]} [value]
  */
 function isObjectLike(value) {
-    return value !== null && typeof value === 'object';
+    return value != null && typeof value == 'object';
 }
 
 /** Built-in value references. */
@@ -565,13 +565,11 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
             return actual == (expected + '');
         case numberTag:
         case boolTag:
-            // Coerce booleans to `1` or `0`
-            return isStrict(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
         case errorTag:
-            return isStrict(actual, expected);
+            return false;
         default:
             if (actualTag === argsTag) {
                 if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
@@ -583,18 +581,6 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
             }
             return compareReferences(actual, expected, isEqual, context, left, right);
     }
-}
-
-/**
- * Performs a loose [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @typedef {true | false} loose
- * @property {[any]} [actual]
- * @property {any} [expected]
- */
-function isLoose(actual, expected) {
-    return actual == expected || (actual !== actual && expected !== expected);
 }
 
 /**
@@ -681,12 +667,10 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
             return actual == (expected + '');
         case numberTag:
         case boolTag:
-            // Coerce booleans to `1` or `0`
-            return isLoose(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
-            return isLoose(actual, expected);
+            return false;
         default:
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;
@@ -739,15 +723,8 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
     if (actual == expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-    if (actual == null || expected == null) {
-        return false;
-    }
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -770,17 +747,10 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
     if (actual === expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-    if (actual == null || expected == null) {
-        return false;
-    }
     // if the input values have different type, or they are primitives
     // in force of the previouse check, here we can return "false"
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }

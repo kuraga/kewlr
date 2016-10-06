@@ -7,7 +7,6 @@ import { BufferFlags, ModeFlags } from '../flags';
 import equalView from './equalView';
 import { EqualFunc } from '../layout';
 import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, stringTag, boolTag } from '../tags';
-import isLoose from './isLoose';
 import isIterable from './isIterable';
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
@@ -106,12 +105,10 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
           return actual == (expected + '');
         case numberTag:
         case boolTag:
-            // Coerce booleans to `1` or `0`
-          return isLoose(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
-            return isLoose(actual, expected);
+           return false;
         default:
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;
