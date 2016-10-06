@@ -15,7 +15,7 @@ function equalArrays(actual: any, expected: any, isEqual: EqualFunc, context: nu
 
     let count = actual.length;
 
-    // compare array lengths to determine if a deep comparison is necessary.
+     // Same number of own properties
     if (count !== expected.length) {
         return false;
     }

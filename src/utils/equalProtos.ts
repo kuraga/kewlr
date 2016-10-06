@@ -10,7 +10,6 @@ import compareRegEx from './compareRegEx';
 import { EqualFunc } from '../layout';
 import isIterable from './isIterable';
 import equalView from './equalView';
-import isObjectLike from './isObjectLike';
 import isStrict from './isStrict';
 import equalArrays from './equalArrays';
 
@@ -109,8 +108,6 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
                 if (actual.length === 0) {
                     return true;
                 }
-            } else if (objectToString.call(expected) === argsTag) {
-                return false;
             }
 
             return compareReferences(actual, expected, isEqual, context, left, right);

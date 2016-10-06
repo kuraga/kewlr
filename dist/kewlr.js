@@ -147,11 +147,8 @@ function equalMap(actual, expected, isEqual, context, left, right) {
     if (!equalKeys(expectedKeys[index], actualKeys, index, end, isEqual, context, left, right)) {
         return false;
     }
-    // If the above fails, while we're at it, let's sort them as we go, so the key order matches.
     while (++index < end) {
         var key = expectedKeys[index];
-        // Adapt if the keys are already in order, which is frequently the
-        // case.
         if (!isEqual(key, actualKeys[index], isEqual, context, left, right) &&
             !equalKeys(key, actualKeys, index, end, isEqual, context, left, right)) {
             return false;
@@ -173,7 +170,7 @@ function equalMap(actual, expected, isEqual, context, left, right) {
  */
 function equalArrays(actual, expected, isEqual, context, left, right) {
     var count = actual.length;
-    // compare array lengths to determine if a deep comparison is necessary.
+    // Same number of own properties
     if (count !== expected.length) {
         return false;
     }
@@ -599,9 +596,6 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
                 if (actual.length === 0) {
                     return true;
                 }
-            }
-            else if (objectToString.call(expected) === argsTag) {
-                return false;
             }
             return compareReferences(actual, expected, isEqual, context, left, right);
     }

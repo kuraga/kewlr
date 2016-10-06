@@ -11,7 +11,6 @@ import isLoose from './isLoose';
 import isIterable from './isIterable';
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
-import isObjectLike from './isObjectLike';
 
 /**
  * Compare objects with different prototypes. This is only done for the 'loose' mode.

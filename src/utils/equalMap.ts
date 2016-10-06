@@ -41,11 +41,8 @@ function equalMap(
         return false;
     }
 
-    // If the above fails, while we're at it, let's sort them as we go, so the key order matches.
     while (++index < end) {
         let key = expectedKeys[index];
-        // Adapt if the keys are already in order, which is frequently the
-        // case.
         if (!isEqual(key, actualKeys[index], isEqual, context, left, right) &&
             !equalKeys(key, actualKeys, index, end, isEqual, context, left, right)) {
             return false;
