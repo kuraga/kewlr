@@ -1,3 +1,6 @@
+/**
+ * 16-24 bits are reserved for Mode flags.
+ */
 export const enum ModeFlags {
     STRICT_MODE             = 1 << 15,
     LOOSE_MODE              = 1 << 16,
