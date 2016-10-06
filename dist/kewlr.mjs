@@ -497,8 +497,8 @@ function isStrict(actual, expected) {
  * Compare two Buffer.isView() values
  *
  * @typedef {true | false} equalView
- * @property {[any]} [actual]
- * @property {any} [expected]
+ * @property {[Uint8Array]} [actual]
+ * @property {Uint8Array} [expected]
  */
 function equalView(actual, expected) {
     var count = actual.length;

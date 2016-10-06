@@ -15,7 +15,7 @@ import { EqualFunc } from './layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function deepEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function deepEqual<K, V>(actual: K, expected: V, isEqual: EqualFunc, context: number, left?: K, right?: V): true | false {
     return context & ModeFlags.STRICT_MODE && getPrototype(actual) === getPrototype(expected)
         ? equalProtos(actual, expected, isEqual, context | ModeFlags.EQUAL_PROTO, left, right)
         : differentProtos(actual, expected, isEqual, context, left, right);

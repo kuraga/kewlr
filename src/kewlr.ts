@@ -9,7 +9,7 @@ import { ModeFlags } from './flags';
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-export function loose(actual: any, expected: any): true | false {
+export function loose<T, S>(actual: T, expected: S): true | false {
     return looseEqual(actual, expected, looseEqual, ModeFlags.LOOSE_MODE);
 };
 
@@ -20,6 +20,6 @@ export function loose(actual: any, expected: any): true | false {
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-export function strict(actual: any, expected: any): true | false {
+export function strict<T, S>(actual: T, expected: S): true | false {
     return strictEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.LOOSE_MODE);
 };
