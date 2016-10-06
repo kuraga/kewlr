@@ -24,7 +24,7 @@ function isObject(value) {
  * @property {[any]} [value]
  */
 function isObjectLike(value) {
-    return value != null && typeof value == 'object';
+    return value !== null && typeof value === 'object';
 }
 
 /** Built-in value references. */
@@ -764,7 +764,9 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function strictEqual(actual, expected, isEqual, context, left, right) {
-    // All identical values are equivalent, as determined by ===.
+    // if the input values have the same primitive value,
+    // or are the same reference,
+    // then they are deep equals.
     if (actual === expected) {
         return true;
     }
@@ -775,6 +777,8 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
     if (actual == null || expected == null) {
         return false;
     }
+    // if the input values have different type, or they are primitives
+    // in force of the previouse check, here we can return "false"
     if ((!isObject(actual) && !isObjectLike(expected))) {
         return actual === expected;
     }

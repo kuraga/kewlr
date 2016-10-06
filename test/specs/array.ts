@@ -61,6 +61,37 @@ describe('strings', () => {
         expect(loose(array1, array2)).to.be.false;
     });
 
+    it('should return true for same array instance', () => {
+        let arr = [1, 2];
+        expect(strict(arr, arr)).to.be.true;
+    });
+
+    it('should return true for equal arrays with different Symbol',  () => {
+
+        expect(strict([1, 'b', 'iii'], [1, 'b', 'iii'])).to.be.true;
+
+        let s = Symbol();
+
+        let arr1: any = [1, 2];
+        let arr2: any = [1, 2];
+
+        arr1[Symbol()] = arr2[Symbol()] = '3';
+        expect(strict(arr1, arr2)).to.be.true;
+    });
+
+    it('should return true for equal arrays with Symbol',  () => {
+
+        expect(strict([1, 'b', 'iii'], [1, 'b', 'iii'])).to.be.true;
+
+        let s = Symbol();
+
+        let arr1: any = [1, 2];
+        let arr2: any = [1, 2];
+
+        arr1[s] = arr2[s] = '3';
+        expect(strict(arr1, arr2)).to.be.true;
+    });
+
     it('should compare sparse arrays', () => {
         const array = Array(1);
         expect(strict(array, Array(1))).to.be.true;

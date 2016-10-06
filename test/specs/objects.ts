@@ -169,8 +169,8 @@ describe('objects', () => {
     });
 
     it('returns true for deeply nested objects', () => {
-       expect(strict({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
-       expect(loose({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
+        expect(strict({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
+        expect(loose({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
     });
 
     it('returns false with objects containing different literals', () => {
@@ -237,10 +237,14 @@ describe('objects', () => {
         expect(strict(object1, object2)).to.be.false;
     });
 
-    it('should compare objects regardless of key order', () => {
-        let object1 = { 'a': 1, 'b': 2, 'c': 3 };
-        let object2 = { 'c': 3, 'a': 1, 'b': 2 };
-        expect(strict(object1, object2)).to.be.true;
+    it('should return true for objects with same object instance', () => {
+        const obj = { val: 100 };
+        expect(strict(obj, obj)).to.be.true;
+    });
+
+    it('should return true for objects with same object instance', () => {
+        const obj = { val: 100 };
+        expect(strict(obj, obj)).to.be.true;
     });
 
     it('should compare object instances', () => {
@@ -280,6 +284,18 @@ describe('objects', () => {
         expect(strict({}, a)).to.be.false;
         expect(strict(a, {a: 1})).to.be.false;
         expect(strict({a: 1}, a)).to.be.false;
+    });
+
+    it('should return true for strict order equal', () => {
+        expect(strict(
+            [ { a: 3, b: 4 } ],
+            [ { b: 4, a: 3 } ]
+        )).to.be.true;
+
+        expect(loose(
+            [ { a: 3, b: 4 } ],
+            [ { b: 4, a: 3 } ]
+        )).to.be.true;
     });
 
     it('when comparing primitives to composites', () => {
@@ -337,11 +353,11 @@ describe('objects', () => {
         expect(strict(a1, a2)).to.be.true;
         a1.d = 1;
         a2.c = 1;
-           expect(strict(a1, a2)).to.be.true;
+        expect(strict(a1, a2)).to.be.true;
     });
 
     it('should handle object wrappers', () => {
-       expect(loose( Number(1), {})).to.be.false;
+        expect(loose( Number(1), {})).to.be.false;
         expect(strict( Number(1), {})).to.be.false;
         expect(strict({}, Number(1))).to.be.false;
         expect(strict( Boolean(true), {})).to.be.false;

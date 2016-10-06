@@ -15,7 +15,9 @@ import { EqualFunc } from './layout';
  * @property {any} [right]
  */
 function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
-    // All identical values are equivalent, as determined by ===.
+    // if the input values have the same primitive value,
+    // or are the same reference,
+    // then they are deep equals.
     if (actual === expected) {
         return true;
     }
@@ -28,7 +30,8 @@ function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: nu
     if (actual == null || expected == null) {
         return false;
     }
-
+    // if the input values have different type, or they are primitives
+    // in force of the previouse check, here we can return "false"
     if ((!isObject(actual) && !isObjectLike(expected))) {
         return actual === expected;
     }

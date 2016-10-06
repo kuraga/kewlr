@@ -88,4 +88,5 @@ describe('functions', () => {
         expect(strict(foo, foo)).to.be.true;
         expect(loose(foo, foo)).to.be.true;
     });
+
 });
