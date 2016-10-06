@@ -39,8 +39,19 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         return equalArrays(actual, expected, isEqual, context, left, right);
     }
 
-    // Map() && Set()
-    if ((supportsMap && actual instanceof Map) || (supportsSet && actual instanceof Set)) {
+    // Map()
+    if (supportsMap && actual instanceof Map) {
+        // check for different primitive keys
+        if (actual.size !== expected.size) {
+            return false;
+        }
+        if (actual.size === 0) {
+            return true;
+        }
+    }
+
+     // Map()
+    if (supportsSet && actual instanceof Set) {
         // check for different primitive keys
         if (actual.size !== expected.size) {
             return false;
@@ -52,8 +63,8 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     // DataView, ArrayBuffer and Buffer
     if ((arrayBufferSupport & BufferFlags.BUFFER_NONE) === 0) {
         if (actual instanceof DataView) {
-            if ((actual.byteLength != expected.byteLength) ||
-                (actual.byteOffset != expected.byteOffset)) {
+            if ((actual.byteLength !== expected.byteLength) ||
+                (actual.byteOffset !== expected.byteOffset)) {
                 return false;
             }
             return equalView(
@@ -61,11 +72,10 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
                 new Uint8Array(expected.buffer, expected.byteOffset, expected.byteLength));
         }
         if (actual instanceof ArrayBuffer) {
-            if ((actual.byteLength != expected.byteLength) ||
-                !equalView(new Uint8Array(actual), new Uint8Array(expected))) {
+            if ((actual.byteLength !== expected.byteLength)) {
                 return false;
             }
-            return true;
+            return equalView(new Uint8Array(actual), new Uint8Array(expected));
         }
         if (isBuffer(actual) || isView(actual)) {
             return equalView(actual, expected);

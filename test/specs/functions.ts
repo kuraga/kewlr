@@ -79,14 +79,12 @@ describe('functions', () => {
     });
 
     it('should return false for different functions', () => {
-        expect(strict(function foo(): any {}, function bar(): any {})).to.be.false;
-        expect(strict(function foo(): any {}, function bar(): any {})).to.be.false;
+        expect(strict(f1, f2)).to.be.false;
+        expect(strict(f1, f2)).to.be.false;
     });
 
     it('should return true for same functions', () => {
-        function foo() {}
-        expect(strict(foo, foo)).to.be.true;
-        expect(loose(foo, foo)).to.be.true;
+        expect(strict(f1, f1)).to.be.true;
+        expect(loose(f1, f1)).to.be.true;
     });
-
 });

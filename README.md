@@ -18,6 +18,7 @@ It should be safe to use this module in production, and it works both for node a
 - Browserify compatible
 - Babel and Bublé compatible
 - fixes all known cross-browser issues
+- supports large data sets
 
 # Install
 
@@ -74,13 +75,6 @@ let s = Symbol();
 loose(s, s); // true
 
 ```
-# Cross browser issues
-
-Too many cross-browser bugs are solved by this module, and this kills the performance. If only NodejS environment, the performance could
-have been improved even more. Based on this the `NodeJS core assert module` is faster in many areas, but doesn't work in browser, and
-are also missing a lot of features.
-
-`Lodash` and `Kewlr` also support large data sets.
 
 # Benchmark
 
@@ -138,7 +132,7 @@ arrow function (differing)  x 471,504 ops/sec ±1.96% (85 runs sampled)
 
 ```js
 NaN                         x 61,172,899 ops/sec ±0.74% (88 runs sampled)
-string literal              x 72,032,383 ops/sec ±1.56% (87 runs sampled)
+string literal              x 78,921,225 ops/sec ±1.10% (83 runs sampled)
 array literal               x 7,549,687 ops/sec ±0.86% (86 runs sampled)
 boolean literal             x 77,500,977 ops/sec ±1.60% (88 runs sampled)
 object literal              x 840,514 ops/sec ±1.36% (87 runs sampled)
@@ -161,8 +155,8 @@ null & undefined            x 47,538,484 ops/sec ±0.79% (87 runs sampled)
 buffer (differing)          x 5,118,075 ops/sec ±0.55% (90 runs sampled)
 date (differing)            x 10,050,854 ops/sec ±0.59% (89 runs sampled)
 number (differing)          x 1,479,982 ops/sec ±1.28% (83 runs sampled)
-error                       x 1,373,778 ops/sec ±1.24% (84 runs sampled)
-map (differing)             x 721,806 ops/sec ±1.03% (84 runs sampled)
+error                       x 1,636,912 ops/sec ±0.98% (85 runs sampled)
+map (differing)             x 787,028 ops/sec ±1.95% (79 runs sampled)
 regex ctor (differing)      x 9,720,439 ops/sec ±2.17% (85 runs sampled)
 set (differing)             x 670,433 ops/sec ±2.01% (87 runs sampled)
 string ctor (differing)     x 815,542 ops/sec ±1.45% (84 runs sampled)
