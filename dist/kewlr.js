@@ -723,8 +723,15 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
     if (actual == expected) {
         return true;
     }
-    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
+    if (actual == null || expected == null) {
+        return false;
+    }
+    if ((!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -741,16 +748,19 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function strictEqual(actual, expected, isEqual, context, left, right) {
-    // if the input values have the same primitive value,
-    // or are the same reference,
-    // then they are deep equals.
+    // All identical values are equivalent, as determined by ===.
     if (actual === expected) {
         return true;
     }
-    // if the input values have different type, or they are primitives
-    // in force of the previouse check, here we can return "false"
-    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
+    if (actual == null || expected == null) {
+        return false;
+    }
+    if ((!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
