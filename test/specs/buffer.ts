@@ -18,8 +18,8 @@ if (typeof Buffer === 'function') {
         });
 
         it('should fail against anything other than a buffer', () => {
-            expect(strict(new Buffer('abc'), [97,98,99])).to.be.false;
-            expect(strict(new Buffer('abc'), {0:97,1:98,2:99,length:3})).to.be.false;
+            expect(strict(new Buffer('abc'), [97, 98, 99])).to.be.false;
+            expect(strict(new Buffer('abc'), {0: 97, 1: 98, 2: 99, length: 3})).to.be.false;
             expect(strict([97, 98, 99], new Buffer('abc'))).to.be.false;
             expect(strict({ 0 : 97, 1 : 98, 2 : 99, length: 3 }, new Buffer('abc'))).to.be.false;
             expect(loose([97, 98, 99], new Buffer('abc'))).to.be.true;
@@ -107,7 +107,7 @@ if (typeof Buffer === 'function') {
             [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
             [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
             [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
-        ].forEach((arrayPair) => {
+        ].forEach((arrayPair: any) => {
             it('equalArrayPairs - loose mode', () => {
                 expect(loose(arrayPair[0], arrayPair[1])).to.be.true;
             });
@@ -128,7 +128,7 @@ if (typeof Buffer === 'function') {
             [new Uint8Array([1, 2, 3, 4]).subarray(1), new Uint8Array([2, 3, 4])],
             [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
             [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
-        ].forEach((arrayPair) => {
+        ].forEach((arrayPair: any) => {
             it('equalArrayPairs - strict mode', () => {
                 expect(strict(arrayPair[0], arrayPair[1])).to.be.true;
             });
@@ -145,7 +145,7 @@ if (typeof Buffer === 'function') {
             [new Float32Array([0.1]), new Float32Array([0.0])],
             [new Float64Array([0.1]), new Float64Array([0.0])]
         ];
-        notEqualArrayPairs.forEach((arrayPair) => {
+        notEqualArrayPairs.forEach((arrayPair: any) => {
             it('notEqualArrayPairs', () => {
                 expect(strict(arrayPair[0], arrayPair[1])).to.false;
                 expect(loose(arrayPair[0], arrayPair[1])).to.false;

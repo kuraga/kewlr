@@ -6,6 +6,6 @@
  * @property {[any]} [value]
  */
 function isObjectLike<T>(value: T): true | false {
-    return value != null && typeof value == 'object';
+    return value !== null && typeof value === 'object';
 }
 export default isObjectLike;

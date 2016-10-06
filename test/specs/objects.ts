@@ -2,7 +2,7 @@ import { strict, loose } from '../../src/kewlr';
 
 const expect = chai.expect;
 
-let obj1 = {}
+let obj1 = {};
 
 describe('objects', () => {
     it('should return true for same object', () => {
@@ -47,21 +47,6 @@ describe('objects', () => {
         const b = { a: 'a', b: 'b', d: 'c' };
         expect(strict(a, b)).to.be.false;
         expect(strict(b, a)).to.be.false;
-    });
-    it('should handle object wrappers', () => {
-        expect(loose(new Number(1), {})).to.be.false;
-        expect(strict(new Number(1), {})).to.be.false;
-        expect(strict({}, new Number(1))).to.be.false;
-        expect(strict(new Boolean(true), {})).to.be.false;
-        expect(strict(new String('a'), {0: 'a'})).to.be.false;
-        expect(strict(new String('a'), {0: 'a'})).to.be.false;
-        expect(strict({0: 'a'}, new String('a'))).to.be.false;
-        expect(strict(new String('a'), ['a'])).to.be.false;
-        expect(strict(['a'], new String('a'))).to.be.false;
-        expect(loose({0: 'a'}, new String('a'))).to.be.true;
-        expect(loose(new String('a'), ['a'])).to.be.true;
-        expect(loose(['a'], new String('a'))).to.be.true;
-
     });
     it('should return true if objects containing identical primitives are equal', () => {
         expect(strict({a: 'Curly', b: 1, c: true}, {a: 'Curly', b: 1, c: true})).to.be.true;
@@ -119,30 +104,30 @@ describe('objects', () => {
 
     it('should handle nested objects and arrays', () => {
         let a = {
-            name: new String('Donald Trump'),
-            age: new Number(77),
+            name:  String('Donald Trump'),
+            age:  Number(77),
             stooge: true,
             hobbies: ['acting'],
             film: {
                 name: 'Sing a Song of Six Pants',
                 release: new Date(1989, 9, 30),
-                stars: [new String('Rich Harris'), 'Jon Doe'],
-                minutes: new Number(16),
+                stars: [ String('Rich Harris'), 'Jon Doe'],
+                minutes:  Number(16),
                 seconds: 48
             }
         };
 
         // `B` contains equivalent nested objects and arrays.
         let b = {
-            name: new String('Donald Trump'),
-            age: new Number(77),
+            name:  String('Donald Trump'),
+            age:  Number(77),
             stooge: true,
             hobbies: ['acting'],
             film: {
                 name: 'Sing a Song of Six Pants',
                 release: new Date(1989, 9, 30),
-                stars: [new String('Richy Foo'), 'Jon Doe'],
-                minutes: new Number(16),
+                stars: [ String('Richy Foo'), 'Jon Doe'],
+                minutes:  Number(16),
                 seconds: 48
             }
         };
@@ -275,10 +260,10 @@ describe('objects', () => {
             }
         }
         Bar.prototype.a = 2;
-        expect(strict(new Foo, new Foo)).to.be.true;
-        expect(strict(new Foo, new Bar)).to.be.false;
-        expect(strict({ 'a': 1 }, new Foo)).to.be.false;
-        expect(strict({ 'a': 2 }, new Bar)).to.be.false;
+        expect(strict(new Foo(), new Foo())).to.be.true;
+        expect(strict(new Foo(), new Bar())).to.be.false;
+        expect(strict({ 'a': 1 }, new Foo())).to.be.false;
+        expect(strict({ 'a': 2 }, new Bar())).to.be.false;
     });
 
     it('should compare objects with constructor properties', () => {
@@ -290,7 +275,7 @@ describe('objects', () => {
     });
 
     it('should handle objects with no constructor property', () => {
-        let a = Object.create(null)
+        let a = Object.create(null);
         expect(strict(a, {})).to.be.false;
         expect(strict({}, a)).to.be.false;
         expect(strict(a, {a: 1})).to.be.false;
@@ -300,14 +285,14 @@ describe('objects', () => {
     it('when comparing primitives to composites', () => {
         expect(strict({}, undefined)).to.be.false;
         expect(strict(undefined, {})).to.be.false;
-        expect(strict(new String, {})).to.be.false;
-        expect(strict({}, new String)).to.be.false;
-        expect(strict({}, new Number)).to.be.false;
-        expect(strict(new Number, {})).to.be.false;
-        expect(strict(new Boolean, {})).to.be.false;
-        expect(strict({}, new Boolean)).to.be.false;
-        expect(strict(new Date, {})).to.be.false;
-        expect(strict({}, new Date)).to.be.false;
+        expect(strict( String, {})).to.be.false;
+        expect(strict({}, String)).to.be.false;
+        expect(strict({}, Number)).to.be.false;
+        expect(strict( Number, {})).to.be.false;
+        expect(strict( Boolean, {})).to.be.false;
+        expect(strict({}, Boolean)).to.be.false;
+        expect(strict( Date, {})).to.be.false;
+        expect(strict({}, Date)).to.be.false;
         expect(strict(RegExp, {})).to.be.false;
         expect(strict({}, RegExp)).to.be.false;
     });
@@ -352,14 +337,24 @@ describe('objects', () => {
         expect(strict(a1, a2)).to.be.true;
         a1.d = 1;
         a2.c = 1;
-        //   expect(strict(a1, a2)).to.be.false;
+           expect(strict(a1, a2)).to.be.true;
     });
 
     it('should handle object wrappers', () => {
-        expect(strict(new Number(1), {})).to.be.false;
-        expect(strict(new Boolean(true), {})).to.be.false;
-        expect(strict(new String('a'), {0: 'a'})).to.be.false;
-        expect(strict(new String('a'), {0: 'a'})).to.be.false;
-        expect(strict(new String('a'), ['a'])).to.be.false;
+       expect(loose( Number(1), {})).to.be.false;
+        expect(strict( Number(1), {})).to.be.false;
+        expect(strict({}, Number(1))).to.be.false;
+        expect(strict( Boolean(true), {})).to.be.false;
+        expect(strict( String('a'), {0: 'a'})).to.be.false;
+        expect(strict( String('a'), {0: 'a'})).to.be.false;
+        expect(strict({0: 'a'}, String('a'))).to.be.false;
+        expect(strict( String('a'), ['a'])).to.be.false;
+        expect(strict(['a'], String('a'))).to.be.false;
+        expect(loose({0: 'a'}, String('a'))).to.be.true;
+        expect(loose( String('a'), ['a'])).to.be.true;
+        expect(loose(['a'], String('a'))).to.be.true;
+        expect(strict(String('a'), {0: 'a'})).to.be.false;
+        expect(loose(String('a'), {0: 'a'})).to.be.false;
+        expect(strict(String('a'), ['a'])).to.be.false;
     });
 });

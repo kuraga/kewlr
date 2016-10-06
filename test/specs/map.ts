@@ -6,10 +6,10 @@ const mapObj = { foo: 'bar' };
 describe('Map', () => {
 
     it('should compare ES6 maps correctly', () => {
-        let a = new Map<string, string>()
-        a.set('x', 'y1')
-        let b = new Map<string, string>()
-        b.set('x', 'y2')
+        let a = new Map<string, string>();
+        a.set('x', 'y1');
+        let b = new Map<string, string>();
+        b.set('x', 'y2');
         expect(strict(a.get('x'), b.get('x'))).to.be.false;
         expect(strict(a, b)).to.be.false;
         expect(loose(a.get('x'), b.get('x'))).to.be.false;

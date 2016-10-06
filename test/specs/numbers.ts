@@ -11,10 +11,10 @@ describe('numbers', () => {
         expect(strict(-Infinity, -Infinity));
     });
     it('should return false for literal vs instance with same value', () => {
-        expect(strict(1, new Number(1))).to.be.true;
-        expect(strict(new Number(1), 1)).to.be.true;
-        expect(loose(1, new Number(1))).to.be.true;
-        expect(loose(new Number(1), 1)).to.be.true;
+        expect(strict(1, Number(1))).to.be.true;
+        expect(strict(Number(1), 1)).to.be.true;
+        expect(loose(1, Number(1))).to.be.true;
+        expect(loose(Number(1), 1)).to.be.true;
     });
     it('should return true NaN vs NaN', () => {
         expect(strict(NaN, NaN)).to.be.true;

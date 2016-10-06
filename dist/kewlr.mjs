@@ -656,12 +656,11 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
     // Map() && Set()
     if ((supportsMap && actual instanceof Map) || (supportsSet && actual instanceof Set)) {
         // check for different primitive keys
-        if (actual.size !== expected.size) {
-            return false;
-        }
-        if (actual.size === 0) {
+        if (actual.size === expected.size) {
             return true;
         }
+        // return false by default
+        return false;
     }
     // There is a known bug with the 'typeof' operator in in Safari 9 which returns 'object' for
     // typed array and other constructors. And there is also an issue with Safari 10 for window.Proxy.

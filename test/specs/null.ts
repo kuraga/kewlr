@@ -25,5 +25,5 @@ describe('null', () => {
      expect(strict(null, null)).to.be.true;
      expect(strict(null, NaN)).to.be.false;
      expect(loose(null, NaN)).to.be.false;
-  })
+  });
 });
