@@ -14,11 +14,8 @@ const bufferSupport = (function(): any {
     if (typeof Buffer !== 'function') {
         return BufferFlags.BUFFER_POLYFILL;
     }
-    if (typeof Buffer.isBuffer !== 'function') {
-        return BufferFlags.BUFFER_POLYFILL;
-    }
-    // Avoid the polyfill
-    if (Buffer.isBuffer(new FakeBuffer())) {
+    if (typeof Buffer.isBuffer !== 'function' ||
+        Buffer.isBuffer(new FakeBuffer())) {
         return BufferFlags.BUFFER_POLYFILL;
     }
     return BufferFlags.BUFFER_NATIVE;
@@ -30,12 +27,10 @@ const bufferSupport = (function(): any {
  * @typedef {true | false} isPolyfilledFastBuffer
  * @property {[any]} [Object]
  */
-function isPolyfilledFastBuffer(object: any): true | false {
+function isPolyfilledFastBuffer(object: any): any {
     let Buffer = object.constructor;
-    if (typeof Buffer !== 'function') {
-        return false;
-    }
-    if (typeof Buffer.isBuffer !== 'function') {
+    if (typeof Buffer !== 'function' ||
+        typeof Buffer.isBuffer !== 'function') {
         return false;
     }
     return Buffer.isBuffer(object);
@@ -48,10 +43,8 @@ function isPolyfilledFastBuffer(object: any): true | false {
  * @property {[any]} [Object]
  */
 function isBuffer(object: any): true | false {
-    if (bufferSupport === BufferFlags.BUFFER_NATIVE && Buffer.isBuffer(object)) {
-        return true;
-    }
-    if (isPolyfilledFastBuffer(object)) {
+    if (bufferSupport === BufferFlags.BUFFER_NATIVE && Buffer.isBuffer(object) ||
+        isPolyfilledFastBuffer(object)) {
         return true;
     }
     if (typeof object.slice !== 'function') {

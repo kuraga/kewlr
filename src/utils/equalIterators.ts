@@ -22,9 +22,6 @@ function equalIterators(actual: any, expected: any, isEqual: EqualFunc, context:
         return false;
     }
 
-    if (actualArray.length === 0) {
-        return true;
-    }
     for (let i = actualArray.length - 1; i >= 0; i--) {
         if (isEqual(actualArray[i], expectedArray[i], isEqual, context, left, right) === false) {
             return false;

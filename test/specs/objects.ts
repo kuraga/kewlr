@@ -22,6 +22,7 @@ describe('objects', () => {
     });
     it('should return true for various object combinations', () => {
         expect(strict({a: [2, 3], b: [4]}, {a: [2, 3], b: [4]})).to.be.true;
+        expect(loose({a: [2, 3], b: [4]}, {a: [2, 3], b: [4]})).to.be.true;
     });
     it('should return false for various object combinations', () => {
         expect(strict( [{a: 3}, {b: 4}], [{a: '3'}, {b: '4'}] )).to.be.false;
@@ -35,6 +36,7 @@ describe('objects', () => {
     });
     it('should notice objects with different shapes', () => {
         expect(strict({a: 1}, {a: 1, b: undefined})).to.be.false;
+        expect(loose({a: 1}, {a: 1, b: undefined})).to.be.false;
     });
     it('should return false with objects containing different keys', () => {
         expect(strict({ foo: 1, bar: 1 }, { foo: 1, baz: 2 })).to.be.false;
@@ -56,6 +58,10 @@ describe('objects', () => {
         expect(strict({0: 'a'}, new String('a'))).to.be.false;
         expect(strict(new String('a'), ['a'])).to.be.false;
         expect(strict(['a'], new String('a'))).to.be.false;
+        expect(loose({0: 'a'}, new String('a'))).to.be.true;
+        expect(loose(new String('a'), ['a'])).to.be.true;
+        expect(loose(['a'], new String('a'))).to.be.true;
+
     });
     it('should return true if objects containing identical primitives are equal', () => {
         expect(strict({a: 'Curly', b: 1, c: true}, {a: 'Curly', b: 1, c: true})).to.be.true;
@@ -69,6 +75,7 @@ describe('objects', () => {
     });
     it('should return false if objects of different sizes are not equal', () => {
         expect(strict({a: 1, b: 2}, {a: 1})).to.be.false;
+        expect(loose({a: 1, b: 2}, {a: 1})).to.be.false;
     });
     it('should return false if commutative equality is implemented for objects', () => {
         expect(strict({a: 1}, {a: 1, b: 2})).to.be.false;
@@ -106,6 +113,8 @@ describe('objects', () => {
         ];
         expect(strict(b, a)).to.be.false;
         expect(strict(a, b)).to.be.false;
+        expect(loose(b, a)).to.be.false;
+        expect(loose(a, b)).to.be.false;
     });
 
     it('should handle nested objects and arrays', () => {

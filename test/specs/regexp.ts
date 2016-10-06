@@ -22,6 +22,11 @@ describe('RegExp', () => {
         expect(strict(/x/gi, /x/g)).to.be.false;
         expect(strict(/x/gim, /x/mgi)).to.be.true;
         expect(strict(/x/gim, /x/gim)).to.be.true;
+        expect(loose(/x/g, { 'global': true, 'ignoreCase': false, 'multiline': false, 'source': 'x' })).to.be.false;
+        expect(loose(/x/, /y/)).to.be.false;
+        expect(loose(/x/gi, /x/g)).to.be.false;
+        expect(loose(/x/gim, /x/mgi)).to.be.true;
+        expect(loose(/x/gim, /x/gim)).to.be.true;
         let re1 = /a/;
         re1.lastIndex = 3;
         expect(strict(/ab/, /a/)).to.be.false;
@@ -59,6 +64,7 @@ describe('RegExp', () => {
 
     it('should return false for different flag order', () => {
         expect(strict(/a/igm, /a/im)).to.be.false;
+        expect(loose(/a/igm, /a/im)).to.be.false;
     });
 
     it('should return false for different last index', () => {

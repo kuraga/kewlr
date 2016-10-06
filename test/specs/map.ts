@@ -12,10 +12,17 @@ describe('Map', () => {
         b.set('x', 'y2')
         expect(strict(a.get('x'), b.get('x'))).to.be.false;
         expect(strict(a, b)).to.be.false;
+        expect(loose(a.get('x'), b.get('x'))).to.be.false;
+        expect(loose(a, b)).to.be.true;
     });
 
     it('should return true for maps with identical keys', () => {
         expect(strict(
+            new Map([[mapObj, 'bar']]),
+            new Map([[mapObj, 'bar']]),
+        )).to.be.true;
+
+           expect(loose(
             new Map([[mapObj, 'bar']]),
             new Map([[mapObj, 'bar']]),
         )).to.be.true;
@@ -39,6 +46,11 @@ describe('Map', () => {
             new Map([['foo', 'bar']]),
             new Map([['foo', 'foo']]),
         )).to.be.false;
+
+        expect(loose(
+            new Map([['foo', 'bar']]),
+            new Map([['foo', 'foo']]),
+        )).to.be.true;
     });
 
     it('should return false for maps with different primitive values', () => {
@@ -46,6 +58,11 @@ describe('Map', () => {
             new Map([['foo', 'bar']]),
             new Map([['bar', 'foo']]),
         )).to.be.false;
+
+        expect(loose(
+            new Map([['foo', 'bar']]),
+            new Map([['bar', 'foo']]),
+        )).to.be.true;
     });
 
     it('should return false for maps with different size', () => {
@@ -66,6 +83,9 @@ describe('Map', () => {
         expect(strict(
             new Map([['a', 1]]), new Map([['a', '1']])
         )).to.be.false;
+        expect(loose(
+            new Map([['a', 1]]), new Map([['a', '1']])
+        )).to.be.true;
     });
 
     it('should return false for strict mode', () => {
@@ -76,6 +96,9 @@ describe('Map', () => {
 
     it('should return true for maps with different order', () => {
         expect(strict(
+            new Map([['a', 1], ['b', 2]]), new Map([['b', 2], ['a', 1]])
+        )).to.be.true;
+        expect(loose(
             new Map([['a', 1], ['b', 2]]), new Map([['b', 2], ['a', 1]])
         )).to.be.true;
     });
@@ -137,6 +160,10 @@ describe('Map', () => {
 
     it('should return true for maps with inner functions', () => {
         expect(strict(
+            new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]]),
+            new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]])
+        )).to.be.true;
+        expect(loose(
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]]),
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]])
         )).to.be.true;
@@ -222,6 +249,7 @@ describe('Map', () => {
         mapB.set('b', 2);
         mapB.set('a', 1);
         expect(strict(mapA, mapB)).to.be.true;
+        expect(loose(mapA, mapB)).to.be.true;
     });
 
     it('should return false for Maps with different entries', () => {
@@ -234,6 +262,7 @@ describe('Map', () => {
         mapA.set('c', 5);
         mapB.set('c', 6);
         expect(strict(mapA.entries(), mapB.entries())).to.be.false;
+        expect(loose(mapA.entries(), mapB.entries())).to.be.true;
     });
 
     it('should compare maps with circular references', () => {
@@ -258,6 +287,12 @@ describe('Map', () => {
         expect(strict(new Map(), /x/)).to.be.false;
         expect(strict(new Map(), 'a')).to.be.false;
         expect(strict(new Map(), 1)).to.be.false;
+        expect(loose(new Map(), Date())).to.be.false;
+        expect(loose(new Map(), Error)).to.be.false;
+        expect(loose(new Map(), /x/)).to.be.false;
+        expect(loose(new Map(), 'a')).to.be.false;
+        expect(loose(new Map(), 1)).to.be.false;
+
     });
 
     it('returns true for Map iterators with same entries', () => {

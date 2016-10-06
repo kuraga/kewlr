@@ -230,9 +230,6 @@ function equalIterators(actual, expected, isEqual, context, left, right) {
     if (actualArray.length !== expectedArray.length) {
         return false;
     }
-    if (actualArray.length === 0) {
-        return true;
-    }
     for (var i = actualArray.length - 1; i >= 0; i--) {
         if (isEqual(actualArray[i], expectedArray[i], isEqual, context, left, right) === false) {
             return false;
@@ -367,11 +364,8 @@ var bufferSupport = (function () {
     if (typeof Buffer !== 'function') {
         return 8 /* BUFFER_POLYFILL */;
     }
-    if (typeof Buffer.isBuffer !== 'function') {
-        return 8 /* BUFFER_POLYFILL */;
-    }
-    // Avoid the polyfill
-    if (Buffer.isBuffer(new FakeBuffer())) {
+    if (typeof Buffer.isBuffer !== 'function' ||
+        Buffer.isBuffer(new FakeBuffer())) {
         return 8 /* BUFFER_POLYFILL */;
     }
     return 4 /* BUFFER_NATIVE */;
@@ -384,10 +378,8 @@ var bufferSupport = (function () {
  */
 function isPolyfilledFastBuffer(object) {
     var Buffer = object.constructor;
-    if (typeof Buffer !== 'function') {
-        return false;
-    }
-    if (typeof Buffer.isBuffer !== 'function') {
+    if (typeof Buffer !== 'function' ||
+        typeof Buffer.isBuffer !== 'function') {
         return false;
     }
     return Buffer.isBuffer(object);
@@ -399,10 +391,8 @@ function isPolyfilledFastBuffer(object) {
  * @property {[any]} [Object]
  */
 function isBuffer(object) {
-    if (bufferSupport === 4 /* BUFFER_NATIVE */ && Buffer.isBuffer(object)) {
-        return true;
-    }
-    if (isPolyfilledFastBuffer(object)) {
+    if (bufferSupport === 4 /* BUFFER_NATIVE */ && Buffer.isBuffer(object) ||
+        isPolyfilledFastBuffer(object)) {
         return true;
     }
     if (typeof object.slice !== 'function') {
@@ -418,13 +408,9 @@ function isBuffer(object) {
  * @typedef {any} arrayBufferSupport
  */
 var arrayBufferSupport = (function () {
-    if (typeof Uint8Array !== 'function') {
-        return 1 /* BUFFER_NONE */;
-    }
-    if (typeof DataView !== 'function') {
-        return 1 /* BUFFER_NONE */;
-    }
-    if (typeof ArrayBuffer !== 'function') {
+    if (typeof Uint8Array !== 'function' ||
+        typeof DataView !== 'function' ||
+        typeof ArrayBuffer !== 'function') {
         return 1 /* BUFFER_NONE */;
     }
     if (typeof ArrayBuffer.isView === 'function') {
@@ -439,12 +425,10 @@ var arrayBufferSupport = (function () {
  * @typedef {any} isView
  */
 var isView = (function () {
-    if (arrayBufferSupport === 1 /* BUFFER_NONE */) {
-        return undefined;
-    }
-    // ES6 typed arrays
-    if (arrayBufferSupport === 2 /* BUFFER_CURRENT */) {
-        return ArrayBuffer.isView;
+    switch (arrayBufferSupport) {
+        case 2 /* BUFFER_CURRENT */: return ArrayBuffer.isView;
+        case 1 /* BUFFER_NONE */: return undefined;
+        default: return undefined;
     }
 })();
 

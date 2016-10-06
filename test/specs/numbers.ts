@@ -11,8 +11,10 @@ describe('numbers', () => {
         expect(strict(-Infinity, -Infinity));
     });
     it('should return false for literal vs instance with same value', () => {
-      //  expect(strict(1, new Number(1))).to.be.false;
-      //  expect(strict(new Number(1), 1)).to.be.false;
+        expect(strict(1, new Number(1))).to.be.true;
+        expect(strict(new Number(1), 1)).to.be.true;
+        expect(loose(1, new Number(1))).to.be.true;
+        expect(loose(new Number(1), 1)).to.be.true;
     });
     it('should return true NaN vs NaN', () => {
         expect(strict(NaN, NaN)).to.be.true;
@@ -29,10 +31,11 @@ describe('numbers', () => {
     });
     it('should return false on numbers with different signs', () => {
         expect(strict(-1, 1)).to.be.false;
-        //expect(strict(-0, +0)).to.be.false;
-        //expect(strict(+0, -0)).to.be.false;
         expect(strict(-Infinity, Infinity)).to.be.false;
         expect(strict(Infinity, -Infinity)).to.be.false;
+        expect(loose(-1, 1)).to.be.false;
+        expect(loose(-Infinity, Infinity)).to.be.false;
+        expect(loose(Infinity, -Infinity)).to.be.false;
     });
     it('should handle numbers correctly', () => {
         expect(strict(-346, -346)).to.be.true;
@@ -42,9 +45,9 @@ describe('numbers', () => {
         expect(strict(9.358546212888048e-14, 9.358546212888048e-14)).to.be.true;
         expect(strict(5, -5)).to.be.false;
         expect(strict(8234, 7823)).to.be.false;
-        expect(strict(8234, 7823)).to.be.false;
+        expect(loose(8234, 7823)).to.be.false;
         expect(strict(-564.23466, 0.236852109)).to.be.false;
         expect(strict(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
-        expect(strict(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
+        expect(loose(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
     });
 });
