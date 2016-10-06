@@ -13,7 +13,6 @@ import equalView from './equalView';
 import isObjectLike from './isObjectLike';
 import isStrict from './isStrict';
 import equalArrays from './equalArrays';
-import isFunction from './isFunction';
 
 /**
  * Compare objects with identical prototypes
@@ -75,28 +74,31 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         }
     }
 
-    // There is a known bug with the 'typeof' operator in in Safari 8-9 which returns 'object' for
+    // There is a known bug with the 'typeof' operator in in Safari 9 which returns 'object' for
     // typed array and other constructors. And there is also an issue with Safari 10 for window.Proxy.
-    // We accept a little drop in performance and fix it!
-    const actualTag = objectToString.call(actual);
-
-    if (isFunction(actualTag)) {
+    // This will not affect 'kewlr' coz we are only returning false after checking for iterabels.
+    if (typeof actual === 'function') {
         if (isIterable(actual)) {
             return equalIterators(actual, expected, isEqual, context, left, right);
         }
         return false;
     }
 
+    const actualTag = objectToString.call(actual);
+
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
 
     switch (actualTag) {
+        case stringTag:
+          return actual == (expected + '');
         case numberTag:
         case boolTag:
+            // Coerce booleans to `1` or `0`
+          return isStrict(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
         case errorTag:
-        case stringTag:
             return isStrict(actual, expected);
         default:
             // use of 'isObjectLike' check, fixes Safari issues with arguments

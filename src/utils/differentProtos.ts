@@ -12,7 +12,6 @@ import isIterable from './isIterable';
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
 import isObjectLike from './isObjectLike';
-import isFunction from './isFunction';
 
 /**
  * Compare objects with different prototypes. This is only done for the 'loose' mode.
@@ -92,26 +91,28 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
             return true;
         }
     }
-
-    // There is a known bug with the 'typeof' operator in in Safari 8-9 which returns 'object' for
+    // There is a known bug with the 'typeof' operator in in Safari 9 which returns 'object' for
     // typed array and other constructors. And there is also an issue with Safari 10 for window.Proxy.
-    // We accept a little drop in performance and fix it!
-    const actualTag = objectToString.call(actual);
-
-    if (isFunction(actualTag)) {
+    // This will not affect 'kewlr' coz we are only returning false after checking for iterabels.
+    if (typeof actual === 'function') {
         if (isIterable(actual)) {
             return equalIterators(actual, expected, isEqual, context, left, right);
         }
         return false;
     }
 
-    switch (actualTag) {
+    const actualTag = objectToString.call(actual);
+
+        switch (actualTag) {
+        case stringTag:
+          return actual == (expected + '');
         case numberTag:
         case boolTag:
+            // Coerce booleans to `1` or `0`
+          return isLoose(+actual, +expected);
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
-        case stringTag:
             return isLoose(actual, expected);
         default:
             if (actualTag === errorTag) {

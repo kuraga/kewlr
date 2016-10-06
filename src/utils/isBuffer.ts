@@ -3,7 +3,7 @@ import { BufferFlags } from '../flags';
 /**
  * Check if Buffer are supported
  *
- * @typedef {any} arrayBufferSupport
+ * @typedef {any} bufferSupport
  */
 const bufferSupport = (function(): any {
     class FakeBuffer {

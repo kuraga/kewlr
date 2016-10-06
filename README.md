@@ -169,10 +169,10 @@ string ctor (differing)     x 815,542 ops/sec ±1.45% (84 runs sampled)
 weakmap                     x 1,343,163 ops/sec ±2.11% (45 runs sampled)
 weakset                     x 1,290,030 ops/sec ±1.62% (86 runs sampled)
 arguments (differing)       x 515,460 ops/sec ±1.15% (84 runs sampled)
-function                    x 1,461,413 ops/sec ±1.67% (85 runs sampled)
+function                    x 5,201,240 ops/sec ±0.91% (83 runs sampled)
 promise                     x 1,377,720 ops/sec ±1.91% (85 runs sampled)
-arrow function (differing)  x 853,200 ops/sec ±2.90% (84 runs sampled)
-generator func (differing)  x 1,112,632 ops/sec ±1.87% (82 runs sampled)
+arrow function (differing)  x 3,195,175 ops/sec ±0.92% (83 runs sampled)
+generator func (differing)  x 2,714,716 ops/sec ±1.67% (81 runs sampled)
 ```
 ### Lodash
 
