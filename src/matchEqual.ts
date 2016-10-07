@@ -6,7 +6,7 @@ import { EqualFunc } from './layout';
 /**
  * Strict equal
  *
- * @typedef {true | false} strictEqual
+ * @typedef {true | false} matchEqual
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -14,10 +14,10 @@ import { EqualFunc } from './layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function matchEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
      // if they reference the same object in memory, then they are the same
     if (actual === expected) {
-       return true;
+       return actual !== 0 || 1 / actual === 1 / expected;
     }
 
     // NaNs are equal
@@ -36,4 +36,4 @@ function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: nu
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 
-export default strictEqual;
+export default matchEqual;

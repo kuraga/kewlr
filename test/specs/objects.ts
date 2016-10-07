@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, loose, match } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -28,6 +28,8 @@ describe('objects', () => {
         expect(strict( [{a: 3}, {b: 4}], [{a: '3'}, {b: '4'}] )).to.be.false;
         expect(strict({x: 5, y: [6]}, {x: 5, y: 6})).to.be.false;
         expect(strict({x: 5, y: 6}, {x: 5, y: [6]})).to.be.false;
+        expect(loose({x: 5, y: 6}, {x: 5, y: [6]})).to.be.true;
+        expect(match({x: 5, y: 6}, {x: 5, y: [6]})).to.be.false;
     });
     it('should return false with objects containing different literals', () => {
         expect(strict({ foo: 1, bar: 1 }, { foo: 1, bar: 2 })).to.be.false;

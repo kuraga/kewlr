@@ -1,5 +1,6 @@
-import looseEqual from './looseEqual';
+import shallowEqual from './shallowEqual';
 import strictEqual from './strictEqual';
+import matchEqual from './matchEqual';
 import { ModeFlags } from './flags';
 
 /**
@@ -10,7 +11,18 @@ import { ModeFlags } from './flags';
  * @property {any} [expected]
  */
 export function loose<T, S>(actual: T, expected: S): true | false {
-    return looseEqual(actual, expected, looseEqual, ModeFlags.LOOSE_MODE);
+    return shallowEqual(actual, expected, shallowEqual, ModeFlags.LOOSE_MODE);
+};
+
+/**
+ * Match mode
+ *
+ * @typedef {true | false} match
+ * @property {[any]} [actual]
+ * @property {any} [expected]
+ */
+export function match<T, S>(actual: T, expected: S): true | false {
+    return matchEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.LOOSE_MODE);
 };
 
 /**

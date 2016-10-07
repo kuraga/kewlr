@@ -6,7 +6,7 @@ import { EqualFunc } from './layout';
 /**
  * Loose equal
  *
- * @typedef {true | false} looseEqual
+ * @typedef {true | false} shallowEqual
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -14,7 +14,7 @@ import { EqualFunc } from './layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function looseEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function shallowEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
      // if they reference the same object in memory, then they are the same
     if (actual == expected) {
@@ -35,4 +35,4 @@ function looseEqual(actual: any, expected: any, isEqual: EqualFunc, context: num
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 
-export default looseEqual;
+export default shallowEqual;

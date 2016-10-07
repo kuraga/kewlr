@@ -13,11 +13,12 @@ It should be safe to use this module in production, and it works both for node a
 - High performance
 - Follows ECMA standards
 - Works for both NodejS and browsers
-- loose and strict mode
+- loose, match and strict mode
 - [`Core-js`](https://github.com/zloirock/core-js) compatible
 - Browserify compatible
 - Babel and Bublé compatible
 - fixes all known cross-browser issues
+- chai compatible
 - supports large data sets
 
 # Install
@@ -48,20 +49,22 @@ Each of the functions takes two arguments of any type, and returns a boolean res
 While composite types, i.e. `Objects` and `Arrays`, are considered equal if they have both the same structure and each sub-value is also equal.
 Circular references in composite structures are supported.
 
-### loose(actual, expected)
+### strict(actual, expected)
 
 - `actual` - Value to compare against `actual`
 - `expected` - Value to compare against `expected`
 
 **Returns:** Boolean indicating whether or not `actual` is the same as `expected`.
 
-Same for `strict` mode.
+Same for `loose` and `match` mode.
 
 ## Differences between loose and strict mode
 
 The differences between `loose` and `strict` mode are mainly the use of tripple equals. And also that the strict mode does a deeply nested `sameValue`
 equality between two objects of any type, and performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero) comparison
 between two values to determine if they are equivalent.
+
+`match` mode is identical to `strict` mode, with a few exceptions regarding primitives This is done to be Chai compatible.
 
 ```js
 loose({}, []) // => true

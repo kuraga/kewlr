@@ -207,6 +207,9 @@ function equalSet(actual, expected, isEqual, context, left, right) {
  *
  * @typedef {any[]} iteratorToArray
  * @property {[any]} [iterator]
+ *
+ * Credit: Chai
+ *
  */
 function iteratorToArray(generator) {
     var generatorResult = generator.next();
@@ -743,7 +746,7 @@ function deepEqual(actual, expected, isEqual, context, left, right) {
 /**
  * Loose equal
  *
- * @typedef {true | false} looseEqual
+ * @typedef {true | false} shallowEqual
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -751,7 +754,7 @@ function deepEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [left]
  * @property {any} [right]
  */
-function looseEqual(actual, expected, isEqual, context, left, right) {
+function shallowEqual(actual, expected, isEqual, context, left, right) {
     // if they reference the same object in memory, then they are the same
     if (actual == expected) {
         return true;
@@ -799,6 +802,35 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
 }
 
 /**
+ * Strict equal
+ *
+ * @typedef {true | false} matchEqual
+ * @property {[any]} [actual]
+ * @property {any} [expected]
+ * @property {EqualFunc} [isEqual]
+ * @property {number} [context]
+ * @property {any} [left]
+ * @property {any} [right]
+ */
+function matchEqual(actual, expected, isEqual, context, left, right) {
+    // if they reference the same object in memory, then they are the same
+    if (actual === expected) {
+        return actual !== 0 || 1 / actual === 1 / expected;
+    }
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
+    if (actual == null || expected == null) {
+        return false;
+    }
+    if ((!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
+    }
+    return deepEqual(actual, expected, isEqual, context, left, right);
+}
+
+/**
  * Loose mode
  *
  * @typedef {true | false} loose
@@ -806,7 +838,18 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [expected]
  */
 function loose(actual, expected) {
-    return looseEqual(actual, expected, looseEqual, 65536 /* LOOSE_MODE */);
+    return shallowEqual(actual, expected, shallowEqual, 65536 /* LOOSE_MODE */);
+}
+
+/**
+ * Match mode
+ *
+ * @typedef {true | false} match
+ * @property {[any]} [actual]
+ * @property {any} [expected]
+ */
+function match(actual, expected) {
+    return matchEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* LOOSE_MODE */);
 }
 
 /**
@@ -821,4 +864,5 @@ function strict(actual, expected) {
 }
 
 exports.loose = loose;
+exports.match = match;
 exports.strict = strict;

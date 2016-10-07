@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, loose, match } from '../../src/kewlr';
 const expect = chai.expect;
 describe('numbers', () => {
     it('should return false for commutative equality', () => {
@@ -9,7 +9,11 @@ describe('numbers', () => {
         expect(strict(3, 3)).to.be.true;
         expect(strict(-0, -0)).to.be.true;
         expect(strict(+0, +0)).to.be.true;
-        expect(strict(0, 0)).to.be.true;
+        expect(strict(-0, -0)).to.be.true;
+        expect(match(+0, +0)).to.be.true;
+        expect(match(0, 0)).to.be.true;
+        expect(match(-0, +0)).to.be.false;
+        expect(match(-0, 0)).to.be.false;
         expect(strict(1, 1)).to.be.true;
         expect(strict(Infinity, Infinity));
         expect(strict(-Infinity, -Infinity));
@@ -26,6 +30,7 @@ describe('numbers', () => {
     it('should return false for different numbers', () => {
         expect(strict(1, 3)).to.be.false;
         expect(strict(3, 1)).to.be.false;
+        expect(match(3, 1)).to.be.false;
     });
     it('should handle different numbers do not match', () => {
         expect(strict(0, 1)).to.be.false;

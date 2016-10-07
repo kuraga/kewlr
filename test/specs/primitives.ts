@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, loose, match } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -34,6 +34,7 @@ describe('primitives', () => {
     it('should return true for number primitives and their corresponding object wrappers', () => {
         expect(strict(75, Number(75))).to.be.true;
         expect(loose(75, Number(75))).to.be.true;
+        expect(match(75, Number(75))).to.be.true;
     });
 
     it('should return true for boolean  objects with identical primitive values', () => {
@@ -58,6 +59,7 @@ describe('primitives', () => {
     it('should return false for number objects vs NaN', () => {
         expect(strict(Number(79), NaN)).to.be.false;
         expect(loose(Number(79), NaN)).to.be.false;
+        expect(match(Number(79), NaN)).to.be.false;
     });
 
     it('should return false for Infinity vs NaN', () => {
@@ -73,6 +75,7 @@ describe('primitives', () => {
     it('should return false for boolean and number objects with like values', () => {
         expect(strict(false, String(''))).to.be.false;
         expect(loose(false, String(''))).to.be.true;
+        expect(match(false, String(''))).to.be.false;
     });
 
     it('should return false for dates and their corresponding numeric primitive values', () => {
@@ -104,6 +107,9 @@ describe('primitives', () => {
         expect(strict(null, {})).to.be.false;
         expect(strict(true, 1)).to.be.false;
         expect(strict(true, 'a')).to.be.false;
+        expect(match(true, 1)).to.be.false;
+        expect(match(true, 'a')).to.be.false;
+
     });
 
     it('should compare primitives correctly - strict mode', () => {
@@ -131,6 +137,7 @@ describe('primitives', () => {
         expect(loose(Object(NaN), Object(NaN))).to.be.true;
         expect(loose(-0, 0)).to.be.true;
         expect(loose(0, '0')).to.be.true;
+        expect(match(0, '0')).to.be.false;
         expect(loose(0, null)).to.be.false;
         expect(loose(NaN, NaN)).to.be.true;
         expect(loose(NaN, Object(NaN))).to.be.false;

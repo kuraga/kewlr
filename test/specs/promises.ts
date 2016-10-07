@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, loose, match } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -11,6 +11,8 @@ describe('Promises',  () => {
         let promise2 = Promise.resolve(1);
         expect(strict(promise1, promise2)).to.be.false;
         expect(strict(promise1, promise1)).to.be.true;
+        expect(match(promise1, promise1)).to.be.true;
+        expect(loose(promise1, promise1)).to.be.true;
     });
 
     it('returns true for the same promises', () => {
