@@ -5,30 +5,30 @@ const expect = chai.expect;
 describe('primitives', () => {
 
     it('should return true for string objects with identical primitive values', () => {
-        expect(strict(new String('Curly'), new String('Curly'))).to.be.true;
-        expect(loose(new String('Curly'), new String('Curly'))).to.be.true;
+        expect(strict(new String('Keith'), new String('Keith'))).to.be.true;
+        expect(loose(new String('Keith'), new String('Keith'))).to.be.true;
     });
 
     it('should return true for string primitives and their corresponding object wrappers', () => {
-        expect(strict(new String('Curly'), 'Curly')).to.be.true;
-        expect(loose(new String('Curly'), 'Curly')).to.be.true;
-        expect(strict('Curly', new String('Curly'))).to.be.true;
-        expect(loose('Curly', new String('Curly'))).to.be.true;
+        expect(strict(new String('Keith'), 'Keith')).to.be.true;
+        expect(loose(new String('Keith'), 'Keith')).to.be.true;
+        expect(strict('Keith', new String('Keith'))).to.be.true;
+        expect(loose('Keith', new String('Keith'))).to.be.true;
     });
 
     it('should return false for string primitives with different values', () => {
-        expect(strict(new String('Curly'), new String('asdf'))).to.be.false;
-        expect(loose(new String('Curly'), new String('asdf'))).to.be.false;
+        expect(strict(new String('Keith'), new String('asdf'))).to.be.false;
+        expect(loose(new String('Keith'), new String('asdf'))).to.be.false;
     });
 
     it('should return false for string objects and objects with a custom `toString` method', () => {
-        expect(strict(new String('Curly'), {toString: function(){ return 'Curly'; }})).to.be.false;
-        expect(loose(new String('Curly'), {toString: function(){ return 'Curly'; }})).to.be.true;
+        expect(strict(new String('Keith'), {toString: function(){ return 'Keith'; }})).to.be.false;
+        expect(loose(new String('Keith'), {toString: function(){ return 'Keith'; }})).to.be.true;
     });
 
      it('should return true for string objects with identical primitive values', () => {
-        expect(strict(new String('Curly'), new String('Curly'))).to.be.true;
-        expect(loose(new String('Curly'), new String('Curly'))).to.be.true;
+        expect(strict(new String('Keith'), new String('Keith'))).to.be.true;
+        expect(loose(new String('Keith'), new String('Keith'))).to.be.true;
     });
 
      it('should return true for number primitives and their corresponding object wrappers', () => {

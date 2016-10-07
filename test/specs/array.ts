@@ -1,24 +1,50 @@
 import { strict, loose } from '../../src/kewlr';
 
 const expect = chai.expect;
-describe('strings', () => {
 
-    it('returns true with arrays containing same literals', () => {
+describe('arrays', () => {
+
+    it('should return true for arrays containing identical primitives', () => {
+        expect(strict([1, 'Larry', true], [1, 'Larry', true])).to.be.true;
+    });
+
+    it('should return true for aArrays containing equivalent elements', () => {
+        expect(strict([/Moe/g, new Date(2009, 9, 25)], [/Moe/g, new Date(2009, 9, 25)])).to.be.true;
+    });
+
+    it('should compare array elements and properties correctly', () => {
+        let a: any = [new Number(47), false, 'Larry', /Moe/, new Date(2009, 11, 13), ['running', 'biking', new String('programming')], {a: 47}];
+        let b: any = [new Number(47), false, 'Larry', /Moe/, new Date(2009, 11, 13), ['running', 'biking', new String('programming')], {a: 47}];
+
+        expect(strict(a, b)).to.be.true;
+
+        // Overwrite the methods defined in ES 5.1 section 15.4.4.
+        a.forEach = a.map = a.filter = a.every = a.indexOf = a.lastIndexOf = a.some = a.reduce = a.reduceRight = null;
+        b.join = b.pop = b.reverse = b.shift = b.slice = b.splice = b.concat = b.sort = b.unshift = null;
+        expect(strict(a, b)).to.be.true;
+        a.push('White Rocks');
+        expect(strict(a, b)).to.be.false;
+        a.push('East Boulder');
+        b.push('Gunbarrel Ranch', 'Teller Farm');
+        expect(strict(a, b)).to.be.false;
+
+    });
+    it('should return true with arrays containing same literals', () => {
         expect(strict([ 1, 2, 3 ], [ 1, 2, 3 ])).to.be.true;
         expect(strict([ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ])).to.be.true;
     });
 
-    it('returns true given literal or constructor', () => {
+    it('should return true given literal or constructor', () => {
         expect(strict([ 1, 2, 3 ], new Array(1, 2, 3))).to.be.true;
         expect(loose([ 1, 2, 3 ], new Array(1, 2, 3))).to.be.true;
     });
 
-    it('returns false with arrays containing literals in different order', () => {
+    it('should return false with arrays containing literals in different order', () => {
         expect(strict([ 3, 2, 1 ], [ 1, 2, 3 ])).to.be.false;
         expect(loose([ 3, 2, 1 ], [ 1, 2, 3 ])).to.be.false;
     });
 
-    it('returns false for arrays of different length', () => {
+    it('should return false for arrays of different length', () => {
         expect(strict(new Array(1), new Array(100))).to.be.false;
         expect(strict(new Array(100), new Array(1))).to.be.false;
         expect(loose(new Array(1), new Array(100))).to.be.false;
@@ -120,6 +146,16 @@ describe('strings', () => {
 
         arr1[s] = arr2[s] = '3';
         expect(strict(arr1, arr2)).to.be.true;
+    });
+
+    it('should return true for sparse arrays with identical lengths', () => {
+        expect(strict(Array(3), Array(3))).to.be.true;
+        expect(loose(Array(3), Array(3))).to.be.true;
+    });
+
+    it('should return true for sparse arrays with different lengths', () => {
+        expect(strict(Array(3), Array(6))).to.be.false;
+        expect(loose(Array(3), Array(6))).to.be.false;
     });
 
     it('should compare sparse arrays', () => {

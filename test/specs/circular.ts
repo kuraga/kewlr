@@ -2,14 +2,14 @@ import { strict, loose } from '../../src/kewlr';
 
 const expect = chai.expect;
 
-  let circular1: any = {foo: 1};
-    let circular2: any = {foo: 1};
-    let circular3: any = {foo: 1};
-    circular1.a = circular1;
-    circular2.a = circular2;
-    circular3.b = circular3;
-    let circular: any = ['a', 'b'];
-    circular.push(circular);
+let circular1: any = {foo: 1};
+let circular2: any = {foo: 1};
+let circular3: any = {foo: 1};
+circular1.a = circular1;
+circular2.a = circular2;
+circular3.b = circular3;
+let circular: any = ['a', 'b'];
+circular.push(circular);
 
 describe('circular references', () => {
 
@@ -80,16 +80,24 @@ describe('circular references', () => {
         expect(strict([circular, 'c'], [circular, 'd'])).to.be.false;
     });
 
- it('should return true if circular reference match', () => {
+    it('should return true if circular reference match', () => {
         expect(strict(circular1, circular2)).to.be.true;
         expect(strict(circular2, circular1)).to.be.true;
     });
 
-      it('should return false if circular references don\'t match', () => {
+    it('should return false if circular references don\'t match', () => {
         expect(strict(circular1, circular3)).to.be.false;
     });
 
-     it('should return false for one circular', () => {
+    it('should return false for one circular', () => {
         expect(strict(circular1, {foo: 1, a: {}})).to.be.false;
+    });
+
+    it('should return true for complex Circular References', () => {
+        let a: any = {foo: {b: {foo: {c: {foo: null}}}}};
+        let  b: any = {foo: {b: {foo: {c: {foo: null}}}}};
+        a.foo.b.foo.c.foo = a;
+        b.foo.b.foo.c.foo = b;
+        expect(strict(a, b)).to.be.true;
     });
 });

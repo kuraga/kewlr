@@ -9,6 +9,11 @@ describe('dates', () => {
         expect(strict(dateA, new Date(dateA.getTime()))).to.be.true;
     });
 
+    it('should return false for invalid dates', () => {
+        let dateA = new Date();
+        expect(strict(new Date('Keith'), new Date('Keith'))).to.be.false;
+    });
+
     it('should return false for different date', () => {
         expect(strict(new Date('Thu, 01 Jan 1970 00:00:00 GMT'), new Date('Fri Dec 20 2013 16:21:18 GMT-0800 (PST)'))).to.be.false;
     });

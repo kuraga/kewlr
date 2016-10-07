@@ -267,19 +267,7 @@ describe('objects', () => {
         expect(strict({a: 1}, a)).to.be.false;
     });
 
-    it('should return true for strict order equal', () => {
-        expect(strict(
-            [ { a: 3, b: 4 } ],
-            [ { b: 4, a: 3 } ]
-        )).to.be.true;
-
-        expect(loose(
-            [ { a: 3, b: 4 } ],
-            [ { b: 4, a: 3 } ]
-        )).to.be.true;
-    });
-
-    it('when comparing primitives to composites', () => {
+    it('should return false for primitives to composites', () => {
         expect(strict({}, undefined)).to.be.false;
         expect(strict(undefined, {})).to.be.false;
         expect(strict( String, {})).to.be.false;
