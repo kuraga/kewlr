@@ -831,13 +831,13 @@ function matchEqual(actual, expected, isEqual, context, left, right) {
 }
 
 /**
- * Loose mode
+ * Shallow mode
  *
- * @typedef {true | false} loose
+ * @typedef {true | false} shallow
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function loose(actual, expected) {
+function shallow(actual, expected) {
     return shallowEqual(actual, expected, shallowEqual, 65536 /* SHALLOW_MODE */);
 }
 
@@ -863,6 +863,6 @@ function strict(actual, expected) {
     return strictEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
 }
 
-exports.loose = loose;
+exports.shallow = shallow;
 exports.match = match;
 exports.strict = strict;
