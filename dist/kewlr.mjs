@@ -331,25 +331,25 @@ function indexOf(array, value) {
  * @property {any} [right]
  */
 function compareReferences(actual, expected, isEqual, context, left, right) {
+    // strict mode *only*
     if (!(context & 65536 /* LOOSE_MODE */)) {
         var leftIndex = indexOf(left, actual);
         var rightIndex = indexOf(right, expected);
-        if (leftIndex !== rightIndex) {
-            return false;
+        if (leftIndex === rightIndex) {
+            if (leftIndex >= 0) {
+                return true;
+            }
+            left.push(actual);
+            right.push(expected);
+            var result = compareInnerValues(actual, expected, isEqual, context, left, right);
+            left.pop();
+            right.pop();
+            return result;
         }
-        if (leftIndex >= 0) {
-            return true;
-        }
-        left.push(actual);
-        right.push(expected);
-        var result = compareInnerValues(actual, expected, isEqual, context, left, right);
-        left.pop();
-        right.pop();
-        return result;
+        return false;
     }
-    else {
-        return compareInnerValues(actual, expected, isEqual, context & ~65536 /* LOOSE_MODE */, [actual], [expected]);
-    }
+    // compare only innerValues for 'loose mode'
+    return compareInnerValues(actual, expected, isEqual, context & ~65536 /* LOOSE_MODE */, [actual], [expected]);
 }
 
 /**

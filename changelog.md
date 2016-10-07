@@ -1,5 +1,9 @@
 # Changelog
 
+# v, 0.2.6
+
+- works with all browsers
+
 # v, 0.2.3
 
 - fixed array circular reference bug

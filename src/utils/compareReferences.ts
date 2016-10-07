@@ -38,7 +38,7 @@ function compareReferences<T, S>(actual: T, expected: S, isEqual: EqualFunc, con
         return false;
 
     }
-    // for 'loose mode' - compare only inner values
+    // compare only innerValues for 'loose mode'
     return compareInnerValues(actual, expected, isEqual, context & ~ModeFlags.LOOSE_MODE, [actual], [expected]);
 }
 export default compareReferences;
