@@ -258,10 +258,10 @@ function compareInnerValues(actual, expected, isEqual, context, left, right) {
                 return equalArrays(actual, expected, isEqual, context, left, right);
             }
             if (supportsMap && actual instanceof Map) {
-                return actual.size === expected.size && equalMap(actual, expected, isEqual, context, left, right);
+                return equalMap(actual, expected, isEqual, context, left, right);
             }
             if (supportsSet && actual instanceof Set) {
-                return actual.size === expected.size && equalSet(actual, expected, isEqual, context, left, right);
+                return equalSet(actual, expected, isEqual, context, left, right);
             }
             if (isIterable(actual)) {
                 return equalIterators(actual, expected, isEqual, context, left, right);

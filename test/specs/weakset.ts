@@ -1,7 +1,11 @@
 import { strict, loose } from '../../src/kewlr';
+
 const expect = chai.expect;
+
 if (typeof WeakSet === 'function') {
+
     describe('WeakSets', function () {
+
         it('returns true for same WeakSets', function () {
             const weakSet = new WeakSet();
             expect(strict(weakSet, weakSet)).to.be.true;
