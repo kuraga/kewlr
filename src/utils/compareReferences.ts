@@ -16,9 +16,6 @@ import { EqualFunc } from '../layout';
  */
 function compareReferences<T, S>(actual: T, expected: S, isEqual: EqualFunc, context: number, left: any, right: any): true | false {
 
-    // Check for circular references after the first level, where it's
-    // redundant. Note that they have to point to the same level to actually
-    // be considered deeply equal.
     if (!(context & ModeFlags.LOOSE_MODE)) {
         let leftIndex = indexOf(left, actual);
         let rightIndex = indexOf(right, expected);

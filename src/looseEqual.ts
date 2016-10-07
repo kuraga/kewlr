@@ -16,7 +16,7 @@ import { EqualFunc } from './layout';
  */
 function looseEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
-    // All identical values are equivalent, as determined by ==.
+     // if they reference the same object in memory, then they are the same
     if (actual == expected) {
         return true;
     }
