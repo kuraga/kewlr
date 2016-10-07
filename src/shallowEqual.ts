@@ -16,22 +16,15 @@ import { EqualFunc } from './layout';
  */
 function shallowEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
-     // if they reference the same object in memory, then they are the same
+    // if they reference the same object in memory, then they are the same
     if (actual == expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
+
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
 
-    if (actual == null || expected == null) {
-        return false;
-    }
-
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
-    }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 

@@ -41,8 +41,8 @@ function compareInnerValues(actual: any, expected: any, isEqual: EqualFunc, cont
             }
         }
     }
-    const actualKeys: any = Object.keys(actual);
-    const expectedKeys: any = Object.keys(expected);
+    const actualKeys: string[] = Object.keys(actual);
+    const expectedKeys: string[] = Object.keys(expected);
 
      // if they don't have the same length, then not equivalent
     if (actualKeys.length !== expectedKeys.length) {

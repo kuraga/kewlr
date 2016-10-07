@@ -755,15 +755,8 @@ function shallowEqual(actual, expected, isEqual, context, left, right) {
     if (actual == expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-    if (actual == null || expected == null) {
-        return false;
-    }
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -784,15 +777,8 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
     if (actual === expected) {
         return true;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-    if (actual == null || expected == null) {
-        return false;
-    }
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -813,15 +799,8 @@ function matchEqual(actual, expected, isEqual, context, left, right) {
     if (actual === expected) {
         return actual !== 0 || 1 / actual === 1 / expected;
     }
-    // NaNs are equal
-    if (actual !== actual) {
-        return expected !== expected;
-    }
-    if (actual == null || expected == null) {
-        return false;
-    }
-    if ((!isObject(actual) && !isObjectLike(expected))) {
-        return actual === expected;
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual !== actual && expected !== expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
