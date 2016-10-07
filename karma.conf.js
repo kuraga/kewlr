@@ -1,6 +1,6 @@
 var buble = require('rollup-plugin-buble');
 var multi = require('rollup-plugin-multi-entry');
-var typeScript = require('rollup-plugin-typeScript');
+var typeScript = require('rollup-plugin-typescript');
 var ts = require('typeScript');
 
 module.exports = function(config) {
