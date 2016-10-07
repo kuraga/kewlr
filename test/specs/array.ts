@@ -1,4 +1,4 @@
-import { strict, shallow } from '../../src/kewlr';
+import { strict, shallow, match } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -6,6 +6,12 @@ describe('arrays', () => {
 
     it('should return true for arrays containing identical primitives', () => {
         expect(strict([1, 'Larry', true], [1, 'Larry', true])).to.be.true;
+    });
+
+    it('should return true for nested values', () => {
+        expect(strict([[1, 2], [2, 3], [3, 4]], [[1, 2], [2, 3], [3, 4]])).to.be.true;
+        expect(shallow([[1, 2], [2, 3], [3, 4]], [[1, 2], [2, 3], [3, 4]])).to.be.true;
+        expect(match([[1, 2], [2, 3], [3, 4]], [[1, 2], [2, 3], [3, 4]])).to.be.true;
     });
 
     it('should return true for aArrays containing equivalent elements', () => {

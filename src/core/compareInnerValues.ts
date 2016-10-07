@@ -1,4 +1,4 @@
-import isIterable from './isIterable';
+import isIterable from '../utils/isIterable';
 import equalMap from './equalMap';
 import equalSet from './equalSet';
 import { isArray, hasOwn, supportsMap, supportsSet } from '../constants';

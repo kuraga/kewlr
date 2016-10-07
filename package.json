@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/chai": "^3.4.32",
     "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.41",
+    "@types/node": "^6.0.45",
     "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "coveralls": "^2.11.14",

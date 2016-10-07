@@ -56,6 +56,17 @@ describe('primitives', () => {
         expect(shallow(Number(NaN), NaN)).to.be.true;
     });
 
+    it('should return true for boolean false and boolean false', () => {
+        expect(strict(false, Object(false))).to.be.true;
+        expect(shallow(false, Object(false))).to.be.true;
+    });
+
+    it('should return false for boolean false and boolean true', () => {
+        expect(strict(Object(true), false)).to.be.false;
+        expect(shallow(Object(true), false)).to.be.false;
+        expect(match(Object(true), false)).to.be.false;
+    });
+
     it('should return false for number objects vs NaN', () => {
         expect(strict(Number(79), NaN)).to.be.false;
         expect(shallow(Number(79), NaN)).to.be.false;

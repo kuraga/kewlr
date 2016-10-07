@@ -8,7 +8,7 @@ import { BufferFlags, ModeFlags } from '../flags';
 import equalView from './equalView';
 import { EqualFunc } from '../layout';
 import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, stringTag, boolTag } from '../tags';
-import isIterable from './isIterable';
+import isIterable from '../utils/isIterable';
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
 

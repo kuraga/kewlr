@@ -19,6 +19,7 @@ try {
 
 describe('Generators',  () => {
     if (supportGenerators && supportArrows) {
+
         it('should return true for same arrow functions', () => {
             let generator = eval('function * generator() {}; generator');
             expect(strict(generator, generator)).to.be.true;

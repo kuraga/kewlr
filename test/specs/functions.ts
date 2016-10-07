@@ -3,8 +3,35 @@ const expect = chai.expect;
 
 let f1: any = () => {};
 let f2: any = () => {};
+let g1 = function f() { /* SOME STUFF */ return 1; };
+let g3 = function f() { /* SOME DIFFERENT STUFF */ return 2; };
+let g = function g() { /* SOME STUFF */ return 1; };
+let keith = function () { /* ANONYMOUS! */ return 'Keith'; };
+let keithwithArg = function (a: any) { /* ANONYMOUS! */ return 'Keith'; };
+let fnNoSpace = function(){};
+let emptyFnOneArg = function (a: any) {};
 
 describe('functions', () => {
+
+    it('should return true for same function', () => {
+        expect(strict(g1, g1)).to.be.true;
+    });
+
+    it('should return false for similar anon function with different lengths', () => {
+        expect(strict(keith, keithwithArg)).to.be.false;
+    });
+
+    it('should return false for functions with different names but same implementations', () => {
+        expect(strict(g1, g)).to.be.false;
+    });
+
+    it('should return false for functions with same name/body, diff arity', () => {
+        expect(strict(emptyFnOneArg, fnNoSpace)).to.be.false;
+    });
+
+    it('should return false for functions with same name/body, diff arity', () => {
+        expect(strict(g1, g3)).to.be.false;
+    });
 
     it('should return true for same arrow functions',  () => {
         let arrow = eval('() => {}');

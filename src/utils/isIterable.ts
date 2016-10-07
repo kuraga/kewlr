@@ -1,4 +1,4 @@
-import { supportsIterator, symbolIterator } from '../constants';
+import { supportSymbolIterator, symbolIterator } from '../constants';
 
 /**
  * Check if a object is iterable
@@ -7,7 +7,7 @@ import { supportsIterator, symbolIterator } from '../constants';
  * @property {[any]} [obj]
  */
 function isIterable(obj: any): true | false {
-    return supportsIterator
+    return supportSymbolIterator
         ? typeof obj[symbolIterator] === 'function'
         : typeof obj['@@iterator'] === 'function';
 }

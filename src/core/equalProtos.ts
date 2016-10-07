@@ -9,7 +9,7 @@ import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, strin
 import equalIterators from './equalIterators';
 import compareRegEx from './compareRegEx';
 import { EqualFunc } from '../layout';
-import isIterable from './isIterable';
+import isIterable from '../utils/isIterable';
 import equalView from './equalView';
 
 /**
@@ -99,7 +99,6 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     const actualTag = objectToString.call(actual);
 
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
-
     switch (actualTag) {
         // booleans and number primitives and their corresponding object wrappers
         case boolTag:
