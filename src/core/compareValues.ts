@@ -26,7 +26,7 @@ function compareValues<K, V>(
     right: Map<K, V>[]
 ): true | false {
      for (let i = end - 1; i >= 0; i--) {
-        if (!isEqual(actual.get(actualKeys[i]), expected.get(expectedKeys[i]), isEqual, context, left, right)) {
+        if (isEqual(actual.get(actualKeys[i]), expected.get(expectedKeys[i]), isEqual, context, left, right) === false) {
             return false;
         }
     }

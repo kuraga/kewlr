@@ -78,6 +78,13 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
             return equalView(new Uint8Array(actual), new Uint8Array(expected));
         }
         if (isBuffer(actual) || isView(actual)) {
+            if (actual.length !== expected.length) {
+                return false;
+            }
+
+            if (actual.length === 0) {
+                return true;
+            }
             return equalView(actual, expected);
         }
     }
@@ -96,10 +103,12 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     switch (objectToString.call(actual)) {
         // booleans and number primitives and their corresponding object wrappers
         case boolTag:
+            return +actual === +expected;
         case numberTag:
             return isStrictEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
+        // None of this has enumerable keys, so we are only returning false
         case weakMapTag:
         case weakSetTag:
         case promiseTag:

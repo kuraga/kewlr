@@ -71,6 +71,9 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
             return true;
         }
         if (isBuffer(actual) || isView(actual)) {
+          if (actual.length !== expected.length) {
+                return false;
+            }
             return equalView(actual, expected);
         }
     }
@@ -102,12 +105,13 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
     const actualTag = objectToString.call(actual);
 
     switch (actualTag) {
-        // booleans and number primitives and their corresponding object wrappers
         case boolTag:
+            return +actual === +expected;
         case numberTag:
             return isLooseEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
+        // None of this has enumerable keys, so we are only returning false
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
@@ -116,14 +120,14 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
             return actual.name == actual.name && actual.message == actual.message;
         default:
             if (actualTag === argsTag) {
-                if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
+                if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
                     return false;
                 }
 
                 if (actual.length === 0) {
                     return true;
                 }
-            } else if (objectToString.call(expected) == argsTag) {
+            } else if (objectToString.call(expected) === argsTag) {
                 return false;
             }
 

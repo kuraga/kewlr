@@ -1,5 +1,3 @@
-import isStrictEqual from '../utils/isStrictEqual';
-
 /**
  * Compare two Buffer.isView() values
  *
@@ -9,12 +7,15 @@ import isStrictEqual from '../utils/isStrictEqual';
  */
 function equalView(actual: Uint8Array, expected: Uint8Array): true | false {
     let count = actual.length;
+
     if (count !== expected.length) {
+
         return false;
     }
+
     while (count) {
         count--;
-        if (!isStrictEqual(actual[count], expected[count])) {
+        if (actual[count] !== expected[count]) {
             return false;
         }
     }

@@ -67,7 +67,7 @@ function isIterable(obj) {
  */
 function compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual, context, left, right) {
     for (var i = end - 1; i >= 0; i--) {
-        if (!isEqual(actual.get(actualKeys[i]), expected.get(expectedKeys[i]), isEqual, context, left, right)) {
+        if (isEqual(actual.get(actualKeys[i]), expected.get(expectedKeys[i]), isEqual, context, left, right) === false) {
             return false;
         }
     }
@@ -491,7 +491,7 @@ function equalView(actual, expected) {
     }
     while (count) {
         count--;
-        if (!isStrictEqual(actual[count], expected[count])) {
+        if (actual[count] !== expected[count]) {
             return false;
         }
     }
@@ -558,6 +558,12 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
             return equalView(new Uint8Array(actual), new Uint8Array(expected));
         }
         if (isBuffer(actual) || isView(actual)) {
+            if (actual.length !== expected.length) {
+                return false;
+            }
+            if (actual.length === 0) {
+                return true;
+            }
             return equalView(actual, expected);
         }
     }
@@ -574,10 +580,12 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
     switch (objectToString.call(actual)) {
         // booleans and number primitives and their corresponding object wrappers
         case boolTag:
+            return +actual === +expected;
         case numberTag:
             return isStrictEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
+        // None of this has enumerable keys, so we are only returning false
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
@@ -660,6 +668,9 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
             return true;
         }
         if (isBuffer(actual) || isView(actual)) {
+            if (actual.length !== expected.length) {
+                return false;
+            }
             return equalView(actual, expected);
         }
     }
@@ -687,12 +698,13 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
     }
     var actualTag = objectToString.call(actual);
     switch (actualTag) {
-        // booleans and number primitives and their corresponding object wrappers
         case boolTag:
+            return +actual === +expected;
         case numberTag:
             return isLooseEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
+        // None of this has enumerable keys, so we are only returning false
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
@@ -701,14 +713,14 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
             return actual.name == actual.name && actual.message == actual.message;
         default:
             if (actualTag === argsTag) {
-                if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
+                if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
                     return false;
                 }
                 if (actual.length === 0) {
                     return true;
                 }
             }
-            else if (objectToString.call(expected) == argsTag) {
+            else if (objectToString.call(expected) === argsTag) {
                 return false;
             }
             return compareReferences(actual, expected, isEqual, context, left, right);
