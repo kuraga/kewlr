@@ -16,23 +16,29 @@ import { EqualFunc } from '../layout';
  */
 function compareReferences<T, S>(actual: T, expected: S, isEqual: EqualFunc, context: number, left: any, right: any): true | false {
 
+    // strict mode *only*
     if (!(context & ModeFlags.LOOSE_MODE)) {
+
         let leftIndex = indexOf(left, actual);
         let rightIndex = indexOf(right, expected);
-        if (leftIndex !== rightIndex) {
-            return false;
+
+        if (leftIndex === rightIndex) {
+            if (leftIndex >= 0) {
+                return true;
+            }
+
+            left.push(actual);
+            right.push(expected);
+
+            let result = compareInnerValues(actual, expected, isEqual, context, left, right);
+            left.pop();
+            right.pop();
+            return result;
         }
-        if (leftIndex >= 0) {
-            return true;
-        }
-        left.push(actual);
-        right.push(expected);
-        let result = compareInnerValues(actual, expected, isEqual, context, left, right);
-        left.pop();
-        right.pop();
-        return result;
-    } else {
-        return compareInnerValues(actual, expected, isEqual, context & ~ModeFlags.LOOSE_MODE, [actual], [expected]);
+        return false;
+
     }
+    // for 'loose mode' - compare only inner values
+    return compareInnerValues(actual, expected, isEqual, context & ~ModeFlags.LOOSE_MODE, [actual], [expected]);
 }
 export default compareReferences;
