@@ -6,10 +6,12 @@ describe('undefined', () => {
 
     it('should return true for both undefined', () => {
         expect(strict(undefined, undefined)).to.be.true;
+        expect(loose(undefined, undefined)).to.be.true;
     });
 
     it('should return false for undefined + null', () => {
         expect(strict(undefined, null)).to.be.false;
+        expect(loose(undefined, null)).to.be.true;
     });
 
     it('should return false for null + undefined', () => {

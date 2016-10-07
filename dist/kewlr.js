@@ -274,7 +274,7 @@ function compareInnerValues(actual, expected, isEqual, context, left, right) {
     }
     var actualKeys = Object.keys(actual);
     var expectedKeys = Object.keys(expected);
-    // having the same number of owned properties (keys incorporates hasOwnProperty)
+    // if they don't have the same length, then not equivalent
     if (actualKeys.length !== expectedKeys.length) {
         return false;
     }
@@ -335,9 +335,6 @@ function indexOf(array, value) {
  * @property {any} [right]
  */
 function compareReferences(actual, expected, isEqual, context, left, right) {
-    // Check for circular references after the first level, where it's
-    // redundant. Note that they have to point to the same level to actually
-    // be considered deeply equal.
     if (!(context & 65536 /* LOOSE_MODE */)) {
         var leftIndex = indexOf(left, actual);
         var rightIndex = indexOf(right, expected);
@@ -754,7 +751,7 @@ function deepEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function looseEqual(actual, expected, isEqual, context, left, right) {
-    // All identical values are equivalent, as determined by ==.
+    // if they reference the same object in memory, then they are the same
     if (actual == expected) {
         return true;
     }
@@ -783,7 +780,7 @@ function looseEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function strictEqual(actual, expected, isEqual, context, left, right) {
-    // All identical values are equivalent, as determined by ===.
+    // if they reference the same object in memory, then they are the same
     if (actual === expected) {
         return true;
     }

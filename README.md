@@ -57,8 +57,77 @@ Circular references in composite structures are supported.
 
 Same for `strict` mode.
 
+## Differences between loose and strict mode
+
+The differences between `loose` and `strict` mode are mainly the use of tripple equals. And also that the strict mode does a deeply nested `sameValue`
+equality between two objects of any type, and performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero) comparison
+between two values to determine if they are equivalent.
+
+```js
+loose({}, []) // => true
+
+strict({}, []) // => false
+
+loose({ 0: 'a', 1: 'b' }, ['a', 'b']) // => true
+
+strict({ 0: 'a', 1: 'b' }, ['a', 'b'])  // => false
+
+loose(1, '1') // => true
+
+strict(1, '1') // => false
+```
+
 # Examples
 
+## Different structure:
+
+```js
+loose({ x : 2016, y : [2017] }, { x : 2016}) // => false
+struct({ x : 2016, y : [2017] }, { x : 2016}) // => false
+```
+
+## Same structure, different values:
+
+```js
+loose( { x : 2016, y : [6] }, { x : 2017}) // => false
+strict( { x : 2016, y : [6] }, { x : 2017}) // => false
+```
+
+## Primitives:
+
+```js
+loose({ x : 5, y : [6] },{ x : 5}) // => false
+strict({ x : 5, y : [6] },{ x : 5}) // => false
+```
+
+## Generators
+
+```js
+let generator = eval('var set = 0; function * generator() { yield set++; }; generator');
+
+loose(generator(), generator()); // => true
+strict(generator(), generator()); // => true
+```
+
+## Symbols()
+
+```js
+strict('abc'[Symbol.iterator](), 'abc'[Symbol.iterator]()) // => true
+```
+
+## Spread operator
+
+```js
+
+let x = new Map();
+    x.set('foo', 'bar');
+let y = new Map();
+    y.set('bar', 'baz');
+
+  loose([...y], [...x]) // => false
+```
+
+## Mixed
 
 ```js
 
@@ -69,10 +138,16 @@ loose({a: 1, b: 2}, {b: 2, a: 1}) // true
 loose(Error('a'), Error('a')) // true
 loose(Error('a'), Error('b')) // false
 strict(Error('a'), Error('b')) // false
+strict({ a : [ 2, 3 ], b : [ 4 ] }, { a : [ 2, 3 ], b : [ 4 ] }) // => true
 
 let s = Symbol();
 
 loose(s, s); // true
+
+let generator = eval('var set = 0; function * generator() { yield set++; }; generator');
+
+loose(generator(), generator()); // => true
+strict(generator(), generator()); // => true
 
 ```
 
@@ -211,3 +286,11 @@ promise                     x 1,142,367 ops/sec ±1.39% (86 runs sampled)
 arrow function (differing)  x 1,221,315 ops/sec ±1.00% (87 runs sampled)
 generator func (differing)  x 1,158,629 ops/sec ±1.14% (85 runs sampled)
 ```
+
+# Bugs?
+
+If you find any bugs, feel free to open an issue ticket.
+
+# Contribution
+
+You are welcome to contribute at any time :)
