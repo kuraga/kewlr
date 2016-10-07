@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -9,16 +9,16 @@ describe('Cyclic Structures', () => {
         a[0].def = 'Harris';
         b[0].def = 'Harris';
         expect(strict(a, b)).to.be.true;
-        expect(loose(a, b)).to.be.true;
+        expect(shallow(a, b)).to.be.true;
         a[0].def = String('Larry');
         b[0].def = String('Curly');
         expect(strict(a, b)).to.be.false;
-        expect(loose(a, b)).to.be.false;
+        expect(shallow(a, b)).to.be.false;
         a = {foo: {b: {foo: {c: {foo: null}}}}};
         b = {foo: {b: {foo: {c: {foo: null}}}}};
         a.foo.b.foo.c.foo = a;
         b.foo.b.foo.c.foo = b;
         expect(strict(a, b)).to.be.true;
-        expect(loose(a, b)).to.be.true;
+        expect(shallow(a, b)).to.be.true;
     });
 });

@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 const expect = chai.expect;
 if (typeof Int32Array === 'function' && typeof DataView === 'function') {
     describe('dataview', () => {
@@ -31,7 +31,7 @@ if (typeof Int32Array === 'function' && typeof DataView === 'function') {
         it('should return false for arrays with different lengths', () => {
             expect(strict(new DataView(new ArrayBuffer(4)), new DataView(new ArrayBuffer(1)))).to.be.false;
             expect(strict(new DataView(new ArrayBuffer(1)), new DataView(new ArrayBuffer(11)))).to.be.false;
-            expect(loose(new DataView(new ArrayBuffer(1)), new DataView(new ArrayBuffer(11)))).to.be.false;
+            expect(shallow(new DataView(new ArrayBuffer(1)), new DataView(new ArrayBuffer(11)))).to.be.false;
         });
         it('should return false for arrays with different values', () => {
             let dataViewA = new DataView(new ArrayBuffer(4));
@@ -46,8 +46,8 @@ if (typeof Int32Array === 'function' && typeof DataView === 'function') {
             dataViewB.setUint8(3, 8);
             expect(strict(dataViewA, dataViewB)).to.be.false;
             expect(strict(dataViewB, dataViewA)).to.be.false;
-            expect(loose(dataViewA, dataViewB)).to.be.false;
-            expect(loose(dataViewB, dataViewA)).to.be.false;
+            expect(shallow(dataViewA, dataViewB)).to.be.false;
+            expect(shallow(dataViewB, dataViewA)).to.be.false;
         });
     });
 }

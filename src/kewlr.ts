@@ -4,14 +4,14 @@ import matchEqual from './matchEqual';
 import { ModeFlags } from './flags';
 
 /**
- * Loose mode
+ * Shallow mode
  *
- * @typedef {true | false} loose
+ * @typedef {true | false} shallow
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-export function loose<T, S>(actual: T, expected: S): true | false {
-    return shallowEqual(actual, expected, shallowEqual, ModeFlags.LOOSE_MODE);
+export function shallow<T, S>(actual: T, expected: S): true | false {
+    return shallowEqual(actual, expected, shallowEqual, ModeFlags.SHALLOW_MODE);
 };
 
 /**
@@ -22,7 +22,7 @@ export function loose<T, S>(actual: T, expected: S): true | false {
  * @property {any} [expected]
  */
 export function match<T, S>(actual: T, expected: S): true | false {
-    return matchEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.LOOSE_MODE);
+    return matchEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.SHALLOW_MODE);
 };
 
 /**
@@ -33,5 +33,5 @@ export function match<T, S>(actual: T, expected: S): true | false {
  * @property {any} [expected]
  */
 export function strict<T, S>(actual: T, expected: S): true | false {
-    return strictEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.LOOSE_MODE);
+    return strictEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.SHALLOW_MODE);
 };

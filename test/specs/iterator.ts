@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -70,13 +70,13 @@ describe('Iterators',  () => {
         let slice1 = new Slice(0, 10);
         let slice2 = new Slice(0, 10);
         expect(strict(slice1, slice2)).to.be.true;
-        expect(loose(slice1, slice2)).to.be.true;
+        expect(shallow(slice1, slice2)).to.be.true;
     });
     it('should return true for iterables + same prototypes + different end times', () => {
         let slice1 = new Slice(0, 10);
         let slice2 = new Slice(0, 20);
         expect(strict(slice1, slice2)).to.be.false;
-        expect(loose(slice1, slice2)).to.be.false;
+        expect(shallow(slice1, slice2)).to.be.false;
     });
     it('should return true for iterables deeply matched', () => {
         expect(strict(new List([
@@ -118,7 +118,7 @@ describe('Iterators',  () => {
                 new List([1, 2, '3']),
                 [1, 2, new Value(3)],
             ]))).to.be.false;
-        expect(loose(  new List([
+        expect(shallow(  new List([
                 new List([1, 2, '3']),
                 [1, 2, {value: 3}],
                 new List([1, 2, 3]),
@@ -182,7 +182,7 @@ describe('Iterators',  () => {
                 [1, 2, {value: 3}],
             ]))).to.be.true;
 
-        expect(loose(  list([
+        expect(shallow(  list([
                 list([1, 2, '3']),
                 [1, 2, {value: 3}],
             ]),
@@ -265,7 +265,7 @@ describe('Iterators',  () => {
                 },
             };
         } });
-        expect(loose(testA, testB)).to.be.true;
+        expect(shallow(testA, testB)).to.be.true;
         expect(strict(testA, testB)).to.be.true;
         expect(strict(testB, testA)).to.be.true;
     });
@@ -299,8 +299,8 @@ describe('Iterators',  () => {
         } });
         expect(strict(testA, testB)).to.be.false;
         expect(strict(testB, testA)).to.be.false;
-        expect(loose(testA, testB)).to.be.true;
-        expect(loose(testB, testA)).to.be.true;
+        expect(shallow(testA, testB)).to.be.true;
+        expect(shallow(testB, testA)).to.be.true;
     });
 });
 
@@ -322,7 +322,7 @@ if (typeof Array.prototype.entries === 'function') {
         });
         it('returns false for Arrays with different entries', () => {
             expect(strict([ 1, 2, 3 ].entries(), [ 4, 5, 6 ].entries())).to.be.false;
-            expect(loose([ 1, 2, 3 ].entries(), [ 4, 5, 6 ].entries())).to.be.true;
+            expect(shallow([ 1, 2, 3 ].entries(), [ 4, 5, 6 ].entries())).to.be.true;
         });
     });
 }
@@ -335,8 +335,8 @@ if (typeof Symbol === 'function' && typeof Array.prototype[Symbol.iterator] === 
         it('returns false for Arrays with different entries', () => {
             expect(strict([ 1, 2, 3 ][Symbol.iterator](), [ 4, 5, 6 ][Symbol.iterator]())).to.be.false;
             expect(strict([ 4, 5, 6 ][Symbol.iterator](), [ 1, 2, 3 ][Symbol.iterator]())).to.be.false;
-            expect(loose([ 1, 2, 3 ][Symbol.iterator](), [ 4, 5, 6 ][Symbol.iterator]())).to.be.true;
-            expect(loose([ 4, 5, 6 ][Symbol.iterator](), [ 1, 2, 3 ][Symbol.iterator]())).to.be.true;
+            expect(shallow([ 1, 2, 3 ][Symbol.iterator](), [ 4, 5, 6 ][Symbol.iterator]())).to.be.true;
+            expect(shallow([ 4, 5, 6 ][Symbol.iterator](), [ 1, 2, 3 ][Symbol.iterator]())).to.be.true;
         });
     });
 }
@@ -366,7 +366,7 @@ if (typeof Symbol === 'function' && typeof Map === 'function' && typeof Map.prot
             mapA.set('c', 5);
             mapB.set('c', 6);
             expect(strict(mapA[Symbol.iterator](), mapB[Symbol.iterator]())).to.be.false;
-            expect(loose(mapA[Symbol.iterator](), mapB[Symbol.iterator]())).to.be.true;
+            expect(shallow(mapA[Symbol.iterator](), mapB[Symbol.iterator]())).to.be.true;
         });
     });
 }
@@ -397,8 +397,8 @@ if (typeof Map === 'function' && typeof Map.prototype.entries === 'function') {
             mapB.set('c', 6);
             expect(strict(mapA.entries(), mapB.entries())).to.be.false;
             expect(strict(mapB.entries(), mapA.entries())).to.be.false;
-            expect(loose(mapA.entries(), mapB.entries())).to.be.true;
-            expect(loose(mapB.entries(), mapA.entries())).to.be.true;
+            expect(shallow(mapA.entries(), mapB.entries())).to.be.true;
+            expect(shallow(mapB.entries(), mapA.entries())).to.be.true;
         });
     });
 }

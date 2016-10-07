@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 const expect = chai.expect;
 
 let f1: any = () => {};
@@ -9,12 +9,12 @@ describe('functions', () => {
     it('should return true for same arrow functions',  () => {
         let arrow = eval('() => {}');
         expect(strict(arrow, arrow)).to.be.true;
-        expect(loose(arrow, arrow)).to.be.true;
+        expect(shallow(arrow, arrow)).to.be.true;
     });
 
     it('should return false for different arrow functions',  () => {
         expect(strict(eval('() => {}'), eval('() => {}'))).to.be.false;
-        expect(loose(eval('() => {}'), eval('() => {}'))).to.be.false;
+        expect(shallow(eval('() => {}'), eval('() => {}'))).to.be.false;
     });
 
     it('should fail if they have different names', () => {
@@ -23,7 +23,7 @@ describe('functions', () => {
 
     it('should pass if they are both anonamous', () => {
         expect(strict(() => {}, () => {})).to.be.false;
-        expect(loose(() => {}, () => {})).to.be.false;
+        expect(shallow(() => {}, () => {})).to.be.false;
     });
 
     it('handle the case where they have different argument names', () => {
@@ -42,8 +42,8 @@ describe('functions', () => {
         function b(): any { return 1 + 2; }
         expect(strict(a, a)).to.be.true;
         expect(strict(a, b)).to.be.false;
-        expect(loose(a, a)).to.be.true;
-        expect(loose(a, b)).to.be.false;
+        expect(shallow(a, a)).to.be.true;
+        expect(shallow(a, b)).to.be.false;
     });
 
     it('should be able to compare object methods', () => {
@@ -55,11 +55,11 @@ describe('functions', () => {
             {noop: function (a: any) {}},
             {noop: () => {}}
         )).to.be.false;
-        expect(loose(
+        expect(shallow(
             {noop: () => {}},
             {noop: () => {}}
         )).to.be.false;
-        expect(loose(
+        expect(shallow(
             {noop: function (a: any) {}},
             {noop: () => {}}
         )).to.be.false;
@@ -79,8 +79,8 @@ describe('functions', () => {
         expect(strict({'test': f1}, {'test': f2})).to.be.false;
         expect(strict({'test': f1}, {'test': f1})).to.be.true;
         expect(strict({'test': f1}, {'test': f1})).to.be.true;
-        expect(loose({'test': f1}, {'test': f1})).to.be.true;
-        expect(loose({'test': f1}, {'test': f1})).to.be.true;
+        expect(shallow({'test': f1}, {'test': f1})).to.be.true;
+        expect(shallow({'test': f1}, {'test': f1})).to.be.true;
     });
 
     it('should return true for arrays of functions', () => {
@@ -98,6 +98,6 @@ describe('functions', () => {
 
     it('should return true for same functions', () => {
         expect(strict(f1, f1)).to.be.true;
-        expect(loose(f1, f1)).to.be.true;
+        expect(shallow(f1, f1)).to.be.true;
     });
 });

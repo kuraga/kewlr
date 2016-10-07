@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -31,8 +31,8 @@ describe('dates', () => {
         expect(strict(new Date('1972-08-01'), undefined)).to.be.false;
         expect(strict(new Date('1972-08-01'), new Date('1972-08-01'))).to.be.true;
         expect(strict( new Date(), new Date(2000, 3, 14))).to.be.false;
-        expect(loose(new Date('1972-08-01'), new Date('1972-08-01'))).to.be.true;
-        expect(loose( new Date(), new Date(2000, 3, 14))).to.be.false;
+        expect(shallow(new Date('1972-08-01'), new Date('1972-08-01'))).to.be.true;
+        expect(shallow( new Date(), new Date(2000, 3, 14))).to.be.false;
         expect(strict( new Date(), new Date(2000, 3, 14))).to.be.false;
         expect(strict( new Date(2000, 3, 14), new Date(2000, 3, 14))).to.be.true;
         expect(strict( new Date(2000, 3, 14), new Date(2000, 3, 14))).to.be.true;

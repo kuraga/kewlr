@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 const expect = chai.expect;
 
 if (typeof Buffer === 'function') {
@@ -22,18 +22,18 @@ if (typeof Buffer === 'function') {
             expect(strict(new Buffer('abc'), {0: 97, 1: 98, 2: 99, length: 3})).to.be.false;
             expect(strict([97, 98, 99], new Buffer('abc'))).to.be.false;
             expect(strict({ 0 : 97, 1 : 98, 2 : 99, length: 3 }, new Buffer('abc'))).to.be.false;
-            expect(loose([97, 98, 99], new Buffer('abc'))).to.be.true;
-            expect(loose({ 0 : 97, 1 : 98, 2 : 99, length: 3 }, new Buffer('abc'))).to.be.false;
+            expect(shallow([97, 98, 99], new Buffer('abc'))).to.be.true;
+            expect(shallow({ 0 : 97, 1 : 98, 2 : 99, length: 3 }, new Buffer('abc'))).to.be.false;
         });
 
         it('should return true for same buffers', () => {
             expect(strict(new Buffer('xyz'), new Buffer('xyz'))).to.be.true;
-            expect(loose(new Buffer('xyz'), new Buffer('xyz'))).to.be.true;
+            expect(shallow(new Buffer('xyz'), new Buffer('xyz'))).to.be.true;
         });
 
         it('should return false for different buffers', () => {
             expect(strict(new Buffer('abc'), new Buffer('xyz'))).to.be.false;
-            expect(loose(new Buffer('abc'), new Buffer('xyz'))).to.be.false;
+            expect(shallow(new Buffer('abc'), new Buffer('xyz'))).to.be.false;
         });
 
         it('should return true in strict mode and false in strict mode', () => {
@@ -47,8 +47,8 @@ if (typeof Buffer === 'function') {
                 let buffer = new Int8Array([-1]).buffer;
                 expect(strict(buffer, new ArrayBuffer(1))).to.be.false;
                 expect(strict(buffer, new Uint8Array([255]).buffer)).to.be.true;
-                expect(loose(buffer, new ArrayBuffer(1))).to.be.false;
-                expect(loose(buffer, new Uint8Array([255]).buffer)).to.be.true;
+                expect(shallow(buffer, new ArrayBuffer(1))).to.be.false;
+                expect(shallow(buffer, new Uint8Array([255]).buffer)).to.be.true;
             });
         }
         it('should notice different Buffers', () => {
@@ -84,9 +84,9 @@ if (typeof Buffer === 'function') {
             expect(strict(b1, b1)).to.be.true;
             expect(strict(b1, b2)).to.be.true;
             expect(strict(b1, b3)).to.be.false;
-            expect(loose(b1, b1)).to.be.true;
-            expect(loose(b1, b2)).to.be.true;
-            expect(loose(b1, b3)).to.be.false;
+            expect(shallow(b1, b1)).to.be.true;
+            expect(shallow(b1, b2)).to.be.true;
+            expect(shallow(b1, b3)).to.be.false;
         });
 
         [
@@ -108,8 +108,8 @@ if (typeof Buffer === 'function') {
             [new Uint16Array([1, 2, 3, 4]).subarray(1), new Uint16Array([2, 3, 4])],
             [new Uint32Array([1, 2, 3, 4]).subarray(1, 3), new Uint32Array([2, 3])]
         ].forEach((arrayPair: any) => {
-            it('equalArrayPairs - loose mode', () => {
-                expect(loose(arrayPair[0], arrayPair[1])).to.be.true;
+            it('equalArrayPairs - shallow mode', () => {
+                expect(shallow(arrayPair[0], arrayPair[1])).to.be.true;
             });
         });
 
@@ -148,7 +148,7 @@ if (typeof Buffer === 'function') {
         notEqualArrayPairs.forEach((arrayPair: any) => {
             it('notEqualArrayPairs', () => {
                 expect(strict(arrayPair[0], arrayPair[1])).to.false;
-                expect(loose(arrayPair[0], arrayPair[1])).to.false;
+                expect(shallow(arrayPair[0], arrayPair[1])).to.false;
             });
         });
     });

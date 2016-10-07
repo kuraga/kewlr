@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -36,19 +36,19 @@ describe('arrays', () => {
 
     it('should return true given literal or constructor', () => {
         expect(strict([ 1, 2, 3 ], new Array(1, 2, 3))).to.be.true;
-        expect(loose([ 1, 2, 3 ], new Array(1, 2, 3))).to.be.true;
+        expect(shallow([ 1, 2, 3 ], new Array(1, 2, 3))).to.be.true;
     });
 
     it('should return false with arrays containing literals in different order', () => {
         expect(strict([ 3, 2, 1 ], [ 1, 2, 3 ])).to.be.false;
-        expect(loose([ 3, 2, 1 ], [ 1, 2, 3 ])).to.be.false;
+        expect(shallow([ 3, 2, 1 ], [ 1, 2, 3 ])).to.be.false;
     });
 
     it('should return false for arrays of different length', () => {
         expect(strict(new Array(1), new Array(100))).to.be.false;
         expect(strict(new Array(100), new Array(1))).to.be.false;
-        expect(loose(new Array(1), new Array(100))).to.be.false;
-        expect(loose(new Array(100), new Array(1))).to.be.false;
+        expect(shallow(new Array(1), new Array(100))).to.be.false;
+        expect(shallow(new Array(100), new Array(1))).to.be.false;
     });
 
     it('should compare arrays', () => {
@@ -89,7 +89,7 @@ describe('arrays', () => {
 
     it('should return false for same contents, different order', () => {
         expect(strict( { a: 'a', b: 'b', c: 'c' }, { a: 'b', b: 'c', c: 'a' })).to.be.false;
-        expect(loose( { a: 'a', b: 'b', c: 'c' }, { a: 'b', b: 'c', c: 'a' })).to.be.false;
+        expect(shallow( { a: 'a', b: 'b', c: 'c' }, { a: 'b', b: 'c', c: 'a' })).to.be.false;
     });
 
     it('should not compare objects with strings', () => {
@@ -116,7 +116,7 @@ describe('arrays', () => {
         array2 = ['c'];
         expect(strict(array1, array2)).to.be.true;
         expect(strict(array2, array1)).to.be.true;
-        expect(loose(array1, array2)).to.be.false;
+        expect(shallow(array1, array2)).to.be.false;
     });
 
     it('should return true for same array instance', () => {
@@ -150,20 +150,20 @@ describe('arrays', () => {
 
     it('should return true for sparse arrays with identical lengths', () => {
         expect(strict(Array(3), Array(3))).to.be.true;
-        expect(loose(Array(3), Array(3))).to.be.true;
+        expect(shallow(Array(3), Array(3))).to.be.true;
     });
 
     it('should return true for sparse arrays with different lengths', () => {
         expect(strict(Array(3), Array(6))).to.be.false;
-        expect(loose(Array(3), Array(6))).to.be.false;
+        expect(shallow(Array(3), Array(6))).to.be.false;
     });
 
     it('should compare sparse arrays', () => {
         const array = Array(1);
         expect(strict(array, Array(1))).to.be.true;
         expect(strict(array, [undefined])).to.be.true;
-        expect(loose(array, [undefined])).to.be.false;
-        expect(loose([undefined], array)).to.be.false;
+        expect(shallow(array, [undefined])).to.be.false;
+        expect(shallow([undefined], array)).to.be.false;
         expect(strict([undefined], array)).to.be.true;
         expect(strict(array, Array(2))).to.be.false;
     });
@@ -218,7 +218,7 @@ describe('arrays', () => {
         expect(strict(array1, array2)).to.be.false;
     });
 
-    it('should compare arrays with circular references - loose mode', function() {
+    it('should compare arrays with circular references - shallow mode', function() {
 
         let array1: any[] = [];
         let array2: any[] = [];
@@ -226,22 +226,22 @@ describe('arrays', () => {
         array1.push(array1);
         array2.push(array2);
 
-        expect(loose(array1, array2)).to.be.true;
+        expect(shallow(array1, array2)).to.be.true;
 
         array1.push('b');
         array2.push('b');
 
-        expect(loose(array1, array2)).to.be.true;
+        expect(shallow(array1, array2)).to.be.true;
 
         array1.push('c');
         array2.push('d');
 
-        expect(loose(array1, array2)).to.be.false;
+        expect(shallow(array1, array2)).to.be.false;
 
         array1 = ['a', 'b', 'c'];
         array1[1] = array1;
         array2 = ['a', ['a', 'b', 'c'], 'c'];
 
-        expect(loose(array1, array2)).to.be.false;
+        expect(shallow(array1, array2)).to.be.false;
     });
 });

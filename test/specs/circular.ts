@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -71,7 +71,7 @@ describe('circular references', () => {
         const a = new Circular();
         const b = new Circular();
         expect(strict(a, b)).to.be.true;
-        expect(loose(a, b)).to.be.true;
+        expect(shallow(a, b)).to.be.true;
     });
 
     it('should handle circular arrays', () => {

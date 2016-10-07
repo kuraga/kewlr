@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 var supportGenerators = false;
@@ -34,7 +34,7 @@ describe('Generators',  () => {
 
         it('should return false for different arrow functions', () => {
             expect(strict(eval('function * generator() {}; generator'), eval('function * generator() {}; generator'))).to.be.false;
-            expect(loose(eval('function * generator() {}; generator'), eval('function * generator() {}; generator'))).to.be.false;
+            expect(shallow(eval('function * generator() {}; generator'), eval('function * generator() {}; generator'))).to.be.false;
         });
 
         it('should return true for same generator function calls', () => {
@@ -64,7 +64,7 @@ describe('Generators',  () => {
             let generatorBIterator = generatorB();
             generatorBIterator.next();
             expect(strict(generatorA(), generatorBIterator)).to.be.false;
-            expect(loose(generatorA(), generatorBIterator)).to.be.true;
+            expect(shallow(generatorA(), generatorBIterator)).to.be.true;
         });
 
         it('should return false for generators if one is done', () => {
@@ -75,7 +75,7 @@ describe('Generators',  () => {
             generatorBIterator.next();
             generatorBIterator.next();
             expect(strict(generatorA(), generatorBIterator)).to.be.false;
-            expect(loose(generatorA(), generatorBIterator)).to.be.true;
+            expect(shallow(generatorA(), generatorBIterator)).to.be.true;
         });
     }
 });

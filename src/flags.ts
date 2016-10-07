@@ -3,7 +3,7 @@
  */
 export const enum ModeFlags {
     STRICT_MODE             = 1 << 15,
-    LOOSE_MODE              = 1 << 16,
+    SHALLOW_MODE            = 1 << 16,
     EQUAL_PROTO             = 1 << 17,
 }
 

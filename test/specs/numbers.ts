@@ -1,4 +1,4 @@
-import { strict, loose, match } from '../../src/kewlr';
+import { strict, shallow, match } from '../../src/kewlr';
 const expect = chai.expect;
 describe('numbers', () => {
     it('should return false for commutative equality', () => {
@@ -21,8 +21,8 @@ describe('numbers', () => {
     it('should return false for literal vs instance with same value', () => {
         expect(strict(1, Number(1))).to.be.true;
         expect(strict(Number(1), 1)).to.be.true;
-        expect(loose(1, Number(1))).to.be.true;
-        expect(loose(Number(1), 1)).to.be.true;
+        expect(shallow(1, Number(1))).to.be.true;
+        expect(shallow(Number(1), 1)).to.be.true;
     });
     it('should return true NaN vs NaN', () => {
         expect(strict(NaN, NaN)).to.be.true;
@@ -42,9 +42,9 @@ describe('numbers', () => {
         expect(strict(-1, 1)).to.be.false;
         expect(strict(-Infinity, Infinity)).to.be.false;
         expect(strict(Infinity, -Infinity)).to.be.false;
-        expect(loose(-1, 1)).to.be.false;
-        expect(loose(-Infinity, Infinity)).to.be.false;
-        expect(loose(Infinity, -Infinity)).to.be.false;
+        expect(shallow(-1, 1)).to.be.false;
+        expect(shallow(-Infinity, Infinity)).to.be.false;
+        expect(shallow(Infinity, -Infinity)).to.be.false;
     });
     it('should handle numbers correctly', () => {
         expect(strict(-346, -346)).to.be.true;
@@ -54,9 +54,9 @@ describe('numbers', () => {
         expect(strict(9.358546212888048e-14, 9.358546212888048e-14)).to.be.true;
         expect(strict(5, -5)).to.be.false;
         expect(strict(8234, 7823)).to.be.false;
-        expect(loose(8234, 7823)).to.be.false;
+        expect(shallow(8234, 7823)).to.be.false;
         expect(strict(-564.23466, 0.236852109)).to.be.false;
         expect(strict(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
-        expect(loose(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
+        expect(shallow(9.358546212888048e-14, 9.358546212888047e-14)).to.be.false;
     });
 });

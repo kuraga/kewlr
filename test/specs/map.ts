@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 const mapObj = { foo: 'bar' };
@@ -36,8 +36,8 @@ describe('Map', () => {
         b.set('x', 'y2');
         expect(strict(a.get('x'), b.get('x'))).to.be.false;
         expect(strict(a, b)).to.be.false;
-        expect(loose(a.get('x'), b.get('x'))).to.be.false;
-        expect(loose(a, b)).to.be.true;
+        expect(shallow(a.get('x'), b.get('x'))).to.be.false;
+        expect(shallow(a, b)).to.be.true;
     });
 
     it('should return true for maps with identical keys', () => {
@@ -46,7 +46,7 @@ describe('Map', () => {
             new Map([[mapObj, 'bar']]),
         )).to.be.true;
 
-        expect(loose(
+        expect(shallow(
             new Map([[mapObj, 'bar']]),
             new Map([[mapObj, 'bar']]),
         )).to.be.true;
@@ -59,7 +59,7 @@ describe('Map', () => {
             new Map([['foo', 'bar']]),
         )).to.be.true;
 
-        expect(loose(
+        expect(shallow(
             new Map([['foo', 'bar']]),
             new Map([['foo', 'bar']]),
         )).to.be.true;
@@ -71,7 +71,7 @@ describe('Map', () => {
             new Map([['foo', 'foo']]),
         )).to.be.false;
 
-        expect(loose(
+        expect(shallow(
             new Map([['foo', 'bar']]),
             new Map([['foo', 'foo']]),
         )).to.be.true;
@@ -83,7 +83,7 @@ describe('Map', () => {
             new Map([['bar', 'foo']]),
         )).to.be.false;
 
-        expect(loose(
+        expect(shallow(
             new Map([['foo', 'bar']]),
             new Map([['bar', 'foo']]),
         )).to.be.true;
@@ -103,11 +103,11 @@ describe('Map', () => {
         )).to.be.false;
     });
 
-    it('should return true for loose mode', () => {
+    it('should return true for shallow mode', () => {
         expect(strict(
             new Map([['a', 1]]), new Map([['a', '1']])
         )).to.be.false;
-        expect(loose(
+        expect(shallow(
             new Map([['a', 1]]), new Map([['a', '1']])
         )).to.be.true;
     });
@@ -122,7 +122,7 @@ describe('Map', () => {
         expect(strict(
             new Map([['a', 1], ['b', 2]]), new Map([['b', 2], ['a', 1]])
         )).to.be.true;
-        expect(loose(
+        expect(shallow(
             new Map([['a', 1], ['b', 2]]), new Map([['b', 2], ['a', 1]])
         )).to.be.true;
     });
@@ -146,7 +146,7 @@ describe('Map', () => {
             new Map([[{foo: 'bar'}, 'bar']]),
             new Map([[{foo: 'bar'}, 'bar']]),
         )).to.be.true;
-        expect(loose(
+        expect(shallow(
             new Map([[{foo: 'bar'}, 'bar']]),
             new Map([[{foo: 'bar'}, 'bar']]),
         )).to.be.true;
@@ -187,7 +187,7 @@ describe('Map', () => {
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]]),
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]])
         )).to.be.true;
-        expect(loose(
+        expect(shallow(
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]]),
             new Map([[{foo: 'bar', bar: bar}, {foo: 'bar', bar: bar}]])
         )).to.be.true;
@@ -221,7 +221,7 @@ describe('Map', () => {
         )).to.be.true;
     });
 
-    it('should return false for maps with loosely same primitive both', () => {
+    it('should return false for maps with shallowly same primitive both', () => {
         expect(strict(
             new Map([['1', 1]]),
             new Map([[1, '1']]),
@@ -235,7 +235,7 @@ describe('Map', () => {
         )).to.be.true;
     });
 
-    it('should return false for maps with loosely same primitive key', () => {
+    it('should return false for maps with shallowly same primitive key', () => {
         expect(strict(
             new Map([[1, 'foo']]),
             new Map([['1', 'foo']]),
@@ -273,7 +273,7 @@ describe('Map', () => {
         mapB.set('b', 2);
         mapB.set('a', 1);
         expect(strict(mapA, mapB)).to.be.true;
-        expect(loose(mapA, mapB)).to.be.true;
+        expect(shallow(mapA, mapB)).to.be.true;
     });
 
     it('should return false for Maps with different entries', () => {
@@ -286,7 +286,7 @@ describe('Map', () => {
         mapA.set('c', 5);
         mapB.set('c', 6);
         expect(strict(mapA.entries(), mapB.entries())).to.be.false;
-        expect(loose(mapA.entries(), mapB.entries())).to.be.true;
+        expect(shallow(mapA.entries(), mapB.entries())).to.be.true;
     });
 
     it('should compare maps with circular references', () => {
@@ -298,7 +298,7 @@ describe('Map', () => {
         map1.set('b', 1);
         map2.set('b', 2);
         expect(strict(map1, map2)).to.be.false;
-        expect(loose(map1, map2)).to.be.true;
+        expect(shallow(map1, map2)).to.be.true;
         expect(strict(map2, map1)).to.be.false;
     });
 
@@ -311,11 +311,11 @@ describe('Map', () => {
         expect(strict(new Map(), /x/)).to.be.false;
         expect(strict(new Map(), 'a')).to.be.false;
         expect(strict(new Map(), 1)).to.be.false;
-        expect(loose(new Map(), Date())).to.be.false;
-        expect(loose(new Map(), Error)).to.be.false;
-        expect(loose(new Map(), /x/)).to.be.false;
-        expect(loose(new Map(), 'a')).to.be.false;
-        expect(loose(new Map(), 1)).to.be.false;
+        expect(shallow(new Map(), Date())).to.be.false;
+        expect(shallow(new Map(), Error)).to.be.false;
+        expect(shallow(new Map(), /x/)).to.be.false;
+        expect(shallow(new Map(), 'a')).to.be.false;
+        expect(shallow(new Map(), 1)).to.be.false;
 
     });
 

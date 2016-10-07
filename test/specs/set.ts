@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -50,9 +50,9 @@ describe('Set()', () => {
         expect(strict(s1, s1)).to.be.true;
         expect(strict(s1, s1)).to.be.true;
         expect(strict(s1, s2)).to.be.false;
-        expect(loose(s1, s1)).to.be.true;
-        expect(loose(s1, s1)).to.be.true;
-        expect(loose(s1, s2)).to.be.false;
+        expect(shallow(s1, s1)).to.be.true;
+        expect(shallow(s1, s1)).to.be.true;
+        expect(shallow(s1, s2)).to.be.false;
     });
 
     it('should return true empty sets', () => {
@@ -60,9 +60,9 @@ describe('Set()', () => {
         expect(strict(new Set(), new Set())).to.be.true;
     });
 
-    it('should return false for sets with loosely same primitive value', () => {
+    it('should return false for sets with shallowly same primitive value', () => {
         expect(strict( new Set([1, 'foo']), new Set(['1', 'foo']))).to.be.false;
-        expect(loose( new Set([1, 'foo']), new Set(['1', 'foo']))).to.be.true;
+        expect(shallow( new Set([1, 'foo']), new Set(['1', 'foo']))).to.be.true;
     });
 
     it('should return true for sets with same primitive values', () => {
@@ -135,7 +135,7 @@ describe('Set()', () => {
     it('should return false for sets with many different primitive values', () => {
         expect(strict(
             new Set(['foo', 'bar', 'bar', 1, 1, 2, true, 3]),  new Set(['foo', 'bar', 'bar', 2, '15', 2, false, 4]))).to.be.false;
-        expect(loose(
+        expect(shallow(
             new Set(['foo', 'bar', 'bar', 1, 1, 2, true, 3]),  new Set(['foo', 'bar', 'bar', 2, '15', 2, false, 4]))).to.be.true;
     });
     it('should return false for sets with many different primitive values', () => {
@@ -144,12 +144,12 @@ describe('Set()', () => {
     });
     it('should return true for sets with identical values', () => {
         let setObj = {foo: 'bar'};
-        expect(loose( new Set([setObj, 'bar']),  new Set([setObj, 'bar']))).to.be.true;
+        expect(shallow( new Set([setObj, 'bar']),  new Set([setObj, 'bar']))).to.be.true;
         expect(strict( new Set([setObj, 'bar']),  new Set([setObj, 'bar']))).to.be.true;
     });
 
     it('should return true for sets with structurally similar values', () => {
-        expect(loose(new Set([{foo: 'bar'}, 'bar']), new Set([{foo: 'bar'}, 'bar']))).to.be.true;
+        expect(shallow(new Set([{foo: 'bar'}, 'bar']), new Set([{foo: 'bar'}, 'bar']))).to.be.true;
         expect(strict(new Set([{foo: 'bar'}, 'bar']), new Set([{foo: 'bar'}, 'bar']))).to.be.true;
     });
     it('should return false for sets with structurally different values', () => {
@@ -158,7 +158,7 @@ describe('Set()', () => {
     it('should return false for sets with many different primitive values', () => {
         expect(strict(
             new Set(['foo', 'bar', 'bar', 1, 1, 2, true, 3]),  new Set(['foo', 'bar', 'bar', 2, '15', 2, false, 4]))).to.be.false;
-        expect(loose(
+        expect(shallow(
             new Set(['foo', 'bar', 'bar', 1, 1, 2, true, 3]),  new Set(['foo', 'bar', 'bar', 2, '15', 2, false, 4]))).to.be.true;
     });
 

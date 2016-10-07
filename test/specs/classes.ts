@@ -1,4 +1,4 @@
-import { strict, loose } from '../../src/kewlr';
+import { strict, shallow } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -19,11 +19,11 @@ describe('Classes', () => {
 
     it('should return true for the same Class', () => {
         expect(strict(new A('A'), new A('A'))).to.be.true;
-        expect(loose(new A('A'), new A('A'))).to.be.true;
+        expect(shallow(new A('A'), new A('A'))).to.be.true;
     });
 
     it('should return false for different Class instance', () => {
         expect(strict(new A('A'), new B('B'))).to.be.false;
-        expect(loose(new A('A'), new B('B'))).to.be.false;
+        expect(shallow(new A('A'), new B('B'))).to.be.false;
     });
 });

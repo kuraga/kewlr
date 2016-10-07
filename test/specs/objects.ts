@@ -1,4 +1,4 @@
-import { strict, loose, match } from '../../src/kewlr';
+import { strict, shallow, match } from '../../src/kewlr';
 
 const expect = chai.expect;
 
@@ -8,7 +8,7 @@ describe('objects', () => {
     it('should return true for same object', () => {
         expect(strict(obj1, obj1)).to.be.true;
     });
-    it('should return false for loosely equal object', () => {
+    it('should return false for shallowly equal object', () => {
         expect(strict([{a: 3}, {b: 4}], [{a: '3'}, {b: '4'}])).to.be.false;
     });
     it('should return false for not equal object', () => {
@@ -17,18 +17,18 @@ describe('objects', () => {
     it('should return false for differing keys', () => {
         expect(strict({a: 1, b: 2}, {b: 1, c: 2})).to.be.false;
         expect(strict({b: 1, c: 2}, {a: 1, b: 2})).to.be.false;
-        expect(loose({a: 1, b: 2}, {b: 1, c: 2})).to.be.false;
-        expect(loose({b: 1, c: 2}, {a: 1, b: 2})).to.be.false;
+        expect(shallow({a: 1, b: 2}, {b: 1, c: 2})).to.be.false;
+        expect(shallow({b: 1, c: 2}, {a: 1, b: 2})).to.be.false;
     });
     it('should return true for various object combinations', () => {
         expect(strict({a: [2, 3], b: [4]}, {a: [2, 3], b: [4]})).to.be.true;
-        expect(loose({a: [2, 3], b: [4]}, {a: [2, 3], b: [4]})).to.be.true;
+        expect(shallow({a: [2, 3], b: [4]}, {a: [2, 3], b: [4]})).to.be.true;
     });
     it('should return false for various object combinations', () => {
         expect(strict( [{a: 3}, {b: 4}], [{a: '3'}, {b: '4'}] )).to.be.false;
         expect(strict({x: 5, y: [6]}, {x: 5, y: 6})).to.be.false;
         expect(strict({x: 5, y: 6}, {x: 5, y: [6]})).to.be.false;
-        expect(loose({x: 5, y: 6}, {x: 5, y: [6]})).to.be.true;
+        expect(shallow({x: 5, y: 6}, {x: 5, y: [6]})).to.be.true;
         expect(match({x: 5, y: 6}, {x: 5, y: [6]})).to.be.false;
     });
     it('should return false with objects containing different literals', () => {
@@ -38,7 +38,7 @@ describe('objects', () => {
     });
     it('should notice objects with different shapes', () => {
         expect(strict({a: 1, b: undefined}, {a: 1, c: undefined})).to.be.false;
-        expect(loose({a: 1, b: undefined}, {a: 1, c: undefined})).to.be.false;
+        expect(shallow({a: 1, b: undefined}, {a: 1, c: undefined})).to.be.false;
     });
     it('should return false with objects containing different keys', () => {
         expect(strict({ foo: 1, bar: 1 }, { foo: 1, baz: 2 })).to.be.false;
@@ -62,7 +62,7 @@ describe('objects', () => {
     });
     it('should return false if objects of different sizes are not equal', () => {
         expect(strict({a: 1, b: 2}, {a: 1})).to.be.false;
-        expect(loose({a: 1, b: 2}, {a: 1})).to.be.false;
+        expect(shallow({a: 1, b: 2}, {a: 1})).to.be.false;
     });
     it('should return false if commutative equality is implemented for objects', () => {
         expect(strict({a: 1}, {a: 1, b: 2})).to.be.false;
@@ -100,8 +100,8 @@ describe('objects', () => {
         ];
         expect(strict(b, a)).to.be.false;
         expect(strict(a, b)).to.be.false;
-        expect(loose(b, a)).to.be.false;
-        expect(loose(a, b)).to.be.false;
+        expect(shallow(b, a)).to.be.false;
+        expect(shallow(a, b)).to.be.false;
     });
 
     it('should handle nested objects and arrays', () => {
@@ -133,7 +133,7 @@ describe('objects', () => {
                 seconds: 48
             }
         };
-        expect(loose(a, b)).to.be.false;
+        expect(shallow(a, b)).to.be.false;
         expect(strict(a, b)).to.be.false;
     });
 
@@ -154,7 +154,7 @@ describe('objects', () => {
             { 'c': 3, 'a': 1, 'b': 2 }
         )).to.be.true;
 
-        expect(loose(
+        expect(shallow(
             { 'a': 1, 'b': 2, 'c': 3 },
             { 'c': 3, 'a': 1, 'b': 2 }
         )).to.be.true;
@@ -167,7 +167,7 @@ describe('objects', () => {
 
     it('returns true for deeply nested objects', () => {
         expect(strict({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
-        expect(loose({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
+        expect(shallow({ foo: { bar: 'foo' } }, { foo: { bar: 'foo' } })).to.be.true;
     });
 
     it('returns false with objects containing different literals', () => {
@@ -193,7 +193,7 @@ describe('objects', () => {
 
         object1.b = object1.a;
         expect(strict(object1, object2)).to.be.true;
-        expect(loose(object1, object2)).to.be.true;
+        expect(shallow(object1, object2)).to.be.true;
     });
 
     it('should compare plain objects', () => {
@@ -253,12 +253,12 @@ describe('objects', () => {
         expect(strict({ 'constructor': Object }, {})).to.be.false;
     });
 
-    it('should compare objects with constructor properties - loose mode', () => {
-        expect(loose({ 'constructor': 1 },   { 'constructor': 1 })).to.be.true;
-        expect(loose({ 'constructor': [1] }, { 'constructor': [1] })).to.be.true;
-        expect(loose({ 'constructor': 1 },   { 'constructor': '1' })).to.be.true;
-        expect(loose({ 'constructor': [1] }, { 'constructor': ['1'] })).to.be.true;
-        expect(loose({ 'constructor': Object }, {})).to.be.false;
+    it('should compare objects with constructor properties - shallow mode', () => {
+        expect(shallow({ 'constructor': 1 },   { 'constructor': 1 })).to.be.true;
+        expect(shallow({ 'constructor': [1] }, { 'constructor': [1] })).to.be.true;
+        expect(shallow({ 'constructor': 1 },   { 'constructor': '1' })).to.be.true;
+        expect(shallow({ 'constructor': [1] }, { 'constructor': ['1'] })).to.be.true;
+        expect(shallow({ 'constructor': Object }, {})).to.be.false;
     });
 
     it('should handle objects with no constructor property', () => {
@@ -328,7 +328,7 @@ describe('objects', () => {
     });
 
     it('should handle object wrappers', () => {
-        expect(loose( Number(1), {})).to.be.false;
+        expect(shallow( Number(1), {})).to.be.false;
         expect(strict( Number(1), {})).to.be.false;
         expect(strict({}, Number(1))).to.be.false;
         expect(strict( Boolean(true), {})).to.be.false;
@@ -337,11 +337,11 @@ describe('objects', () => {
         expect(strict({0: 'a'}, String('a'))).to.be.false;
         expect(strict( String('a'), ['a'])).to.be.false;
         expect(strict(['a'], String('a'))).to.be.false;
-        expect(loose({0: 'a'}, String('a'))).to.be.true;
-        expect(loose( String('a'), ['a'])).to.be.true;
-        expect(loose(['a'], String('a'))).to.be.true;
+        expect(shallow({0: 'a'}, String('a'))).to.be.true;
+        expect(shallow( String('a'), ['a'])).to.be.true;
+        expect(shallow(['a'], String('a'))).to.be.true;
         expect(strict(String('a'), {0: 'a'})).to.be.false;
-        expect(loose(String('a'), {0: 'a'})).to.be.false;
+        expect(shallow(String('a'), {0: 'a'})).to.be.false;
         expect(strict(String('a'), ['a'])).to.be.false;
     });
 

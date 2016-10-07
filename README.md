@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/zubuzon/kewlr.svg?branch=master)](https://travis-ci.org/zubuzon/kewlr)
 [![Coverage Status](https://coveralls.io/repos/github/zubuzon/kewlr/badge.svg?branch=master)](https://coveralls.io/github/zubuzon/kewlr?branch=master)
 
-`Kewlr` is a module which you can use to determine if two values are equal to each others. It offers two modes - `loose` and `strict`, and
+`Kewlr` is a module which you can use to determine if two values are equal to each others. It offers two modes - `shallow` and `strict`, and
 it aim to be the fastest `deepEqual` algorithm, and support everything that is possible to support.
 
 It should be safe to use this module in production, and it works both for node and the browser.
@@ -13,7 +13,7 @@ It should be safe to use this module in production, and it works both for node a
 - High performance
 - Follows ECMA standards
 - Works for both NodejS and browsers
-- loose, match and strict mode
+- shallow, match and strict mode
 - [`Core-js`](https://github.com/zloirock/core-js) compatible
 - Browserify compatible
 - Babel and Bublé compatible
@@ -34,17 +34,17 @@ Include `Kewlr` in your project like this:
 ```js
 
 // Node 5.x or newer.
-var { strict, loose } = require('kewlr');
+var { strict, shallow } = require('kewlr');
 ```
 or
 
 ```js
-import { strict, loose } from 'kewlr';
+import { strict, shallow } from 'kewlr';
 ```
 
 # API
 
-Kewlr let you import two different functions, so you can choose between either `strict` and `loose` mode when you include this module into your project.
+Kewlr let you import two different functions, so you can choose between either `strict` and `shallow` mode when you include this module into your project.
 Each of the functions takes two arguments of any type, and returns a boolean result. Primitive types are equal if they are `===`.
 While composite types, i.e. `Objects` and `Arrays`, are considered equal if they have both the same structure and each sub-value is also equal.
 Circular references in composite structures are supported.
@@ -56,26 +56,26 @@ Circular references in composite structures are supported.
 
 **Returns:** Boolean indicating whether or not `actual` is the same as `expected`.
 
-Same for `loose` and `match` mode.
+Same for `shallow` and `match` mode.
 
-## Differences between loose and strict mode
+## Differences between shallow and strict mode
 
-The differences between `loose` and `strict` mode are mainly the use of tripple equals. And also that the strict mode does a deeply nested `sameValue`
+The differences between `shallow` and `strict` mode are mainly the use of tripple equals. And also that the strict mode does a deeply nested `sameValue`
 equality between two objects of any type, and performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero) comparison
 between two values to determine if they are equivalent.
 
 `match` mode is identical to `strict` mode, with a few exceptions regarding primitives This is done to be Chai compatible.
 
 ```js
-loose({}, []) // => true
+shallow({}, []) // => true
 
 strict({}, []) // => false
 
-loose({ 0: 'a', 1: 'b' }, ['a', 'b']) // => true
+shallow({ 0: 'a', 1: 'b' }, ['a', 'b']) // => true
 
 strict({ 0: 'a', 1: 'b' }, ['a', 'b'])  // => false
 
-loose(1, '1') // => true
+shallow(1, '1') // => true
 
 strict(1, '1') // => false
 ```
@@ -85,21 +85,21 @@ strict(1, '1') // => false
 ## Different structure:
 
 ```js
-loose({ x : 2016, y : [2017] }, { x : 2016}) // => false
+shallow({ x : 2016, y : [2017] }, { x : 2016}) // => false
 struct({ x : 2016, y : [2017] }, { x : 2016}) // => false
 ```
 
 ## Same structure, different values:
 
 ```js
-loose( { x : 2016, y : [6] }, { x : 2017}) // => false
+shallow( { x : 2016, y : [6] }, { x : 2017}) // => false
 strict( { x : 2016, y : [6] }, { x : 2017}) // => false
 ```
 
 ## Primitives:
 
 ```js
-loose({ x : 5, y : [6] },{ x : 5}) // => false
+shallow({ x : 5, y : [6] },{ x : 5}) // => false
 strict({ x : 5, y : [6] },{ x : 5}) // => false
 ```
 
@@ -108,7 +108,7 @@ strict({ x : 5, y : [6] },{ x : 5}) // => false
 ```js
 let generator = eval('var set = 0; function * generator() { yield set++; }; generator');
 
-loose(generator(), generator()); // => true
+shallow(generator(), generator()); // => true
 strict(generator(), generator()); // => true
 ```
 
@@ -127,29 +127,29 @@ let x = new Map();
 let y = new Map();
     y.set('bar', 'baz');
 
-  loose([...y], [...x]) // => false
+  shallow([...y], [...x]) // => false
 ```
 
 ## Mixed
 
 ```js
 
-loose(a, 'b') // false
-loose({a: 0}, {a: '0'}, 'strict') // false
-loose({a: 1}, {a: 1}) // true
-loose({a: 1, b: 2}, {b: 2, a: 1}) // true
-loose(Error('a'), Error('a')) // true
-loose(Error('a'), Error('b')) // false
+shallow(a, 'b') // false
+shallow({a: 0}, {a: '0'}, 'strict') // false
+shallow({a: 1}, {a: 1}) // true
+shallow({a: 1, b: 2}, {b: 2, a: 1}) // true
+shallow(Error('a'), Error('a')) // true
+shallow(Error('a'), Error('b')) // false
 strict(Error('a'), Error('b')) // false
 strict({ a : [ 2, 3 ], b : [ 4 ] }, { a : [ 2, 3 ], b : [ 4 ] }) // => true
 
 let s = Symbol();
 
-loose(s, s); // true
+shallow(s, s); // true
 
 let generator = eval('var set = 0; function * generator() { yield set++; }; generator');
 
-loose(generator(), generator()); // => true
+shallow(generator(), generator()); // => true
 strict(generator(), generator()); // => true
 
 ```

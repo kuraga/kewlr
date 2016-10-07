@@ -336,7 +336,7 @@ function indexOf(array, value) {
  */
 function compareReferences(actual, expected, isEqual, context, left, right) {
     // strict mode *only*
-    if (!(context & 65536 /* LOOSE_MODE */)) {
+    if (!(context & 65536 /* SHALLOW_MODE */)) {
         var leftIndex = indexOf(left, actual);
         var rightIndex = indexOf(right, expected);
         if (leftIndex === rightIndex) {
@@ -353,7 +353,7 @@ function compareReferences(actual, expected, isEqual, context, left, right) {
         return false;
     }
     // compare only innerValues for 'loose mode'
-    return compareInnerValues(actual, expected, isEqual, context & ~65536 /* LOOSE_MODE */, [actual], [expected]);
+    return compareInnerValues(actual, expected, isEqual, context & ~65536 /* SHALLOW_MODE */, [actual], [expected]);
 }
 
 /**
@@ -834,7 +834,7 @@ function matchEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [expected]
  */
 function loose(actual, expected) {
-    return shallowEqual(actual, expected, shallowEqual, 65536 /* LOOSE_MODE */);
+    return shallowEqual(actual, expected, shallowEqual, 65536 /* SHALLOW_MODE */);
 }
 
 /**
@@ -845,7 +845,7 @@ function loose(actual, expected) {
  * @property {any} [expected]
  */
 function match(actual, expected) {
-    return matchEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* LOOSE_MODE */);
+    return matchEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
 }
 
 /**
@@ -856,7 +856,7 @@ function match(actual, expected) {
  * @property {any} [expected]
  */
 function strict(actual, expected) {
-    return strictEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* LOOSE_MODE */);
+    return strictEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
 }
 
 export { loose, match, strict };
