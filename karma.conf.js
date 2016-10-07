@@ -1,7 +1,7 @@
 var buble = require('rollup-plugin-buble');
 var multi = require('rollup-plugin-multi-entry');
 var typeScript = require('rollup-plugin-typescript');
-var ts = require('typeScript');
+var ts = require('typescript');
 
 module.exports = function(config) {
     config.set({
@@ -29,6 +29,7 @@ module.exports = function(config) {
                 ]
             },
          },
+	    // need polyfills for PhantomJS
         browsers: ['Chrome', 'Firefox'],
 
         reporters: ['mocha'],
