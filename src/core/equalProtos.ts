@@ -1,9 +1,9 @@
 import compareReferences from './compareReferences';
 import { isArray, supportsMap, supportsSet, objectToString } from '../constants';
 import { BufferFlags } from '../flags';
-import isBuffer from './isBuffer';
-import isStrictEqual from './isStrictEqual';
-import arrayBufferSupport from './arrayBufferSupport';
+import isBuffer from '../support/isBuffer';
+import isStrictEqual from '../utils/isStrictEqual';
+import arrayBufferSupport from '../support/arrayBufferSupport';
 import isView from './isView';
 import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, stringTag, boolTag } from '../tags';
 import equalIterators from './equalIterators';

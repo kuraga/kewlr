@@ -1,9 +1,9 @@
 import compareReferences from './compareReferences';
 import { isArray, symbolsAreObjects, supportsMap, supportsSet, objectToString } from '../constants';
-import isBuffer from './isBuffer';
-import arrayBufferSupport from './arrayBufferSupport';
+import isBuffer from '../support/isBuffer';
+import arrayBufferSupport from '../support/arrayBufferSupport';
 import isView from './isView';
-import isLooseEqual from './isLooseEqual';
+import isLooseEqual from '../utils/isLooseEqual';
 import { BufferFlags, ModeFlags } from '../flags';
 import equalView from './equalView';
 import { EqualFunc } from '../layout';

@@ -1,6 +1,6 @@
 import { ModeFlags } from '../flags';
 import compareInnerValues from './compareInnerValues';
-import indexOf from './indexOf';
+import indexOf from '../utils/indexOf';
 import { EqualFunc } from '../layout';
 
 /**

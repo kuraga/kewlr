@@ -1,4 +1,4 @@
-import isStrictEqual from './isStrictEqual';
+import isStrictEqual from '../utils/isStrictEqual';
 
 /**
  * Compare two Buffer.isView() values

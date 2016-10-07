@@ -1,5 +1,5 @@
-import equalProtos from './utils/equalProtos';
-import differentProtos from './utils/differentProtos';
+import equalProtos from './core/equalProtos';
+import differentProtos from './core/differentProtos';
 import { getPrototype } from './constants';
 import { ModeFlags } from './flags';
 import { EqualFunc } from './layout';

@@ -1,5 +1,5 @@
 import { BufferFlags } from '../flags';
-import arrayBufferSupport from './arrayBufferSupport';
+import arrayBufferSupport from '../support/arrayBufferSupport';
 
 /**
  * Determine if 'isView' is supported or not
