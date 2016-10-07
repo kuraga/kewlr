@@ -67,10 +67,6 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     // DataView, ArrayBuffer and Buffer
     if ((arrayBufferSupport & BufferFlags.BUFFER_NONE) === 0) {
         if (actual instanceof DataView) {
-            if ((actual.byteLength !== expected.byteLength) ||
-                (actual.byteOffset !== expected.byteOffset)) {
-                return false;
-            }
             return equalView(
                 new Uint8Array(actual.buffer, actual.byteOffset, actual.byteLength),
                 new Uint8Array(expected.buffer, expected.byteOffset, expected.byteLength));
@@ -96,10 +92,8 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         return false;
     }
 
-    const actualTag = objectToString.call(actual);
-
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
-    switch (actualTag) {
+    switch (objectToString.call(actual)) {
         // booleans and number primitives and their corresponding object wrappers
         case boolTag:
         case numberTag:

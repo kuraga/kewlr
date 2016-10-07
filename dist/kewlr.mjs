@@ -28,13 +28,13 @@ function isObjectLike(value) {
 var getPrototype = Object.getPrototypeOf;
 var hasOwn = Object.prototype.hasOwnProperty;
 var objectToString = Object.prototype.toString;
-var supportsIterator = typeof Symbol === 'function' && Symbol.iterator !== undefined;
-var symbolIterator = supportsIterator ? Symbol.iterator : undefined;
+var supportSymbolIterator = typeof Symbol === 'function' && Symbol.iterator !== undefined;
+var symbolIterator = supportSymbolIterator ? Symbol.iterator : undefined;
 var supportsUnicode = hasOwn.call(RegExp.prototype, 'unicode');
 var supportsSticky = hasOwn.call(RegExp.prototype, 'sticky');
 var supportsMap = typeof Map === 'function';
 var supportsSet = typeof Set === 'function';
-var iterator = supportsIterator ? symbolIterator : false;
+var iterator = supportSymbolIterator ? symbolIterator : false;
 // core-js' symbols are objects, and some old versions of V8 erroneously had
 // `typeof Symbol() === "object"`.
 var symbolsAreObjects = typeof Symbol === 'function' && typeof Symbol() === 'object';
@@ -46,7 +46,7 @@ var symbolsAreObjects = typeof Symbol === 'function' && typeof Symbol() === 'obj
  * @property {[any]} [obj]
  */
 function isIterable(obj) {
-    return supportsIterator
+    return supportSymbolIterator
         ? typeof obj[symbolIterator] === 'function'
         : typeof obj['@@iterator'] === 'function';
 }
@@ -549,10 +549,6 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
     // DataView, ArrayBuffer and Buffer
     if ((arrayBufferSupport & 1 /* BUFFER_NONE */) === 0) {
         if (actual instanceof DataView) {
-            if ((actual.byteLength !== expected.byteLength) ||
-                (actual.byteOffset !== expected.byteOffset)) {
-                return false;
-            }
             return equalView(new Uint8Array(actual.buffer, actual.byteOffset, actual.byteLength), new Uint8Array(expected.buffer, expected.byteOffset, expected.byteLength));
         }
         if (actual instanceof ArrayBuffer) {
@@ -574,9 +570,8 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
         }
         return false;
     }
-    var actualTag = objectToString.call(actual);
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
-    switch (actualTag) {
+    switch (objectToString.call(actual)) {
         // booleans and number primitives and their corresponding object wrappers
         case boolTag:
         case numberTag:
@@ -588,15 +583,14 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
         case promiseTag:
         case errorTag:
             return false;
-        default:
-            if (actualTag === argsTag) {
-                if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
-                    return false;
-                }
-                if (actual.length === 0) {
-                    return true;
-                }
+        case argsTag:
+            if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
+                return false;
             }
+            if (actual.length === 0) {
+                return true;
+            }
+        default:
             return compareReferences(actual, expected, isEqual, context, left, right);
     }
 }
@@ -703,11 +697,10 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
         case weakSetTag:
         case promiseTag:
             return false;
+        case errorTag:
+            return actual.name == actual.name && actual.message == actual.message;
         default:
-            if (actualTag === errorTag) {
-                return actual.name == actual.name && actual.message == actual.message;
-            }
-            else if (actualTag === argsTag) {
+            if (actualTag === argsTag) {
                 if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
                     return false;
                 }
