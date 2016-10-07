@@ -105,10 +105,10 @@ describe('primitives', () => {
         expect(strict(0, '0')).to.be.false;
         expect(strict(0, null)).to.be.false;
         expect(strict(NaN, NaN)).to.be.true;
-        expect(strict(NaN, Object(NaN))).to.be.true;
+        expect(strict(NaN, Object(NaN))).to.be.false;
         expect(strict(0, Object(0))).to.be.true;
         expect(strict(Object(0), Object(0))).to.be.true;
-        expect(strict(NaN, Object(NaN))).to.be.true;
+        expect(strict(NaN, Object(NaN))).to.be.false;
         expect(strict(Object(NaN), Object(NaN))).to.be.true;
         expect(strict(NaN, 'a')).to.be.false;
         expect(strict(NaN, Infinity)).to.be.false;

@@ -22,7 +22,7 @@ function shallowEqual(actual: any, expected: any, isEqual: EqualFunc, context: n
     }
 
     if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+        return actual != actual && expected != expected;
     }
 
     return deepEqual(actual, expected, isEqual, context, left, right);

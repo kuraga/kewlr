@@ -782,8 +782,12 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
     if (actual === expected) {
         return true;
     }
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
     if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+        return actual === expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }

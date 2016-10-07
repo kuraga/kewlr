@@ -20,9 +20,14 @@ function strictEqual(actual: any, expected: any, isEqual: EqualFunc, context: nu
        return true;
     }
 
-      if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
-      }
+    // NaNs are equal
+    if (actual !== actual) {
+        return expected !== expected;
+    }
+
+    if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
+        return actual === expected;
+    }
 
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
