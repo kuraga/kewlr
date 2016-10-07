@@ -32,7 +32,7 @@
     "pretest": "tsc --sourceMap --skipLibCheck -t es6 --m umd -p ./tsconfig.json",
     "lint": "tslint src/**/*.ts",
     "watch:tests": "mocha test/specs/**/*.ts -R spec --bail --watch",
-    "watch:build": "tsc -t es5 -m es6 --skipLibCheck -p ./tsconfig.json -w",
+    "watch:build": "tsc -t es5 -m es6 --skipLibCheck -p ./tsconfig.json -w"
   },
   "repository": {
     "type": "git",

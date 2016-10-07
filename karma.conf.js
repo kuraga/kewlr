@@ -10,12 +10,12 @@ module.exports = function(config) {
         basePath: './',
 
         files: [
-            'test/browser/**/*.ts'
+            'test/specs/**/*.ts'
         ],
 
         preprocessors: {
             'src/**/*.js': ['rollup'],
-            'test/browser/**/*.ts': ['rollup']
+            'test/specs/**/*.ts': ['rollup']
         },
 
         rollupPreprocessor: {
@@ -25,17 +25,10 @@ module.exports = function(config) {
                     typeScript({
                         typescript: ts
                     }),
-                    buble({
-                        plugins: []
-                    })
+                    buble()
                 ]
             },
-            bundle: {
-                intro: '(function() {',
-                outro: '})();',
-                sourceMap: 'inline'
-            }
-        },
+         },
         browsers: ['Chrome', 'Firefox'],
 
         reporters: ['mocha'],
@@ -51,11 +44,5 @@ module.exports = function(config) {
         autoWatch: false,
 
         singleRun: true,
-        // change Karma's debug.html to the mocha web reporter
-        client: {
-            mocha: {
-                reporter: 'html'
-            }
-        }
     })
 };

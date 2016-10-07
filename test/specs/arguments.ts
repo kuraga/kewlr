@@ -48,14 +48,4 @@ describe('arguments',  () => {
         expect(strict(argumentsA, argumentsB)).to.be.false;
         expect(loose(argumentsA, argumentsB)).to.be.false;
     });
-
-    it('returns false given an array', () => {
-        expect(strict([], arguments)).to.be.false;
-        expect(loose([], arguments)).to.be.false;
-    });
-
-    it('returns false given an object',  () => {
-        expect(strict({}, arguments)).to.be.false;
-        expect(loose({}, arguments)).to.be.false;
-    });
 });
