@@ -79,17 +79,17 @@ function compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual,
 }
 
 /**
- * Check if equal keys
+ * Check if an array contains equal keys
  *
  * @typedef {true | false} equalKeys
- * @property {[any]} [actualKeys]
- * @property {any} [expectedKeys]
+ * @property {[any[]]} [actualKeys]
+ * @property {any[]} [expectedKeys]
  * @property {number} [start]
  * @property {number} [end]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
- * @property {any} [left]
- * @property {any} [right]
+ * @property {any[]} [left]
+ * @property {any[]} [right]
  */
 function equalKeys(actualKeys, expectedKeys, start, end, isEqual, context, left, right) {
     for (var i = start + 1; i < end; i++) {
@@ -144,13 +144,13 @@ function equalMap(actual, expected, isEqual, context, left, right) {
         return compareValues(actual, expected, actualKeys, expectedKeys, end, isEqual, context, left, right);
     }
     // Don't compare the same key twice
-    if (!equalKeys(expectedKeys[index], actualKeys, index, end, isEqual, context, left, right)) {
+    if (equalKeys(expectedKeys[index], actualKeys, index, end, isEqual, context, left, right) === false) {
         return false;
     }
     while (++index < end) {
         var key = expectedKeys[index];
-        if (!isEqual(key, actualKeys[index], isEqual, context, left, right) &&
-            !equalKeys(key, actualKeys, index, end, isEqual, context, left, right)) {
+        if ((isEqual(key, actualKeys[index], isEqual, context, left, right) === false) &&
+            equalKeys(key, actualKeys, index, end, isEqual, context, left, right) === false) {
             return false;
         }
     }
@@ -162,7 +162,7 @@ function equalMap(actual, expected, isEqual, context, left, right) {
  *
  * @typedef {true | false} equalArrays
  * @property {[any]} [actual]
- * @property {any} [expected]
+ * @property {any[]} [expected]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
  * @property {any} [left]
@@ -174,12 +174,13 @@ function equalArrays(actual, expected, isEqual, context, left, right) {
     if (count !== expected.length) {
         return false;
     }
+    // Equal if both are empty
     if (count === 0) {
         return true;
     }
     // deep compare the contents, ignoring non-numeric properties.
     while (count--) {
-        if (!isEqual(actual[count], expected[count], isEqual, context, left, right)) {
+        if (isEqual(actual[count], expected[count], isEqual, context, left, right) === false) {
             return false;
         }
     }

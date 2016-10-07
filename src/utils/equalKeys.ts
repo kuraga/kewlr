@@ -1,27 +1,27 @@
 import { EqualFunc } from '../layout';
 
 /**
- * Check if equal keys
+ * Check if an array contains equal keys
  *
  * @typedef {true | false} equalKeys
- * @property {[any]} [actualKeys]
- * @property {any} [expectedKeys]
+ * @property {[any[]]} [actualKeys]
+ * @property {any[]} [expectedKeys]
  * @property {number} [start]
  * @property {number} [end]
  * @property {EqualFunc} [isEqual]
  * @property {number} [context]
- * @property {any} [left]
- * @property {any} [right]
+ * @property {any[]} [left]
+ * @property {any[]} [right]
  */
 function equalKeys(
-    actualKeys: any,
-    expectedKeys: any,
+    actualKeys: any[],
+    expectedKeys: any[],
     start: number,
     end: number,
     isEqual: EqualFunc,
     context: number,
-    left: any,
-    right: any
+    left: any[],
+    right: any[]
 ): true | false {
     for (let i = start + 1; i < end; i++) {
         let key = expectedKeys[i];

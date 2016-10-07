@@ -3,6 +3,9 @@
  *
  * @typedef {any[]} iteratorToArray
  * @property {[any]} [iterator]
+ *
+ * Credit: Chai
+ *
  */
 function iteratorToArray(generator: any): any[] {
   let generatorResult = generator.next();

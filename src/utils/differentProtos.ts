@@ -24,7 +24,7 @@ import compareRegEx from './compareRegEx';
  * @property {any} [left]
  * @property {any} [right]
  */
-function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context: number, left: any, right: any): true | false {
     // core.js and older V8 compat
     if (symbolsAreObjects) {
         if (actual instanceof Symbol || expected instanceof Symbol) {

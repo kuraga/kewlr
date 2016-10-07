@@ -37,14 +37,14 @@ function equalMap(
     }
 
     // Don't compare the same key twice
-    if (!equalKeys(expectedKeys[index], actualKeys, index, end, isEqual, context, left, right)) {
+    if (equalKeys(expectedKeys[index], actualKeys, index, end, isEqual, context, left, right) === false) {
         return false;
     }
 
     while (++index < end) {
         let key = expectedKeys[index];
-        if (!isEqual(key, actualKeys[index], isEqual, context, left, right) &&
-            !equalKeys(key, actualKeys, index, end, isEqual, context, left, right)) {
+        if ((isEqual(key, actualKeys[index], isEqual, context, left, right) === false) &&
+            equalKeys(key, actualKeys, index, end, isEqual, context, left, right) === false) {
             return false;
         }
     }
