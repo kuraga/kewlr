@@ -43,7 +43,7 @@ import { strict, loose } from 'kewlr';
 
 # API
 
-Boogy let you import two different functions, so you can choose between either `strict` and `loose` mode when you include this module into your project.
+Kewlr let you import two different functions, so you can choose between either `strict` and `loose` mode when you include this module into your project.
 Each of the functions takes two arguments of any type, and returns a boolean result. Primitive types are equal if they are `===`.
 While composite types, i.e. `Objects` and `Arrays`, are considered equal if they have both the same structure and each sub-value is also equal.
 Circular references in composite structures are supported.
@@ -286,11 +286,3 @@ promise                     x 1,142,367 ops/sec ±1.39% (86 runs sampled)
 arrow function (differing)  x 1,221,315 ops/sec ±1.00% (87 runs sampled)
 generator func (differing)  x 1,158,629 ops/sec ±1.14% (85 runs sampled)
 ```
-
-# Bugs?
-
-If you find any bugs, feel free to open an issue ticket.
-
-# Contribution
-
-You are welcome to contribute at any time :)
