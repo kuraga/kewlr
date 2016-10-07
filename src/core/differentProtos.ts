@@ -112,10 +112,10 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
         case weakSetTag:
         case promiseTag:
             return false;
+        case errorTag:
+            return actual.name == actual.name && actual.message == actual.message;
         default:
-            if (actualTag === errorTag) {
-                return actual.name == actual.name && actual.message == actual.message;
-            } else if (actualTag === argsTag) {
+            if (actualTag === argsTag) {
                 if (objectToString.call(expected) != argsTag || actual.length !== expected.length) {
                     return false;
                 }

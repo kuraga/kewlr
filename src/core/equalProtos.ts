@@ -111,17 +111,15 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         case promiseTag:
         case errorTag:
             return false;
-        default:
-            if (actualTag === argsTag) {
-                if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
-                    return false;
-                }
-
-                if (actual.length === 0) {
-                    return true;
-                }
+        case argsTag:
+            if (objectToString.call(expected) !== argsTag || actual.length !== expected.length) {
+                return false;
             }
 
+            if (actual.length === 0) {
+                return true;
+            }
+        default:
             return compareReferences(actual, expected, isEqual, context, left, right);
     }
 }
