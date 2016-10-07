@@ -1,6 +1,10 @@
 import { strict, loose } from '../../src/kewlr';
 const expect = chai.expect;
 describe('numbers', () => {
+    it('should return false for commutative equality', () => {
+        expect(strict(-0, 0)).to.be.true;
+    });
+
     it('should return true for same values', () => {
         expect(strict(3, 3)).to.be.true;
         expect(strict(-0, -0)).to.be.true;

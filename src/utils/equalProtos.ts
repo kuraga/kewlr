@@ -2,6 +2,7 @@ import compareReferences from './compareReferences';
 import { isArray, supportsMap, supportsSet, objectToString } from '../constants';
 import { BufferFlags } from '../flags';
 import isBuffer from './isBuffer';
+import isStrictEqual from './isStrictEqual';
 import arrayBufferSupport from './arrayBufferSupport';
 import isView from './isView';
 import { argsTag, numberTag, weakMapTag, promiseTag, weakSetTag, errorTag, stringTag, boolTag } from '../tags';
@@ -100,10 +101,12 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
 
     switch (actualTag) {
+        // booleans and number primitives and their corresponding object wrappers
+        case boolTag:
+        case numberTag:
+            return isStrictEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
-        case numberTag:
-        case boolTag:
         case weakMapTag:
         case weakSetTag:
         case promiseTag:

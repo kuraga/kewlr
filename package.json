@@ -1,6 +1,6 @@
 {
     "name": "kewlr",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Determine if two objects are equal to each other according to a recursive equality algorithm",
     "main": "dist/kewlr.js",
     "jsnext:main": "dist/kewlr.mjs",

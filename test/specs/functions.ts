@@ -30,11 +30,20 @@ describe('functions', () => {
         expect(strict(function (b: any): any { return b; }, function (a: any): any {return a})).to.be.false;
     })
 
-    it('should compare functions as objects', () => {
+    it('should compare functions with title as objects', () => {
         f1.title = 'sometitle';
         expect(strict(f1, f2)).to.be.false;
         expect(strict(f2, f1)).to.be.false;
         expect(strict(f1, f1)).to.be.true;
+    });
+
+    it('should compare functions with title as objects', () => {
+        function a(): any { return 1 + 2; }
+        function b(): any { return 1 + 2; }
+        expect(strict(a, a)).to.be.true;
+        expect(strict(a, b)).to.be.false;
+        expect(loose(a, a)).to.be.true;
+        expect(loose(a, b)).to.be.false;
     });
 
     it('should be able to compare object methods', () => {

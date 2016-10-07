@@ -412,6 +412,18 @@ function isBuffer(object) {
 }
 
 /**
+ * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @typedef {true | false} isStrictEqual
+ * @property {[any]} [actual]
+ * @property {any} [expected]
+ */
+function isStrictEqual(actual, expected) {
+    return actual === expected || (actual !== actual && expected !== expected);
+}
+
+/**
  * Check if arrayBuffer are supported
  *
  * @typedef {any} arrayBufferSupport
@@ -469,18 +481,6 @@ function compareRegEx(actual, expected) {
 }
 
 /**
- * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @typedef {true | false} strict
- * @property {[any]} [actual]
- * @property {any} [expected]
- */
-function isStrict(actual, expected) {
-    return actual === expected || (actual !== actual && expected !== expected);
-}
-
-/**
  * Compare two Buffer.isView() values
  *
  * @typedef {true | false} equalView
@@ -494,7 +494,7 @@ function equalView(actual, expected) {
     }
     while (count) {
         count--;
-        if (!isStrict(actual[count], expected[count])) {
+        if (!isStrictEqual(actual[count], expected[count])) {
             return false;
         }
     }
@@ -580,10 +580,12 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
     var actualTag = objectToString.call(actual);
     // Numbers, Booleans, WeakMap, WeakSet, Promise, Error and String
     switch (actualTag) {
+        // booleans and number primitives and their corresponding object wrappers
+        case boolTag:
+        case numberTag:
+            return isStrictEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
-        case numberTag:
-        case boolTag:
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
@@ -600,6 +602,18 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
             }
             return compareReferences(actual, expected, isEqual, context, left, right);
     }
+}
+
+/**
+ * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @typedef {true | false} isLooseEqual
+ * @property {[any]} [actual]
+ * @property {any} [expected]
+ */
+function isLooseEqual(actual, expected) {
+    return actual == expected || (actual !== actual && expected !== expected);
 }
 
 /**
@@ -682,10 +696,12 @@ function differentProtos(actual, expected, isEqual, context, left, right) {
     }
     var actualTag = objectToString.call(actual);
     switch (actualTag) {
+        // booleans and number primitives and their corresponding object wrappers
+        case boolTag:
+        case numberTag:
+            return isLooseEqual(+actual, +expected);
         case stringTag:
             return actual == (expected + '');
-        case numberTag:
-        case boolTag:
         case weakMapTag:
         case weakSetTag:
         case promiseTag:

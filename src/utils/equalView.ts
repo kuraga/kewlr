@@ -1,4 +1,4 @@
-import eq from './eq';
+import isStrictEqual from './isStrictEqual';
 
 /**
  * Compare two Buffer.isView() values
@@ -14,7 +14,7 @@ function equalView(actual: Uint8Array, expected: Uint8Array): true | false {
     }
     while (count) {
         count--;
-        if (!eq(actual[count], expected[count])) {
+        if (!isStrictEqual(actual[count], expected[count])) {
             return false;
         }
     }

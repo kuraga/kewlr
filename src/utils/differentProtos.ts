@@ -3,6 +3,7 @@ import { isArray, symbolsAreObjects, supportsMap, supportsSet, objectToString } 
 import isBuffer from './isBuffer';
 import arrayBufferSupport from './arrayBufferSupport';
 import isView from './isView';
+import isLooseEqual from './isLooseEqual';
 import { BufferFlags, ModeFlags } from '../flags';
 import equalView from './equalView';
 import { EqualFunc } from '../layout';
@@ -100,15 +101,17 @@ function differentProtos(actual: any, expected: any, isEqual: EqualFunc, context
 
     const actualTag = objectToString.call(actual);
 
-        switch (actualTag) {
-        case stringTag:
-          return actual == (expected + '');
-        case numberTag:
+    switch (actualTag) {
+        // booleans and number primitives and their corresponding object wrappers
         case boolTag:
+        case numberTag:
+            return isLooseEqual(+actual, +expected);
+        case stringTag:
+            return actual == (expected + '');
         case weakMapTag:
         case weakSetTag:
         case promiseTag:
-           return false;
+            return false;
         default:
             if (actualTag === errorTag) {
                 return actual.name == actual.name && actual.message == actual.message;

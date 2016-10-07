@@ -176,4 +176,18 @@ describe('Set()', () => {
         expect(strict(new Set(), 'a')).to.be.false;
         expect(strict(new Set(), 1)).to.be.false;
     });
+
+    it('should compare sets with circular references', () => {
+
+        let set1 = new Set();
+        let set2 = new Set();
+
+        set1.add(set1);
+        set2.add(set2);
+        expect(strict(set1, set2)).to.be.true;
+
+        set1.add(1);
+        set2.add(2);
+        expect(strict(set1, set2)).to.be.false;
+    });
 });

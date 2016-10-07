@@ -5,6 +5,30 @@ const mapObj = { foo: 'bar' };
 
 describe('Map', () => {
 
+    it('should compare maps', () => {
+
+        let map1: any = new Map();
+        let map2: any = new Map();
+
+        map1.set('a', 1);
+        map2.set('b', 2);
+        expect(strict(map1, map2)).to.be.false;
+
+        map1.set('b', 2);
+        map2.set('a', 1);
+        expect(strict(map1, map2)).to.be.true;
+
+        map1.delete('a');
+        map1.set('a', 1);
+        expect(strict(map1, map2)).to.be.true;
+
+        map2.delete('a');
+        expect(strict(map1, map2)).to.be.false;
+
+        map1.clear();
+        map2.clear();
+    });
+
     it('should compare ES6 maps correctly', () => {
         let a = new Map<string, string>();
         a.set('x', 'y1');
@@ -22,7 +46,7 @@ describe('Map', () => {
             new Map([[mapObj, 'bar']]),
         )).to.be.true;
 
-           expect(loose(
+        expect(loose(
             new Map([[mapObj, 'bar']]),
             new Map([[mapObj, 'bar']]),
         )).to.be.true;

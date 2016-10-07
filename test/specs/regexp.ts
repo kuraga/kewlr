@@ -2,7 +2,7 @@ import { strict, loose } from '../../src/kewlr';
 const expect = chai.expect;
 describe('RegExp', () => {
 
-    it('should handle RegExps', () => {
+    it('should compare regexes', () => {
         expect(strict(/a/, /a/)).to.be.true;
         expect(strict(/ab/, /a/)).to.be.false;
         expect(strict(/a/g, /a/g)).to.be.true;
