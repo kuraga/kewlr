@@ -11,14 +11,16 @@ It should be safe to use this module in production, and it works both for node a
 # Features
 
 - High performance
+- 100% accurate
 - Follows ECMA standards
 - Works for both NodejS and browsers
 - shallow, match and strict mode
 - [`Core-js`](https://github.com/zloirock/core-js) compatible
-- Browserify compatible
+- [`Chai`](https://github.com/chaijs/chai) compatible
+- [`Browserify`](http://browserify.org/) compatible
 - Babel and Bublé compatible
 - fixes all known cross-browser issues
-- chai compatible
+
 - supports large data sets
 
 # Install

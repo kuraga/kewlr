@@ -1,5 +1,12 @@
 # Changelog
 
+# v, 0.3.0
+
+- BC! loose mode renamed to shallow mode
+- added 'match' mode to be Chai compatible
+- cleanup
+- updated readme
+
 # v, 0.2.6
 
 - works with all browsers
