@@ -133,7 +133,7 @@ arrow function (differing)  x 471,504 ops/sec ±1.96% (85 runs sampled)
 ```js
 NaN                         x 61,172,899 ops/sec ±0.74% (88 runs sampled)
 string literal              x 78,921,225 ops/sec ±1.10% (83 runs sampled)
-array literal               x 7,549,687 ops/sec ±0.86% (86 runs sampled)
+array literal               x 954,921 ops/sec ±1.33% (81 runs sampled)
 boolean literal             x 77,500,977 ops/sec ±1.60% (88 runs sampled)
 object literal              x 840,514 ops/sec ±1.36% (87 runs sampled)
 object from null            x 900,767 ops/sec ±1.58% (86 runs sampled)

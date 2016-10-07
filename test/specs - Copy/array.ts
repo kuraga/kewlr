@@ -27,34 +27,34 @@ describe('strings', () => {
 
     it('should compare arrays', () => {
 
-        let array1: any = [true, null, 1, 'a', undefined];
-        let array2: any = [true, null, 1, 'a', undefined];
+      var array1: any = [true, null, 1, 'a', undefined],
+          array2: any = [true, null, 1, 'a', undefined];
 
-        expect(strict(array1, array2)).to.be.true;
+       expect(strict(array1, array2)).to.be.true;
 
-        array1 = [[1, 2, 3], new Date(2012, 4, 23), /x/, { 'e': 1 }];
-        array2 = [[1, 2, 3], new Date(2012, 4, 23), /x/, { 'e': 1 }];
+      array1 = [[1, 2, 3], new Date(2012, 4, 23), /x/, { 'e': 1 }];
+      array2 = [[1, 2, 3], new Date(2012, 4, 23), /x/, { 'e': 1 }];
 
-        expect(strict(array1, array2)).to.be.true;
+       expect(strict(array1, array2)).to.be.true;
 
-        array1 = [1];
-        array1[2] = 3;
+      array1 = [1];
+      array1[2] = 3;
 
-        array2 = [1];
-        array2[1] = undefined;
-        array2[2] = 3;
+      array2 = [1];
+      array2[1] = undefined;
+      array2[2] = 3;
 
-        expect(strict(array1, array2)).to.be.true;
+       expect(strict(array1, array2)).to.be.true;
 
-        array1 = [1, 2, 3];
-        array2 = [3, 2, 1];
+       array1 = [1, 2, 3];
+       array2 = [3, 2, 1];
 
-        expect(strict(array1, array2)).to.be.false;
+       expect(strict(array1, array2)).to.be.false;
 
-        array1 = [1, 2];
-        array2 = [1, 2, 3];
+      array1 = [1, 2];
+      array2 = [1, 2, 3];
 
-        expect(strict(array1, array2)).to.be.false;
+       expect(strict(array1, array2)).to.be.false;
     });
 
     it('should not compare objects with array', () => {
@@ -155,57 +155,31 @@ describe('strings', () => {
         expect(strict(a1, a2)).to.be.true;
     });
 
-    it('should compare arrays with circular references - strict mode', function() {
+  it('should compare arrays with circular references', function() {
 
-        let array1: any[] = [];
-        let array2: any[] = [];
+      var array1: any[] = [],
+          array2: any[] = [];
 
-        array1.push(array1);
-        array2.push(array2);
+      array1.push(array1);
+      array2.push(array2);
 
-        expect(strict(array1, array2)).to.be.true;
+       expect(strict(array1, array2)).to.be.true;
 
-        array1.push('b');
-        array2.push('b');
+      array1.push('b');
+      array2.push('b');
 
-        expect(strict(array1, array2)).to.be.true;
+       expect(strict(array1, array2)).to.be.true;
 
-        array1.push('c');
-        array2.push('d');
+      array1.push('c');
+      array2.push('d');
 
-        expect(strict(array1, array2)).to.be.false;
+       expect(strict(array1, array2)).to.be.false;
 
-        array1 = ['a', 'b', 'c'];
-        array1[1] = array1;
-        array2 = ['a', ['a', 'b', 'c'], 'c'];
+      array1 = ['a', 'b', 'c'];
+      array1[1] = array1;
+      array2 = ['a', ['a', 'b', 'c'], 'c'];
 
-        expect(strict(array1, array2)).to.be.false;
+       expect(strict(array1, array2)).to.be.false;
     });
 
-    it('should compare arrays with circular references - loose mode', function() {
-
-        let array1: any[] = [];
-        let array2: any[] = [];
-
-        array1.push(array1);
-        array2.push(array2);
-
-        expect(loose(array1, array2)).to.be.true;
-
-        array1.push('b');
-        array2.push('b');
-
-        expect(loose(array1, array2)).to.be.true;
-
-        array1.push('c');
-        array2.push('d');
-
-        expect(loose(array1, array2)).to.be.false;
-
-        array1 = ['a', 'b', 'c'];
-        array1[1] = array1;
-        array2 = ['a', ['a', 'b', 'c'], 'c'];
-
-        expect(loose(array1, array2)).to.be.false;
-    });
 });

@@ -254,17 +254,22 @@ function equalIterators(actual, expected, isEqual, context, left, right) {
  * @property {any} [right]
  */
 function compareInnerValues(actual, expected, isEqual, context, left, right) {
+    // Fixes circular reference issues with Arrays, Map() and Set() in strict mode
     if (context & 131072 /* EQUAL_PROTO */) {
-        // NOTE!! Due to circular references Map(), Set() must be in this function. Moving it will increase performance, but will
-        // also cause tons of circular reference issues
-        if (supportsMap && actual instanceof Map) {
-            return actual.size === expected.size && equalMap(actual, expected, isEqual, context, left, right);
-        }
-        if (supportsSet && actual instanceof Set) {
-            return actual.size === expected.size && equalSet(actual, expected, isEqual, context, left, right);
-        }
-        if (isIterable(actual)) {
-            return equalIterators(actual, expected, isEqual, context, left, right);
+        // 'strict mode' *only*
+        if (context & 32768 /* STRICT_MODE */) {
+            if (isArray(actual)) {
+                return equalArrays(actual, expected, isEqual, context, left, right);
+            }
+            if (supportsMap && actual instanceof Map) {
+                return actual.size === expected.size && equalMap(actual, expected, isEqual, context, left, right);
+            }
+            if (supportsSet && actual instanceof Set) {
+                return actual.size === expected.size && equalSet(actual, expected, isEqual, context, left, right);
+            }
+            if (isIterable(actual)) {
+                return equalIterators(actual, expected, isEqual, context, left, right);
+            }
         }
     }
     var actualKeys = Object.keys(actual);
@@ -508,6 +513,14 @@ function equalView(actual, expected) {
  * @property {any} [right]
  */
 function equalProtos(actual, expected, isEqual, context, left, right) {
+    if (isArray(actual)) {
+        if (actual.length !== expected.length) {
+            return false;
+        }
+        if (actual.length === 0) {
+            return true;
+        }
+    }
     // RegExp
     if (actual instanceof RegExp) {
         return compareRegEx(actual, expected);
@@ -515,9 +528,6 @@ function equalProtos(actual, expected, isEqual, context, left, right) {
     // Date
     if (actual instanceof Date) {
         return actual.getTime() === expected.getTime();
-    }
-    if (isArray(actual)) {
-        return equalArrays(actual, expected, isEqual, context, left, right);
     }
     // Map()
     if (supportsMap && actual instanceof Map) {

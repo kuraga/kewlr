@@ -67,16 +67,14 @@ class Value {
 }
 describe('Iterators',  () => {
     it('should return true for iterables with same prototypes', () => {
-        let slice1 = new Slice(0, 10);
-        let slice2 = new Slice(0, 10);
+        var slice1 = new Slice(0, 10);
+        var slice2 = new Slice(0, 10);
         expect(strict(slice1, slice2)).to.be.true;
-        expect(loose(slice1, slice2)).to.be.true;
     });
     it('should return true for iterables + same prototypes + different end times', () => {
-        let slice1 = new Slice(0, 10);
-        let slice2 = new Slice(0, 20);
+        var slice1 = new Slice(0, 10);
+        var slice2 = new Slice(0, 20);
         expect(strict(slice1, slice2)).to.be.false;
-        expect(loose(slice1, slice2)).to.be.false;
     });
     it('should return true for iterables deeply matched', () => {
         expect(strict(new List([
@@ -181,7 +179,6 @@ describe('Iterators',  () => {
                 list([1, 2, '3']),
                 [1, 2, {value: 3}],
             ]))).to.be.true;
-
         expect(loose(  list([
                 list([1, 2, '3']),
                 [1, 2, {value: 3}],

@@ -1,5 +1,11 @@
 # Changelog
 
+# v, 0.2.3
+
+- fixed array circular reference bug
+- speeding up 'loose mode'
+- cleanup
+
 # v, 0.2.2
 
 - improved performance

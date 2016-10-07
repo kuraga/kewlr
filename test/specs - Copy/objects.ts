@@ -148,13 +148,13 @@ describe('objects', () => {
 
     it('should compare objects regardless of key order', () => {
         expect(strict(
-            { 'a': 1, 'b': 2, 'c': 3 },
-            { 'c': 3, 'a': 1, 'b': 2 }
+           { 'a': 1, 'b': 2, 'c': 3 },
+           { 'c': 3, 'a': 1, 'b': 2 }
         )).to.be.true;
 
         expect(loose(
-            { 'a': 1, 'b': 2, 'c': 3 },
-            { 'c': 3, 'a': 1, 'b': 2 }
+           { 'a': 1, 'b': 2, 'c': 3 },
+           { 'c': 3, 'a': 1, 'b': 2 }
         )).to.be.true;
     });
 
@@ -191,7 +191,27 @@ describe('objects', () => {
 
         object1.b = object1.a;
         expect(strict(object1, object2)).to.be.true;
-        expect(loose(object1, object2)).to.be.true;
+    });
+
+    it('should compare objects with complex circular references', () => {
+
+        let object1: any = {
+            'foo': { 'b': { 'c': { 'd': {} } } },
+            'bar': { 'a': 2 }
+        };
+
+        let object2: any = {
+            'foo': { 'b': { 'c': { 'd': {} } } },
+            'bar': { 'a': 2 }
+        };
+
+        object1.foo.b.c.d = object1;
+        object1.bar.b = object1.foo.b;
+
+        object2.foo.b.c.d = object2;
+        object2.bar.b = object2.foo.b;
+
+        expect(strict(object1, object2)).to.be.true;
     });
 
     it('should compare plain objects', () => {
@@ -353,74 +373,5 @@ describe('objects', () => {
         expect(strict(String('a'), {0: 'a'})).to.be.false;
         expect(loose(String('a'), {0: 'a'})).to.be.false;
         expect(strict(String('a'), ['a'])).to.be.false;
-    });
-
-    it('should compare objects with circular references', () => {
-
-        let object1: any = {};
-        let object2: any = {};
-
-        object1.a = object1;
-        object2.a = object2;
-
-        expect(strict(object1, object2)).to.be.true;
-
-        object1.b = 0;
-        object2.b = 0;
-
-        expect(strict(object1, object2)).to.be.true;
-
-        object1.c = Object(1);
-        object2.c = Object(2);
-
-        expect(strict(object1, object2)).to.be.false;
-
-        object1 = { 'a': 1, 'b': 2, 'c': 3 };
-        object1.b = object1;
-        object2 = { 'a': 1, 'b': { 'a': 1, 'b': 2, 'c': 3 }, 'c': 3 };
-
-        expect(strict(object1, object2)).to.be.false;
-    });
-
-    it('should compare objects with multiple circular references', () => {
-
-        let array1: any = [{}];
-        let array2: any = [{}];
-
-        (array1[0].a = array1).push(array1);
-        (array2[0].a = array2).push(array2);
-
-        expect(strict(array1, array2)).to.be.true;
-
-        array1[0].b = 0;
-        array2[0].b = 0;
-
-        expect(strict(array1, array2)).to.be.true;
-
-        array1[0].c = Object(1);
-        array2[0].c = Object(2);
-
-        expect(strict(array1, array2)).to.be.false;
-    });
-
-    it('should compare objects with complex circular references', () => {
-
-        const object1: any = {
-            'foo': { 'b': { 'c': { 'd': {} } } },
-            'bar': { 'a': 2 }
-        };
-
-        const object2: any = {
-            'foo': { 'b': { 'c': { 'd': {} } } },
-            'bar': { 'a': 2 }
-        };
-
-        object1.foo.b.c.d = object1;
-        object1.bar.b = object1.foo.b;
-
-        object2.foo.b.c.d = object2;
-        object2.bar.b = object2.foo.b;
-
-        expect(strict(object1, object2)).to.be.true;
     });
 });

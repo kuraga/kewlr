@@ -10,7 +10,6 @@ import compareRegEx from './compareRegEx';
 import { EqualFunc } from '../layout';
 import isIterable from './isIterable';
 import equalView from './equalView';
-import equalArrays from './equalArrays';
 
 /**
  * Compare objects with identical prototypes
@@ -25,6 +24,14 @@ import equalArrays from './equalArrays';
  */
 function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
+    if (isArray(actual)) {
+        if (actual.length !== expected.length) {
+            return false;
+        }
+        if (actual.length === 0) {
+            return true;
+        }
+    }
     // RegExp
     if (actual instanceof RegExp) {
         return compareRegEx(actual, expected);
@@ -33,10 +40,6 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
     // Date
     if (actual instanceof Date) {
         return actual.getTime() === expected.getTime();
-    }
-
-    if (isArray(actual)) {
-        return equalArrays(actual, expected, isEqual, context, left, right);
     }
 
     // Map()
@@ -50,7 +53,7 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
         }
     }
 
-     // Map()
+    // Map()
     if (supportsSet && actual instanceof Set) {
         // check for different primitive keys
         if (actual.size !== expected.size) {
@@ -98,7 +101,7 @@ function equalProtos(actual: any, expected: any, isEqual: EqualFunc, context: nu
 
     switch (actualTag) {
         case stringTag:
-          return actual == (expected + '');
+            return actual == (expected + '');
         case numberTag:
         case boolTag:
         case weakMapTag:

@@ -1,10 +1,11 @@
 import isIterable from './isIterable';
 import equalMap from './equalMap';
 import equalSet from './equalSet';
-import { hasOwn, supportsMap, supportsSet } from '../constants';
+import { isArray, hasOwn, supportsMap, supportsSet } from '../constants';
 import { ModeFlags } from '../flags';
 import { EqualFunc } from '../layout';
 import equalIterators from './equalIterators';
+import equalArrays from './equalArrays';
 
 /**
  * Compare inner values
@@ -19,23 +20,27 @@ import equalIterators from './equalIterators';
  */
 function compareInnerValues(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
 
+    // Fixes circular reference issues with Arrays, Map() and Set() in strict mode
     if (context & ModeFlags.EQUAL_PROTO) {
+        // 'strict mode' *only*
+        if (context & ModeFlags.STRICT_MODE) {
+            if (isArray(actual)) {
+                return equalArrays(actual, expected, isEqual, context, left, right);
+            }
 
-        // NOTE!! Due to circular references Map(), Set() must be in this function. Moving it will increase performance, but will
-        // also cause tons of circular reference issues
-        if (supportsMap && actual instanceof Map) {
-            return actual.size === expected.size && equalMap(actual, expected, isEqual, context, left, right);
-        }
+            if (supportsMap && actual instanceof Map) {
+                return actual.size === expected.size && equalMap(actual, expected, isEqual, context, left, right);
+            }
 
-        if (supportsSet && actual instanceof Set) {
-            return actual.size === expected.size && equalSet(actual, expected, isEqual, context, left, right);
-        }
+            if (supportsSet && actual instanceof Set) {
+                return actual.size === expected.size && equalSet(actual, expected, isEqual, context, left, right);
+            }
 
-        if (isIterable(actual)) {
-            return equalIterators(actual, expected, isEqual, context, left, right);
+            if (isIterable(actual)) {
+                return equalIterators(actual, expected, isEqual, context, left, right);
+            }
         }
     }
-
     const actualKeys: any = Object.keys(actual);
     const expectedKeys: any = Object.keys(expected);
 
