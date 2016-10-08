@@ -20,7 +20,9 @@
   ],
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -45,7 +47,7 @@
   },
   "homepage": "https://github.com/zubuzon/kewlr#readme",
   "devDependencies": {
-    "@types/chai": "^3.4.32",
+    "@types/chai": "^3.4.33",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.45",
     "chai": "^3.5.0",
