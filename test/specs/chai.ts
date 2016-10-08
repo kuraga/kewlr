@@ -1,5 +1,38 @@
 import { chai as match } from '../../src/kewlr';
+
+/**
+ * Chai mode - 100% compatible with Chai's own deepEqual module
+ *
+ * NOTE! All Chai's tests is used here - only a few to make sure 100% compat
+ */
+
 const expect = chai.expect;
+
+describe('strings', () => {
+
+// This isn't compatible with Chai, but after the specs even if it's a anti-pattern now
+// and supported by e.g. Lodash
+    it('returns false for literal vs instance with same value', () => {
+        expect(match('x', new String('x'))).to.be.true;
+    });
+
+    it('returns false for different values', () => {
+        expect(match('x', 'y')).to.be.false;
+    });
+});
+
+describe('booleans', () => {
+
+    it('returns false for same values', () => {
+        expect(match(true, true)).to.be.true;
+    });
+
+// This isn't compatible with Chai, but after the specs even if it's a anti-pattern now
+// and supported by e.g. Lodash
+    it('returns false for literal vs instance with same value', () => {
+        expect(match(true, new Boolean(true))).to.be.true;
+    });
+});
 
 describe('numbers', () => {
 
@@ -16,7 +49,7 @@ describe('numbers', () => {
         //     expect(match(1, new Number(1))).to.be.false;
     });
 
-    it('returns true NaN vs NaN', function () {
+    it('returns true NaN vs NaN',  () => {
         expect(match(NaN, NaN)).to.be.true;
     });
 
@@ -144,5 +177,79 @@ describe('functions', function () {
 
     it('returns false for different functions', function () {
         expect(match(function foo() {}, function bar() {})).to.be.false;
+    });
+});
+
+describe('errors', function () {
+
+    it('returns true for same errors', function () {
+        var error = new Error('foo');
+        expect(match(error, error)).to.be.true;
+    });
+
+    it('returns false for different errors', function () {
+        expect(match(new Error('foo'), new Error('foo'))).to.be.false;
+    });
+
+});
+describe('@@iterator Sham', function () {
+    it('returns true for two objects with same [Symbol.iterator] entries', function () {
+        var testA = {};
+        Object.defineProperty(testA, Symbol.iterator, { value: function () {
+            var keys = [ 'a', 'b', 'c' ];
+            var values = [ 'a', 'b', 'c' ];
+            return {
+                next: function () {
+                    if (keys.length) {
+                        return { value: [ keys.shift(), values.shift() ], done: false };
+                    }
+                    return { done: true };
+                },
+            };
+        } });
+        var testB = {};
+        Object.defineProperty(testB, Symbol.iterator, { value: function () {
+            var keys = [ 'a', 'b', 'c' ];
+            var values = [ 'a', 'b', 'c' ];
+            return {
+                next: function () {
+                    if (keys.length) {
+                        return { value: [ keys.shift(), values.shift() ], done: false };
+                    }
+                    return { done: true };
+                },
+            };
+        } });
+        expect(match(testA, testB)).to.be.true;
+    });
+
+    it('returns false for two objects with different [Symbol.iterator] entries', function () {
+        var testA = {};
+        Object.defineProperty(testA, Symbol.iterator, { value: function () {
+            var keys = [ 'a', 'b', 'c' ];
+            var values = [ 'a', 'b', 'c' ];
+            return {
+                next: function () {
+                    if (keys.length) {
+                        return { value: [ keys.shift(), values.shift() ], done: false };
+                    }
+                    return { done: true };
+                },
+            };
+        } });
+        var testB = {};
+        Object.defineProperty(testB, Symbol.iterator, { value: function () {
+            var keys = [ 'a', 'b', 'c' ];
+            var values = [ 'd', 'e', 'f' ];
+            return {
+                next: function () {
+                    if (keys.length) {
+                        return { value: [ keys.shift(), values.shift() ], done: false };
+                    }
+                    return { done: true };
+                },
+            };
+        } });
+        expect(match(testA, testB)).to.be.false;
     });
 });
