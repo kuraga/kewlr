@@ -215,6 +215,7 @@ arrow function (differing)  x 471,504 ops/sec ±1.96% (85 runs sampled)
 ### Kewlr
 
 ```js
+NaN                         x 59,709,975 ops/sec ±0.81% (95 runs sampled)
 string literal              x 69,543,087 ops/sec ±0.49% (95 runs sampled)
 array literal               x 1,089,537 ops/sec ±0.95% (90 runs sampled)
 boolean literal             x 60,163,978 ops/sec ±0.39% (96 runs sampled)
