@@ -1,6 +1,6 @@
 {
   "name": "kewlr",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Compare objects and return whether they are equal according to a recursive equality algorithm. This module is around 6 - 9% faster then similiar modules. Works for both NodejS and the browser.",
   "main": "dist/kewlr.js",
   "jsnext:main": "dist/kewlr.mjs",

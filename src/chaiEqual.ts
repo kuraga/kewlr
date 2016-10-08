@@ -4,9 +4,9 @@ import deepEqual from './deepEqual';
 import { EqualFunc } from './layout';
 
 /**
- * Strict equal
+ * Chai equal
  *
- * @typedef {true | false} matchEqual
+ * @typedef {true | false} chaiEqual
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -14,7 +14,7 @@ import { EqualFunc } from './layout';
  * @property {any} [left]
  * @property {any} [right]
  */
-function matchEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
+function chaiEqual(actual: any, expected: any, isEqual: EqualFunc, context: number, left?: any, right?: any): true | false {
     // if they reference the same object in memory, then they are the same
     if (actual === expected) {
         return actual !== 0 || 1 / actual === 1 / expected;
@@ -27,4 +27,4 @@ function matchEqual(actual: any, expected: any, isEqual: EqualFunc, context: num
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
 
-export default matchEqual;
+export default chaiEqual;

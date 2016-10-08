@@ -761,7 +761,7 @@ function shallowEqual(actual, expected, isEqual, context, left, right) {
         return true;
     }
     if (actual == null || expected == null || (!isObject(actual) && !isObjectLike(expected))) {
-        return actual !== actual && expected !== expected;
+        return actual != actual && expected != expected;
     }
     return deepEqual(actual, expected, isEqual, context, left, right);
 }
@@ -793,9 +793,9 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
 }
 
 /**
- * Strict equal
+ * Chai equal
  *
- * @typedef {true | false} matchEqual
+ * @typedef {true | false} chaiEqual
  * @property {[any]} [actual]
  * @property {any} [expected]
  * @property {EqualFunc} [isEqual]
@@ -803,7 +803,7 @@ function strictEqual(actual, expected, isEqual, context, left, right) {
  * @property {any} [left]
  * @property {any} [right]
  */
-function matchEqual(actual, expected, isEqual, context, left, right) {
+function chaiEqual(actual, expected, isEqual, context, left, right) {
     // if they reference the same object in memory, then they are the same
     if (actual === expected) {
         return actual !== 0 || 1 / actual === 1 / expected;
@@ -826,14 +826,14 @@ function shallow(actual, expected) {
 }
 
 /**
- * Match mode
+ * Chai mode
  *
  * @typedef {true | false} match
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-function match(actual, expected) {
-    return matchEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
+function chai(actual, expected) {
+    return chaiEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
 }
 
 /**
@@ -847,4 +847,4 @@ function strict(actual, expected) {
     return strictEqual(actual, expected, strictEqual, 32768 /* STRICT_MODE */ | 65536 /* SHALLOW_MODE */);
 }
 
-export { shallow, match, strict };
+export { shallow, chai, strict };

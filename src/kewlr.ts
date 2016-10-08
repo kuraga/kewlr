@@ -1,6 +1,6 @@
 import shallowEqual from './shallowEqual';
 import strictEqual from './strictEqual';
-import matchEqual from './matchEqual';
+import chaiEqual from './chaiEqual';
 import { ModeFlags } from './flags';
 
 /**
@@ -15,14 +15,14 @@ export function shallow<T, S>(actual: T, expected: S): true | false {
 };
 
 /**
- * Match mode
+ * Chai mode
  *
  * @typedef {true | false} match
  * @property {[any]} [actual]
  * @property {any} [expected]
  */
-export function match<T, S>(actual: T, expected: S): true | false {
-    return matchEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.SHALLOW_MODE);
+export function chai<T, S>(actual: T, expected: S): true | false {
+    return chaiEqual(actual, expected, strictEqual, ModeFlags.STRICT_MODE | ModeFlags.SHALLOW_MODE);
 };
 
 /**

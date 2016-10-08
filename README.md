@@ -14,7 +14,7 @@ It should be safe to use this module in production, and it works both for node a
 - 100% accurate
 - Follows ECMA standards
 - Works for both NodejS and browsers
-- shallow, match and strict mode
+- shallow, chai and strict mode
 - [`Core-js`](https://github.com/zloirock/core-js) compatible
 - [`Chai`](https://github.com/chaijs/chai) compatible
 - [`Browserify`](http://browserify.org/) compatible
@@ -58,7 +58,7 @@ Circular references in composite structures are supported.
 
 **Returns:** Boolean indicating whether or not `actual` is the same as `expected`.
 
-Same for `shallow` and `match` mode.
+Same for `shallow` and `chai` mode.
 
 ## Differences between shallow and strict mode
 
@@ -66,7 +66,7 @@ The differences between `shallow` and `strict` mode are mainly the use of trippl
 equality between two objects of any type, and performs a [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero) comparison
 between two values to determine if they are equivalent.
 
-`match` mode is identical to `strict` mode, with a few exceptions regarding primitives This is done to be Chai compatible.
+`chai` mode is is what the name says - turns Kewlr into Chai'r deepEqual module with Kewlrs performance under the hood.
 
 ```js
 shallow({}, []) // => true
@@ -304,4 +304,103 @@ function                    x 1,272,566 ops/sec ±1.80% (93 runs sampled)
 promise                     x 1,142,367 ops/sec ±1.39% (86 runs sampled)
 arrow function (differing)  x 1,221,315 ops/sec ±1.00% (87 runs sampled)
 generator func (differing)  x 1,158,629 ops/sec ±1.14% (85 runs sampled)
+```
+
+# Chai mode
+
+Kewlr supports a `chai` mode. This mode is 100% compatible with Chai's deepEqual module, but with Kewlrs performance under the hood.
+
+### Benchmark
+
+* /NI = Not Implemented
+
+```js
+
+// Chai (*original*)
+
+NaN                            x 23,135,184 ops/sec ±1.41% (95 runs sampled)
+string literal              x 52,196,723 ops/sec ±0.32% (96 runs sampled)
+array literal               x 369,912 ops/sec ±1.55% (90 runs sampled)
+boolean literal             x 47,495,619 ops/sec ±1.29% (93 runs sampled)
+object literal              x 251,964 ops/sec ±1.98% (93 runs sampled)
+object from null            x 294,651 ops/sec ±1.16% (96 runs sampled)
+regex literal               x 321,041 ops/sec ±1.17% (96 runs sampled)
+String                      : /NI
+Boolean                     : /NI
+Number                      : /NI
+Number literal              x 30,095,668 ops/sec ±1.06% (95 runs sampled)
+null                        x 52,542,828 ops/sec ±0.91% (92 runs sampled)
+undefined                   x 52,576,269 ops/sec ±0.66% (93 runs sampled)
+buffer                      : /NI
+date                        x 374,308 ops/sec ±1.45% (89 runs sampled)
+map                         x 350,373 ops/sec ±2.02% (92 runs sampled)
+regex constructor           x 281,013 ops/sec ±1.15% (93 runs sampled)
+set                         x 281,116 ops/sec ±1.61% (88 runs sampled)
+string constructor          : /NI
+arguments                   x 328,653 ops/sec ±1.69% (96 runs sampled)
+promise                     x 391,043 ops/sec ±2.25% (92 runs sampled)
+weakmap                     x 422,815 ops/sec ±1.32% (96 runs sampled)
+string literal (differing)  x 38,615,393 ops/sec ±1.85% (95 runs sampled)
+array literal (differing)   x 207,455 ops/sec ±1.78% (91 runs sampled)
+boolean literal (differing) x 42,698,174 ops/sec ±1.20% (95 runs sampled)
+object literal (differing)  x 128,334 ops/sec ±2.27% (90 runs sampled)
+regex literal (differing)   x 304,894 ops/sec ±1.54% (93 runs sampled)
+number literal (differing)  : /NI
+null & undefined            x 44,412,001 ops/sec ±1.13% (92 runs sampled)
+buffer (differing)          x 307,443 ops/sec ±1.57% (94 runs sampled)
+date (differing)            x 360,143 ops/sec ±1.34% (94 runs sampled)
+number (differing)            x 340,573 ops/sec ±1.77% (90 runs sampled)
+error                       x 415,895 ops/sec ±1.06% (96 runs sampled)
+map (differing)             x 191,026 ops/sec ±2.30% (91 runs sampled)
+regex ctor (differing)      x 321,128 ops/sec ±0.76% (58 runs sampled)
+set (differing)             x 169,544 ops/sec ±1.40% (94 runs sampled)
+string ctor (differing)     x 312,103 ops/sec ±1.40% (93 runs sampled)
+weakset                     x 314,585 ops/sec ±1.25% (93 runs sampled)
+arguments (differing)       x 205,860 ops/sec ±1.83% (90 runs sampled)
+function                    x 450,480 ops/sec ±1.91% (93 runs sampled)
+arrow function (differing)  x 459,619 ops/sec ±1.82% (91 runs sampled)
+
+// Kewlr - Chai mode
+NaN                         x 46,946,316 ops/sec ±0.50% (95 runs sampled)
+string literal              x 49,497,748 ops/sec ±0.52% (98 runs sampled)
+array literal               x 911,174 ops/sec ±0.84% (94 runs sampled)
+boolean literal             x 44,945,903 ops/sec ±0.32% (100 runs sampled)
+object literal              x 882,087 ops/sec ±0.87% (95 runs sampled)
+object from null            x 544,655 ops/sec ±0.64% (92 runs sampled)
+regex literal               x 5,934,119 ops/sec ±0.47% (98 runs sampled)
+String                      x 688,034 ops/sec ±2.59% (92 runs sampled)
+Boolean                     x 929,798 ops/sec ±0.69% (96 runs sampled)
+Number                      x 897,256 ops/sec ±0.57% (92 runs sampled)
+Number literal              x 48,896,797 ops/sec ±0.85% (95 runs sampled)
+null                        x 47,105,902 ops/sec ±0.72% (96 runs sampled)
+undefined                   x 46,435,714 ops/sec ±0.71% (92 runs sampled)
+buffer                      : /NI
+date                        x 8,181,286 ops/sec ±0.67% (96 runs sampled)
+map                         x 932,079 ops/sec ±0.66% (94 runs sampled)
+regex constructor           x 6,296,232 ops/sec ±0.40% (95 runs sampled)
+set                         x 907,274 ops/sec ±0.87% (95 runs sampled)
+string constructor          x 659,903 ops/sec ±0.58% (94 runs sampled)
+arguments                   x 576,035 ops/sec ±0.80% (95 runs sampled)
+promise                     x 999,637 ops/sec ±0.76% (94 runs sampled)
+weakmap                     x 1,164,366 ops/sec ±0.63% (96 runs sampled)
+string literal (differing)  x 38,990,103 ops/sec ±0.45% (93 runs sampled)
+array literal (differing)   x 894,618 ops/sec ±1.57% (94 runs sampled)
+boolean literal (differing) x 32,678,290 ops/sec ±1.87% (96 runs sampled)
+object literal (differing)  x 541,684 ops/sec ±1.05% (95 runs sampled)
+regex literal (differing)   x 8,576,171 ops/sec ±0.45% (99 runs sampled)
+number literal (differing)  : /NI
+null & undefined            x 44,298,328 ops/sec ±0.56% (97 runs sampled)
+buffer (differing)          x 4,888,593 ops/sec ±1.59% (95 runs sampled)
+date (differing)            x 8,095,821 ops/sec ±0.62% (96 runs sampled)
+number (differing)            x 775,817 ops/sec ±2.33% (89 runs sampled)
+error                       x 1,262,244 ops/sec ±1.62% (93 runs sampled)
+map (differing)             x 949,984 ops/sec ±1.80% (95 runs sampled)
+regex ctor (differing)      x 8,176,987 ops/sec ±2.31% (92 runs sampled)
+set (differing)             x 857,345 ops/sec ±1.45% (92 runs sampled)
+string ctor (differing)     : /NI
+weakset                     x 1,110,013 ops/sec ±0.76% (96 runs sampled)
+arguments (differing)       x 466,570 ops/sec ±1.13% (92 runs sampled)
+function                    x 2,184,845 ops/sec ±1.63% (85 runs sampled)
+arrow function (differing)  x 2,367,934 ops/sec ±2.64% (94 runs sampled)
+generator func (differing)  x 2,241,420 ops/sec ±1.65% (95 runs sampled)
 ```

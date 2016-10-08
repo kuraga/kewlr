@@ -1,4 +1,4 @@
-import { strict, shallow, match } from '../../src/kewlr';
+import { strict, shallow, chai as match } from '../../src/kewlr';
 
 const expect = chai.expect;
 

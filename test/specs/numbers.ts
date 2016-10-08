@@ -1,6 +1,9 @@
-import { strict, shallow, match } from '../../src/kewlr';
+import { strict, shallow, chai as match } from '../../src/kewlr';
+
 const expect = chai.expect;
+
 describe('numbers', () => {
+
     it('should return false for commutative equality', () => {
         expect(strict(-0, 0)).to.be.true;
     });
